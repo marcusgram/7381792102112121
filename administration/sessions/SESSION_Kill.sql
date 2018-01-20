@@ -84,7 +84,7 @@ INST_ID   SID  SERIAL# SPID                     USERNAME   PROGRAM
 
 -----------------------------------------
 -- identifier les sessions 
--- par username
+-- par SID
 -- Retourne la requete, le SID et le SERIAL à utiliser,
 -- le username
 ----------------------------------------
