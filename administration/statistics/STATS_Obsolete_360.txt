@@ -1,0 +1,67 @@
+
+
+
+set pagesize 100
+
+
+SELECT /*+ NO_MERGE */
+       s.owner, s.table_name, s.num_rows, s.last_analyzed, s.stale_stats, s.stattype_locked
+  FROM dba_tab_statistics s,
+       dba_tables t
+ WHERE s.object_type = 'TABLE'  
+   AND s.owner = 'SIEBEL'
+   AND s.last_analyzed < SYSDATE - 31
+   AND s.table_name NOT LIKE 'BIN%'
+   AND NOT (s.table_name LIKE '%TEMP' OR s.table_name LIKE '%\_TEMP\_%' ESCAPE '\')
+   AND t.owner = s.owner
+   AND t.table_name = s.table_name
+   AND t.temporary = 'N'
+   AND s.table_name like '%REQ'
+ ORDER BY
+       s.owner, s.table_name;
+
+	   
+	   ---------
+
+
+set pagesize 100
+
+
+SELECT /*+ NO_MERGE */
+       s.owner, s.table_name, s.num_rows, s.last_analyzed, s.stale_stats, s.stattype_locked
+  FROM dba_tab_statistics s,
+       dba_tables t
+ WHERE s.object_type = 'TABLE'
+   AND s.owner NOT IN ('ANONYMOUS','APEX_030200','APEX_040000','APEX_SSO','APPQOSSYS','CTXSYS','DBSNMP','DIP','EXFSYS','FLOWS_FILES','MDSYS','OLAPSYS','ORACLE_OCM','ORDDATA','ORDPLUGINS','ORDSYS','OUTLN','OWBSYS')
+   AND s.owner NOT IN ('SI_INFORMTN_SCHEMA','SQLTXADMIN','SQLTXPLAIN','SYS','SYSMAN','SYSTEM','TRCANLZR','WMSYS','XDB','XS$NULL')
+   AND s.last_analyzed < SYSDATE - 31
+   AND s.table_name NOT LIKE 'BIN%'
+   AND NOT (s.table_name LIKE '%TEMP' OR s.table_name LIKE '%\_TEMP\_%' ESCAPE '\')
+   AND t.owner = s.owner
+   AND t.table_name = s.table_name
+   AND t.temporary = 'N'
+ ORDER BY
+       s.owner, s.table_name;
+
+
+OWNER                          TABLE_NAME                       NUM_ROWS LAST_ANALYZED       STA STATT
+------------------------------ ------------------------------ ---------- ------------------- --- -----
+TFR_SAIS_RISQUEDBF_APP         CTRI_SAV                            25508 24/01/2012 22:01:46 NO
+TFR_SAIS_RISQUEDBF_APP         CTRU                               776734 24/01/2012 22:02:14 NO
+TFR_SAIS_RISQUEDBF_APP         MESSAGE                             13722 24/01/2012 22:01:44 NO
+TFR_SAIS_RISQUEDBF_APP         PARAM_TRACE                          2839 24/01/2012 22:01:11 NO
+TFR_SAIS_RISQUEDBF_APP         QDDATA                                569 24/01/2012 22:01:11 NO
+TFR_SAIS_RISQUEDBF_APP         QDINODETABLE                          631 24/01/2012 22:01:05 NO
+TFR_SAIS_RISQUEDBF_APP         RECA                                 3150 24/01/2012 22:01:33 NO
+TFR_SAIS_RISQUEDBF_APP         RECAID                                  3 24/01/2012 22:01:00 NO
+TFR_SAIS_RISQUEDBF_APP         RECARJ                                108 24/01/2012 22:01:05 NO
+TFR_SAIS_RISQUEDBF_APP         REJCTRI                              9648 24/01/2012 22:01:34 NO
+TFR_SAIS_RISQUEDBF_APP         REJETCOR                                0 26/11/2011 05:00:24 NO
+TFR_SAIS_RISQUEDBF_APP         REMISE                                  9 24/01/2012 22:01:00 NO
+TFR_SAIS_RISQUEDBF_APP         SOCIETE                                10 24/01/2012 22:01:01 NO
+TFR_SAIS_RISQUEDBF_APP         TEMPNAF                              1970 24/01/2012 22:01:06 NO
+TFR_SAIS_RISQUEDBF_APP         TFR_PARAM                            1436 24/01/2012 22:01:06 NO
+UA_ITR_OWN                     TA_DOSSIER                            272 20/07/2011 18:53:30 NO  ALL
+UA_ITR_OWN                     TA_STATUS                             347 20/07/2011 18:53:32 NO  ALL
+WMA_OWN                        TA_INSURANCE                         7008 20/07/2011 18:53:30 NO  ALL
+WMA_OWN                        TA_SIMULATION                        7416 20/07/2011 18:53:32 NO  ALL

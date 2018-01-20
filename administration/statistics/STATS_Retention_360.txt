@@ -1,0 +1,10 @@
+ 
+
+
+SELECT DBMS_STATS.get_stats_history_availability availability,
+       DBMS_STATS.get_stats_history_retention retention
+  FROM dual;  
+
+AVAILABILITY                                                                 RETENTION
+--------------------------------------------------------------------------- ----------
+05-JUN-14 09.00.57.454322000 AM +02:00                                              31

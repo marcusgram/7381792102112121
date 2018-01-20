@@ -1,0 +1,14 @@
+
+
+http://dba-tips.blogspot.fr/2012/11/all-about-statistics-in-oracle.html
+
+To Check current Stats history retention period (days):
+---------------------------------------------------
+ select dbms_stats.get_stats_history_retention from dual;
+ select dbms_stats.get_stats_history_availability from dual;
+
+
+
+To modify current Stats history retention period (days):
+---------------------------------------------------
+ Exec dbms_stats.alter_stats_history_retention(60);

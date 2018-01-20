@@ -1,0 +1,62 @@
+
+
+SELECT DT.OWNER,
+       DT.TABLE_NAME,
+       ROUND ( (DELETES + UPDATES + INSERTS) / NUM_ROWS * 100) PERCENTAGE
+FROM   DBA_TABLES DT, DBA_TAB_MODIFICATIONS DTM
+WHERE  DT.OWNER = DTM.TABLE_OWNER
+       AND DT.TABLE_NAME = DTM.TABLE_NAME
+       AND NUM_ROWS > 0
+       AND ROUND ( (DELETES + UPDATES + INSERTS) / NUM_ROWS * 100) >= 10
+       AND OWNER IN ('&OWNER_NAME’')
+ORDER BY 3 desc;
+
+
+SELECT DT.OWNER,
+       DT.TABLE_NAME,
+       ROUND ( (DELETES + UPDATES + INSERTS) / NUM_ROWS * 100) PERCENTAGE
+FROM   DBA_TABLES DT, DBA_TAB_MODIFICATIONS DTM
+WHERE  OWNER = '&owner_name'    
+       AND DT.OWNER = DTM.TABLE_OWNER
+       AND DT.TABLE_NAME = DTM.TABLE_NAME
+       AND NUM_ROWS > 0
+       AND ROUND ( (DELETES + UPDATES + INSERTS) / NUM_ROWS * 100) >= 10
+       AND OWNER IN ('&OWNER_NAME’')
+ORDER BY 3 desc;
+
+
+
+
+
+
+Find schema level stats that are stale one can call 
+
+DBMS_STATS.GATHER_SCHEMA_STATS(ownname=>’SCOTT’, objlist=>ObjList, options=>’LIST STALE’);
+
+The view has the monitoring information about tables user_tab_modifications, all_tab_modifications and dba_tab_modifications.
+
+
+SET SERVEROUTPUT ON;
+DECLARE
+ObjList dbms_stats.ObjectTab;
+BEGIN
+DBMS_STATS.GATHER_SCHEMA_STATS(ownname=>'NATURALPERSON_OWN', objlist=>ObjList, options=>'LIST STALE');
+FOR i in ObjList.FIRST..ObjList.LAST
+LOOP
+dbms_output.put_line(ObjList(i).ownname || '.' || ObjList(i).ObjName || ' ' || ObjList(i).ObjType || ' ' || ObjList(i).partname);
+END LOOP;
+END;
+/
+
+
+
+DECLARE
+ObjList dbms_stats.ObjectTab;
+BEGIN
+dbms_stats.gather_database_stats(objlist=>ObjList, options=>’LIST STALE’);
+FOR i in ObjList.FIRST..ObjList.LAST
+LOOP
+dbms_output.put_line(ObjList(i).ownname || ‘.’ || ObjList(i).ObjName || ‘ ‘ || ObjList(i).ObjType || ‘ ‘ || ObjList(i).partname);
+END LOOP;
+END;
+/

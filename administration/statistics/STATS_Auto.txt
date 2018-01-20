@@ -1,0 +1,348 @@
+
+
+
+
+
+
+--- In 11g daily maintenance windows are provided. by default these are defined as :
+
+    Weeknights: Starts at 10 p.m. and ends at 2 a.m.
+    Weekends: Starts at 6 a.m. is 20 hours long.
+
+
+
+--- How to enable auto stats collection?
+--- If for some reason automatic optimizer statistics collection is disabled, 
+--- you can enable it using the ENABLE procedure in the DBMS_AUTO_TASK_ADMIN package:
+
+exec DBMS_AUTO_TASK_ADMIN.ENABLE(
+ client_name => 'auto optimizer stats collection', 
+ operation => NULL, 
+ window_name => NULL);
+
+
+
+
+
+
+
+
+--- How to disable the auto stats collection?
+--- In situations when you want to disable automatic optimizer statistics collection, 
+--- you can disable it using the DISABLE procedure in the DBMS_AUTO_TASK_ADMIN package:
+
+exec DBMS_AUTO_TASK_ADMIN.DISABLE(
+ client_name => 'auto optimizer stats collection', 
+ operation => NULL, 
+ window_name => NULL);
+
+
+
+
+
+
+
+--- How can I check the status of the 'auto optimizer stats collection'?
+--- The status of the automatic statistics collection can be checked using:
+
+select client_name, JOB_SCHEDULER_STATUS 
+ from DBA_AUTOTASK_CLIENT_JOB
+ where client_name='auto optimizer stats collection';
+
+
+
+
+
+
+
+
+--- How can I check whether or not the database has the 'auto optimizer stats collection' 
+--- job enabled to run during the next maintenance window?
+
+SELECT CLIENT_NAME,
+       STATUS
+FROM   DBA_AUTOTASK_CLIENT
+WHERE  CLIENT_NAME = 'auto optimizer stats collection';
+
+
+CLIENT_NAME                                                      STATUS
+---------------------------------------------------------------- --------
+auto optimizer stats collection                                  ENABLED
+
+
+
+
+How can I see the history of the automatic stats job for each day?
+
+SELECT client_name, window_name, jobs_created, jobs_started, jobs_completed
+ FROM dba_autotask_client_history
+ WHERE client_name like '%stats%';
+
+
+
+SELECT window_name, jobs_created, jobs_started, jobs_completed,WINDOW_START_TIME,WINDOW_END_TIME
+ FROM dba_autotask_client_history
+ WHERE client_name like '%stats%'
+order by WINDOW_END_TIME desc;
+
+
+CLIENT_NAME                                                      WINDOW_NAME                                                       JOBS_CREATED JOBS_STARTED JOBS_COMPLETED WINDOW_END_TIME
+---------------------------------------------------------------- ----------------------------------------------------------------- ------------ ------------ -------------- ---------------------------------------------------------------------------
+auto optimizer stats collection                                  THURSDAY_WINDOW                                                              1            1              1 17-JAN-14 02.59.33.996090 PM +01:00
+auto optimizer stats collection                                  WEDNESDAY_WINDOW                                                             1            1              1 16-JAN-14 02.00.00.005056 AM +01:00
+auto optimizer stats collection                                  TUESDAY_WINDOW                                                               1            1              1 15-JAN-14 02.00.00.011867 AM +01:00
+auto optimizer stats collection                                  MONDAY_WINDOW                                                                1            1              1 14-JAN-14 02.00.00.003251 AM +01:00
+auto optimizer stats collection                                  SUNDAY_WINDOW                                                                5            5              5 13-JAN-14 02.00.00.006105 AM +01:00
+auto optimizer stats collection                                  SATURDAY_WINDOW                                                              5            5              5 12-JAN-14 02.00.00.006286 AM +01:00
+auto optimizer stats collection                                  FRIDAY_WINDOW                                                                1            1              1 11-JAN-14 02.00.00.010751 AM +01:00
+auto optimizer stats collection                                  THURSDAY_WINDOW                                                              1            1              1 10-JAN-14 02.00.00.012238 AM +01:00
+
+
+
+
+select DBMS_STATS.GET_PREFS(pname=>'GRANULARITY', ownname=>'YOUR_SCHEMA', tabname=> 'YOUR_TABLE') from dual; 
+select DBMS_STATS.GET_PREFS(pname=>'GRANULARITY', ownname=>'YOUR_SCHEMA') from dual;
+
+
+
+
+
+
+
+-- Get default stats Parameters --
+
+select DBMS_STATS.GET_PREFS(pname=>'GRANULARITY', ownname=>'SBXRCB_OWN') from dual;
+
+SELECT TABLE_NAME, 
+   PREFERENCE_VALUE FROM DBA_TAB_STAT_PREFS 
+WHERE OWNER='SBXRCB_OWN' 
+--AND PREFERENCE_NAME = 'METHOD_OPT';
+
+
+set linesize 1000
+select TABLE_NAME,
+ PREFERENCE_NAME,
+ PREFERENCE_VALUE 
+FROM 
+ DBA_TAB_STAT_PREFS
+WHERE OWNER='SBXRCB_OWN';
+
+
+TABLENAME		PREFERENCE_NAME			PREFERENCE_VALUE
+----------------------	--------------- 		---------------------------------------------------------------------
+COLMAN 			METHOD_OPT			FOR ALL COLUMNS SIZE AUTO FOR COLUMNS SIZE 1 COLMAN_IDREFMANUPPERCASE
+COLPRL 			METHOD_OPT			FOR ALL COLUMNS SIZE AUTO FOR COLUMNS SIZE 1 COLPRL_MDTRUM
+
+
+
+-----------
+
+
+set pages 800
+set feedback off
+set heading off
+set termout off
+set linesize 1000
+set trimspool on
+set verify off
+
+
+ 
+prompt -- GRANULARITY : Determines granularity of statistics to collect (only pertinent if the table is partitioned). DEFAULT : AUTO --
+prompt -- AUTO   : Determines the granularity based on the partitioning type -- 
+prompt -- ALL    : Gathers all (subpartition, partition, and global) statistics -- 
+prompt -- GLOBAL : Gathers global statistics --
+prompt -- GLOBAL AND PARTITION : Gathers the global and partition level statistics. No subpartition level statistics are gathered even if it is a composite partitioned object. --
+prompt -- PARTITION : Gathers partition-level statistics -- 
+prompt -- SUBPARTITION : Gathers subpartition-level statistics --
+SELECT dbms_stats.get_prefs('granularity') FROM dual; 
+
+
+
+
+prompt CASDADE : Determines whether or not index statistics are collected as part of gathering table statistics. DEFAULT : TRUE --
+prompt The default value for CASCADE set by SET_PARAM is not used by export/import procedures. It is used only by gather procedures --
+SELECT dbms_stats.get_prefs('cascade') FROM dual;  
+
+
+
+
+Select '-- DEGREE : Determines degree of parallelism used for gathering statistics. -- Default: NULL' from dual
+union
+select '-- NULL means:  "use the table default value specified by the DEGREE clause in the CREATE TABLE or ALTER TABLE statement' from dual
+union
+SELECT 'Value :' || dbms_stats.get_prefs('degree') FROM dual;   
+
+
+select '-- ESTIMATE_PERCENT : Determines the percentage of rows to estimate - Default: DBMS_STATS.AUTO_SAMPLE_SIZE' from dual
+Union
+select '-- Possible Values: DBMS_STATS.AUTO_SAMPLE_SIZE - (Valid range is 0.000001 to 100) - NULL - compute will be used (100%)' from dual
+Union
+SELECT 'Value :' || dbms_stats.get_prefs('estimate_percent') FROM dual;  
+
+
+
+
+
+spool stats.out
+set head off
+set echo off
+SET NEWPAGE NONE
+SET PAGESIZE 0
+SET SPACE 0
+SET LINESIZE 16000
+SET ECHO OFF
+SET FEEDBACK OFF
+SET VERIFY OFF
+SET HEADING OFF
+SET TERMOUT OFF
+SET TRIMOUT ON
+SET TRIMSPOOL ON
+prompt
+prompt "Controls column statistics collection and histogram creation."
+prompt "Default: FOR ALL COLUMNS SIZE AUTO"
+
+SELECT dbms_stats.get_prefs('method_opt') FROM dual;   
+spool off;
+
+
+
+
+
+FOR ALL COLUMNS SIZE AUTO
+FOR ALL [INDEXED | HIDDEN] COLUMNS [size_clause]
+FOR COLUMNS [size clause] column [size_clause] [,column [size_clause]...]
+
+
+
+SELECT dbms_stats.get_prefs('no_invalidate') FROM dual; 
+
+
+ 
+SELECT dbms_stats.get_prefs('granularity') FROM dual;  
+SELECT dbms_stats.get_prefs('publish') FROM dual;  
+SELECT dbms_stats.get_prefs('incremental') FROM dual;   
+SELECT dbms_stats.get_prefs('stale_percent') FROM dual;  
+
+
+
+sqlplus -s usrname/password@dbname << SQL >> $logfile 2>&1
+echo " dropping the table1" | tee logfile
+echo "creating the table1" | tee logfile
+CREATE TABLE table1
+(
+  VERSION       VARCHAR2(25 BYTE),              
+  CATEGORY           VARCHAR2(255 BYTE),
+  SHORT_NAME  VARCHAR2(25 BYTE),
+)
+commit;
+quit
+SQL
+
+
+
+
+sqlplus -s usrname/password@dbname << SQL | tee ./stats.out
+prompt "";
+prompt "Controls column statistics collection and histogram creation.";
+prompt "Default: FOR ALL COLUMNS SIZE AUTO";
+SELECT dbms_stats.get_prefs('method_opt') FROM dual;
+
+quit
+SQL
+
+
+
+
+------
+
+
+
+set pages 800
+set feedback off
+set heading off
+set termout off
+set linesize 1000
+set trimspool on
+set verify off
+
+SELECT dbms_stats.get_prefs('granularity') FROM dual; 
+SELECT dbms_stats.get_prefs('cascade') FROM dual;  
+SELECT dbms_stats.get_prefs('degree') FROM dual;   
+SELECT dbms_stats.get_prefs('estimate_percent') FROM dual;
+  
+SELECT dbms_stats.get_prefs('method_opt') FROM dual;   
+SELECT dbms_stats.get_prefs('no_invalidate') FROM dual; 
+SELECT dbms_stats.get_prefs('granularity') FROM dual;  
+SELECT dbms_stats.get_prefs('publish') FROM dual; 
+
+ 
+SELECT dbms_stats.get_prefs('incremental') FROM dual;   
+SELECT dbms_stats.get_prefs('stale_percent') FROM dual;  
+
+
+
+
+
+=> 
+
+SQL>  SELECT dbms_stats.get_prefs('granularity') FROM dual;
+AUTO
+
+SQL> SELECT dbms_stats.get_prefs('cascade') FROM dual;
+DBMS_STATS.AUTO_CASCADE
+
+SQL> SELECT dbms_stats.get_prefs('degree') FROM dual;
+NULL
+
+SQL> SELECT dbms_stats.get_prefs('estimate_percent') FROM dual;
+DBMS_STATS.AUTO_SAMPLE_SIZE
+
+
+
+SQL> SELECT dbms_stats.get_prefs('method_opt') FROM dual;
+FOR ALL COLUMNS SIZE REPEAT
+
+SQL> SELECT dbms_stats.get_prefs('no_invalidate') FROM dual;
+DBMS_STATS.AUTO_INVALIDATE
+
+SQL> SELECT dbms_stats.get_prefs('granularity') FROM dual;
+AUTO
+
+SQL> SELECT dbms_stats.get_prefs('publish') FROM dual;
+TRUE
+
+
+
+SQL> SELECT dbms_stats.get_prefs('incremental') FROM dual;
+FALSE
+
+SQL> SELECT dbms_stats.get_prefs('stale_percent') FROM dual;
+10
+
+SQL> SELECT dbms_stats.get_prefs('autostats_target') FROM dual;
+AUTO
+
+
+
+
+
+[PRIMARY] sys@SIE1FRP0 SQL> SELECT dbms_stats.get_prefs('stale_percent') FROM dual;
+10
+[PRIMARY] sys@SIE1FRP0 SQL> SELECT dbms_stats.get_prefs('incremental') FROM dual;
+FALSE
+[PRIMARY] sys@SIE1FRP0 SQL> SELECT dbms_stats.get_prefs('publish') FROM dual;
+TRUE
+[PRIMARY] sys@SIE1FRP0 SQL> SELECT dbms_stats.get_prefs('no_invalidate') FROM dual;
+DBMS_STATS.AUTO_INVALIDATE
+[PRIMARY] sys@SIE1FRP0 SQL> SELECT dbms_stats.get_prefs('method_opt') FROM dual;
+FOR ALL COLUMNS SIZE REPEAT
+[PRIMARY] sys@SIE1FRP0 SQL> SELECT dbms_stats.get_prefs('estimate_percent') FROM dual
+  2  ;
+DBMS_STATS.AUTO_SAMPLE_SIZE
+[PRIMARY] sys@SIE1FRP0 SQL> SELECT dbms_stats.get_prefs('degree') FROM dual;
+NULL
+[PRIMARY] sys@SIE1FRP0 SQL> SELECT dbms_stats.get_prefs('cascade') FROM dual;
+DBMS_STATS.AUTO_CASCADE
+[PRIMARY] sys@SIE1FRP0 SQL> SELECT dbms_stats.get_prefs('granularity') FROM dual;
+AUTO

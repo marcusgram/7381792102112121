@@ -1,0 +1,160 @@
+
+SELECT STATE FROM DBA_SCHEDULER_JOBS WHERE JOB_NAME = 'GATHER_STATS_JOB';
+
+SELECT JOB_NAME, SCHEDULE_NAME, SCHEDULE_TYPE, ENABLED
+    FROM DBA_SCHEDULER_JOBS
+    WHERE PROGRAM_NAME = 'GATHER_STATS_PROG';
+
+
+
+
+
+------ Pour la 11g -----
+
+
+SQL> SELECT CLIENT_NAME,STATUS FROM DBA_AUTOTASK_CLIENT;
+
+CLIENT_NAME                                                      STATUS
+---------------------------------------------------------------- --------
+auto optimizer stats collection                                  ENABLED
+auto space advisor                                               ENABLED
+sql tuning advisor                                               ENABLED
+
+
+
+-- Automatic optimizer statistics collection eliminates many of the manual tasks associated with managing the query optimizer, 
+-- and significantly reduces the risks of generating poor execution plans due to missing or stale statistics.
+
+If for some reason automatic optimizer statistics collection is disabled, you can enable it using the ENABLE procedure in the DBMS_AUTO_TASK_ADMIN package:
+
+
+
+-- Activer le caclul auto des stats --
+
+BEGIN
+  DBMS_AUTO_TASK_ADMIN.ENABLE(
+    client_name => 'auto optimizer stats collection', 
+    operation => NULL, 
+    window_name => NULL);
+END;
+/
+
+
+-- Desactiver le calcul auto des Stats --
+
+In situations when you want to disable automatic optimizer statistics collection, 
+you can disable it using the DISABLE procedure in the DBMS_AUTO_TASK_ADMIN package:
+
+exec DBMS_AUTO_TASK_ADMIN.DISABLE(
+client_name => 'auto optimizer stats collection',
+operation => NULL,
+window_name => NULL);
+
+
+
+
+
+
+-- Details des fenetres de job auto passés --
+
+SELECT window_name ,
+last_start_date,
+enabled ,
+active
+FROM dba_scheduler_windows;
+
+WINDOW_NAME                    LAST_START_DATE                                                             ENABL ACTIV
+------------------------------ --------------------------------------------------------------------------- ----- -----
+MONDAY_WINDOW                  20-JAN-14 10.00.00.010020 PM EUROPE/PARIS                                   TRUE  FALSE
+TUESDAY_WINDOW                 14-JAN-14 10.00.00.000392 PM EUROPE/PARIS                                   TRUE  FALSE
+WEDNESDAY_WINDOW               15-JAN-14 10.00.00.000760 PM EUROPE/PARIS                                   TRUE  FALSE
+THURSDAY_WINDOW                16-JAN-14 10.00.00.001111 PM EUROPE/PARIS                                   TRUE  FALSE
+FRIDAY_WINDOW                  17-JAN-14 10.00.00.005548 PM EUROPE/PARIS                                   TRUE  FALSE
+SATURDAY_WINDOW                18-JAN-14 06.00.00.008568 AM EUROPE/PARIS                                   TRUE  FALSE
+SUNDAY_WINDOW                  19-JAN-14 06.00.00.005684 AM EUROPE/PARIS                                   TRUE  FALSE
+WEEKNIGHT_WINDOW                                                                                           FALSE FALSE
+WEEKEND_WINDOW                                                                                             FALSE FALSE
+
+
+
+
+
+
+
+
+-- Details des fenetres de job auto prévus --
+
+
+ select * from DBA_AUTOTASK_WINDOW_CLIENTS;
+
+WINDOW_NAME                    WINDOW_NEXT_TIME                                                            WINDO AUTOTASK OPTIMIZE SEGMENT_ SQL_TUNE HEALTH_M
+------------------------------ --------------------------------------------------------------------------- ----- -------- -------- -------- -------- --------
+MONDAY_WINDOW                  27-JAN-14 10.00.00.000000 PM EUROPE/PARIS                                   FALSE ENABLED  ENABLED  ENABLED  ENABLED  DISABLED
+TUESDAY_WINDOW                 21-JAN-14 10.00.00.000000 PM EUROPE/PARIS                                   FALSE ENABLED  ENABLED  ENABLED  ENABLED  DISABLED
+WEDNESDAY_WINDOW               22-JAN-14 10.00.00.000000 PM EUROPE/PARIS                                   FALSE ENABLED  ENABLED  ENABLED  ENABLED  DISABLED
+THURSDAY_WINDOW                23-JAN-14 10.00.00.000000 PM EUROPE/PARIS                                   FALSE ENABLED  ENABLED  ENABLED  ENABLED  DISABLED
+FRIDAY_WINDOW                  24-JAN-14 10.00.00.000000 PM EUROPE/PARIS                                   FALSE ENABLED  ENABLED  ENABLED  ENABLED  DISABLED
+SATURDAY_WINDOW                25-JAN-14 06.00.00.000000 AM EUROPE/PARIS                                   FALSE ENABLED  ENABLED  ENABLED  ENABLED  DISABLED
+SUNDAY_WINDOW                  26-JAN-14 06.00.00.000000 AM EUROPE/PARIS    
+
+
+
+-- Historique des statistiques passées en mode mode maintenance ---
+
+ COLUMN CLIENT_NAME FORMAT A20;
+ COLUMN WINDOW_START_TIME FORMAT A20;
+ select client_name, window_name, TO_CHAR(WINDOW_START_TIME,'YYYY-MON-DD:HH24:MI:SS') WINDOW_START_TIME,
+    (JOBS_COMPLETED/JOBS_STARTED) *100 COMPLETE_RATIO
+    from dba_autotask_client_history
+    WHERE client_name = 'auto optimizer stats collection'
+    order by 3 asc;
+
+
+CLIENT_NAME          WINDOW_NAME                                                       WINDOW_START_TIME    COMPLETE_RATIO
+-------------------- ----------------------------------------------------------------- -------------------- --------------
+
+auto optimizer stats FRIDAY_WINDOW                                                     2014-JAN-17:22:00:00            100
+ collection
+
+auto optimizer stats SATURDAY_WINDOW                                                   2014-JAN-18:06:00:00            100
+ collection
+
+auto optimizer stats SUNDAY_WINDOW                                                     2014-JAN-19:06:00:00            100
+ collection
+
+auto optimizer stats MONDAY_WINDOW                                                     2014-JAN-20:22:00:00            100
+ collection
+
+
+
+
+
+-- prochain passage des STATS AUTO
+
+
+select *  from DBA_SCHEDULER_WINDOW_GROUPS where window_group_name = 'ORA$AT_WGRP_OS';
+
+WINDOW_GROUP_NAME              ENABL NUMBER_OF_WINDOWS NEXT_START_DATE					COMMENTS
+------------------------------ ----- ----------------- ---------------------------------------------    ----------------------------
+ORA$AT_WGRP_OS                 TRUE                  7 21-JAN-14 10.00.00.000000 PM EUROPE/PARIS	auto optimizer stats collection
+
+
+
+select window_name, REPEAT_INTERVAL, DURATION from DBA_SCHEDULER_WINDOWS
+   where window_name='MONDAY_WINDOW';
+
+
+
+
+select client_name, 
+       WINDOW_START_TIME, 
+       JOB_START_TIME
+    from DBA_AUTOTASK_JOB_HISTORY
+    where CLIENT_NAME = 'auto optimizer stats collection'
+    order by 2,3;
+
+
+
+
+
+

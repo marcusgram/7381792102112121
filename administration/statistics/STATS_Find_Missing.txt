@@ -1,0 +1,125 @@
+
+-- This script shows which tables and indexes are either missing statistics or have stale statistics, 
+and the statistics are not locked (meaning that a DBA has not intentionally blocked the object from getting statistics).  
+The script filters out schemas that are installed with the database to show only user schemas.
+
+-- This script helps a DBA find objects that need to be analyzed in case they are not using the AUTO method for DBMS_STATS.
+
+
+
+SELECT 'TABLE' object_type,
+  owner,
+  table_name object_name,
+  last_analyzed,
+  stattype_locked,
+  stale_stats,num_rows
+FROM all_tab_statistics
+WHERE (last_analyzed IS NULL
+OR stale_stats = 'YES')
+AND stattype_locked  IS NULL
+AND owner IN ('SIEBEL')
+UNION ALL
+SELECT 'INDEX' object_type,
+  owner,
+  index_name object_name,
+  last_analyzed,
+  stattype_locked,
+  stale_stats,num_rows
+FROM all_ind_statistics
+WHERE (last_analyzed IS NULL
+OR stale_stats        = 'YES')
+AND stattype_locked  IS NULL
+AND owner IN ('SIEBEL')
+ORDER BY object_type DESC,
+  owner,
+  object_name;
+  
+  
+  
+  
+  
+SELECT 'TABLE' object_type,
+  owner,
+  table_name object_name,
+  last_analyzed,
+  stattype_locked,
+  stale_stats,num_rows
+FROM all_tab_statistics
+WHERE (last_analyzed IS NULL
+OR stale_stats = 'YES')
+AND stattype_locked  IS NULL
+AND owner IN ('SIEBEL')
+AND table_name = '&table_name';
+
+
+
+SELECT 'INDEX' object_type,
+  owner,
+  index_name object_name,
+  last_analyzed,
+  stattype_locked,
+  stale_stats,num_rows
+FROM all_ind_statistics
+WHERE (last_analyzed IS NULL
+OR stale_stats        = 'YES')
+AND stattype_locked  IS NULL
+AND owner IN ('SIEBEL')
+AND table_name = '&table_name';
+
+
+
+SELECT 'TABLE' object_type,
+  owner,
+  table_name object_name,
+  last_analyzed,
+  stattype_locked,
+  stale_stats,num_rows
+FROM all_tab_statistics
+WHERE owner IN ('SIEBEL')
+AND table_name = '&table_name';
+
+
+
+SELECT 'INDEX' object_type,
+  owner,
+  index_name object_name,
+  last_analyzed,
+  stattype_locked,
+  stale_stats,num_rows
+FROM all_ind_statistics
+WHERE owner IN ('SIEBEL')
+AND table_name = '&table_name';
+
+
+SELECT 'TABLE' object_type,
+  owner,
+  table_name object_name,
+  last_analyzed,
+  stattype_locked,
+  stale_stats,num_rows
+FROM all_tab_statistics
+WHERE owner = ('GEN$HUIS')
+AND TABLE_NAME like 'TEL_LISTE%'
+and last_analyzed is not null;
+
+
+SELECT 'TABLE' object_type,
+  owner,
+  table_name object_name,
+  last_analyzed,
+  stattype_locked,
+  stale_stats,num_rows
+FROM all_tab_statistics
+WHERE owner = ('GEN$HUIS')
+and last_analyzed is null
+;
+
+
+SELECT count(*), object_type
+FROM all_tab_statistics
+WHERE owner = ('GEN$HUIS')
+and last_analyzed is null
+group by object_type;
+
+
+

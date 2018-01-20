@@ -1,0 +1,90 @@
+
+
+SELECT SYSDATE - last_analyzed, 
+       blocks, 
+       avg_row_len, 
+       avg_space,
+       chain_cnt,  
+       num_rows
+       FROM
+   user_tables;
+
+
+---------
+
+set ver off
+set linesize 100
+col table_name format a15
+col last_analyzed format a40
+select TABLE_NAME "Table Name",to_char(LAST_ANALYZED,'DD-MON-YY HH24:MI:SS') "Date and Time", num_rows from dba_TABLES
+where owner = '&user'
+and table_name = '&tabname'
+order by 2 asc;
+
+---------
+
+set ver off
+set linesize 100
+col table_name format a15
+col last_analyzed format a40
+select TABLE_NAME "Table Name",to_char(LAST_ANALYZED,'DD-MON-YY HH24:MI:SS') "Date and Time", num_rows from dba_TABLES
+where owner = 'SBXPCB_OWN'
+order by 2 asc;
+
+Table Name                     Date and Time                 NUM_ROWS
+------------------------------ --------------------------- ----------
+REFRGLVOL                      21-JAN-14 08:50:36                   0
+REFSPAR                        21-JAN-14 08:50:36                   0
+REFSRD                         21-JAN-14 08:50:36                   0
+REFSSEMETT                     21-JAN-14 08:50:36                   2
+REFSSEMETTTAB                  21-JAN-14 08:50:36                  32
+REFSYCOORD                     21-JAN-14 08:50:36                   0
+REFSYCORRES                    21-JAN-14 08:50:36                   0
+REFTAUX                        21-JAN-14 08:50:36                   0
+REFTRANS                       21-JAN-14 08:50:36                   4
+REFNFLUSEUIL                   21-JAN-14 08:50:36                   0
+TECHSELECTELT
+
+---
+
+set ver off
+set linesize 100
+col table_name format a15
+col last_analyzed format a40
+select TABLE_NAME "Table Name",to_char(LAST_ANALYZED,'DD-MON-YY HH24:MI:SS') "Date and Time", num_rows from dba_TABLES
+where owner = 'GEN$HUIS'
+order by 2 asc;
+
+
+
+set ver off
+set linesize 100
+col table_name format a15
+col last_analyzed format a40
+select TABLE_NAME "Table Name",to_char(LAST_ANALYZED,'DD-MON-YY HH24:MI:SS') "Date and Time", num_rows from dba_TABLES
+where owner = 'MESSAGERIE_OWN'
+and table_name like 'SS%'
+order by 2 asc;
+
+
+
+set ver off
+
+set linesize 900
+col table_name format a15
+col "Date and Time" format a30
+col "OBJ Name" for a30
+select TABLE_NAME "OBJ Name",to_char(LAST_ANALYZED,'DD-MON-YY HH24:MI:SS') "Date and Time", num_rows from dba_TABLES
+where owner = 'PIM_OWN'
+and table_name like 'EVE%'
+UNION
+select INDEX_NAME "OBJ Name",to_char(LAST_ANALYZED,'DD-MON-YY HH24:MI:SS') "Date and Time", num_rows from dba_INDEXES
+where owner = 'PIM_OWN'
+and table_name like '%EVE%'
+order by 2 asc;
+
+
+
+
+
+select * from sys.aux_stats$;

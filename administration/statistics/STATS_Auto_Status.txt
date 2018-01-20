@@ -1,0 +1,172 @@
+
+
+select status
+from dba_autotask_client
+where client_name = 'auto optimizer stats collection';
+
+STATUS
+--------
+ENABLED
+
+
+
+
+-- You can query the DBA_OPTSTAT_OPERATIONS view to find out the beginning and ending times for the automatic statistics collection job, as shown here:
+
+col OPERATION for a30;
+col TARGET for a30
+set pagesize 100
+
+select operation,start_time,end_time from dba_optstat_operations
+where operation='gather_database_stats(auto)'
+order by start_time desc;
+
+select distinct operation from dba_optstat_operations;
+
+OPERATION                      TARGET                         START_TIME                                                                  END_TIME
+------------------------------ ------------------------------ --------------------------------------------------------------------------- ---------------------------------------------------------------------------
+gather_database_stats(auto)                                   30-NOV-14 09.01.22.091336 AM +01:00                                         30-NOV-14 09.01.51.443756 AM +01:00
+gather_database_stats(auto)                                   04-DEC-14 09.07.57.649323 PM +01:00                                         04-DEC-14 09.10.10.892963 PM +01:00
+gather_database_stats(auto)                                   07-DEC-14 09.02.13.684446 PM +01:00                                         07-DEC-14 09.02.33.186799 PM +01:00
+gather_database_stats(auto)                                   16-NOV-14 09.10.02.446767 AM +01:00                                         16-NOV-14 09.10.41.415590 AM +01:00
+gather_database_stats(auto)                                   16-NOV-14 01.10.19.546505 PM +01:00                                         16-NOV-14 01.10.45.374831 PM +01:00
+gather_database_stats(auto)                                   18-NOV-14 09.08.30.944758 PM +01:00                                         18-NOV-14 09.10.34.482180 PM +01:00
+gather_database_stats(auto)                                   21-NOV-14 09.09.03.526988 PM +01:00                                         21-NOV-14 09.10.25.899536 PM +01:00
+gather_database_stats(auto)                                   23-NOV-14 09.01.32.832529 PM +01:00                                         23-NOV-14 09.02.07.853041 PM +01:00
+
+
+
+col OPERATION for a30;
+col TARGET for a30
+set pagesize 100
+
+select start_time,end_time from dba_optstat_operations
+where operation='gather_database_stats(auto)';
+
+
+
+
+col OPERATION for a30;
+col TARGET for a30
+set pagesize 100
+
+select start_time,end_time from dba_optstat_operations
+where operation='auto space advisor(auto)';
+
+SELECT window_name, jobs_created, jobs_started, jobs_completed,WINDOW_START_TIME,WINDOW_END_TIME
+ FROM dba_autotask_client_history
+ WHERE client_name = 'auto space advisor'
+order by WINDOW_END_TIME desc;
+
+
+auto optimizer stats collection
+auto space advisor
+sql tuning advisor
+
+
+col WINDOW_NAME for a20;
+col WINDOW_START_TIME for a40;
+col WINDOW_END_TIME for a40;
+set pagesize 100
+SELECT window_name, jobs_created, jobs_started, jobs_completed,WINDOW_START_TIME,WINDOW_END_TIME
+ FROM dba_autotask_client_history
+ WHERE client_name like '%stats%'
+order by WINDOW_END_TIME desc;
+
+
+col WINDOW_NAME for a20;
+col WINDOW_START_TIME for a40;
+col WINDOW_END_TIME for a40;
+set pagesize 100
+SELECT window_name, jobs_created, jobs_started, jobs_completed,WINDOW_START_TIME,WINDOW_END_TIME
+ FROM dba_autotask_client_history
+ WHERE client_name = 'auto space advisor'
+order by WINDOW_END_TIME desc;
+
+
+col WINDOW_NAME for a20;
+col WINDOW_START_TIME for a40;
+col WINDOW_END_TIME for a40;
+set pagesize 100
+SELECT window_name, jobs_created, jobs_started, jobs_completed,WINDOW_START_TIME,WINDOW_END_TIME
+ FROM dba_autotask_client_history
+ WHERE client_name = 'sql tuning advisor'
+order by WINDOW_END_TIME desc;
+
+
+
+--- GET NEXT DATES PLANIFIED --
+
+select WINDOW_NAME,
+OPTIMIZER_STATS,
+SQL_TUNE_ADVISOR,
+SEGMENT_ADVISOR,
+WINDOW_NEXT_TIME 
+from DBA_AUTOTASK_WINDOW_CLIENTS 
+order by WINDOW_NEXT_TIME;
+
+
+
+col STATUS for a20;
+col JOB_DURATION for a20;
+col WINDOW_NAME for a20;
+col JOB_START_TIME for a40;
+col JOB_STATUS for a15;
+select 
+CLIENT_NAME,
+JOB_START_TIME,
+WINDOW_NAME,
+JOB_DURATION,
+JOB_STATUS 
+from dba_autotask_job_history 
+where CLIENT_NAME='auto space advisor' 
+and JOB_START_TIME > SYSDATE-30
+order by 2;
+
+
+col CLIENT_NAME for a40;
+col STATUS for a20;
+col JOB_DURATION for a20;
+col WINDOW_NAME for a20;
+col JOB_START_TIME for a40;
+col JOB_STATUS for a15;
+select 
+CLIENT_NAME,
+JOB_START_TIME,
+WINDOW_NAME,
+JOB_DURATION,
+JOB_STATUS 
+from dba_autotask_job_history 
+where CLIENT_NAME='&Nom_du_job' 
+and JOB_START_TIME > SYSDATE-7
+order by 2;
+
+
+--'auto space advisor'
+--'sql tuning advisor'
+--gather_table_stats
+--gather_database_stats(auto)
+--lock_schema_stats
+--unlock_table_stats
+--copy_table_stats
+--delete_table_stats
+--unlock_schema_stats
+--lock_table_stats
+--gather_schema_stats
+
+col STATUS for a20;
+col JOB_DURATION for a20;
+col WINDOW_NAME for a20;
+col JOB_START_TIME for a40;
+col JOB_STATUS for a15;
+select 
+CLIENT_NAME,
+JOB_START_TIME,
+WINDOW_NAME,
+JOB_DURATION,
+JOB_STATUS 
+from dba_autotask_job_history 
+--where CLIENT_NAME='auto space advisor' 
+order by 2 desc;
+
+

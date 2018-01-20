@@ -1,0 +1,10 @@
+-- There are several values for the options parameter that we need to know about:
+
+    gather – re-analyzes the whole schema.
+     
+    gather empty – Only analyze tables that have no existing statistics.
+     
+    gather stale – Only re-analyze tables with more than 10% modifications (inserts, updates, deletes).
+     
+    gather auto – This will re-analyze objects which currently have no statistics and objects with stale statistics.   
+                  Using gather auto is like combining gather stale and gather empty.

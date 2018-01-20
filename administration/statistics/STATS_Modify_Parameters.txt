@@ -1,0 +1,5 @@
+
+
+-- The previous statement adjusts the threshold for the table EMPS owned by HR to 15%
+
+exec dbms_stats.set_table_prefs('HR', 'EMPS', 'STALE_PERCENT', '15')

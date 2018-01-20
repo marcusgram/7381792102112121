@@ -1,0 +1,32 @@
+
+Verrouillage
+--------------
+exec dbms_stats.lock_schema_stats('SIEBEL');
+
+select STATTYPE_LOCKED from dba_tab_statistics where  OWNER ='SIEBEL' and STATTYPE_LOCKED ='ALL';
+
+
+select OWNER, TABLE_NAME, max(LAST_ANALYZED),  num_rows,STATTYPE_LOCKED 
+from dba_tab_statistics  
+where owner in ('SIEBEL') 
+--and num_rows is not null
+and TABLE_NAME in ('EIM_ACT_DTL','EIM_ACTIVITY','EIM_ACTIVITY1','EIM_ADDR_PER',
+'EIM_ASSET','EIM_CAMP_CON','EIM_CON_DTL','EIM_CON_LOY','EIM_CONTACT',
+'EIM_FN_INSCLM1','EIM_GROUP','EIM_OPTY','EIM_SRV_REQ1')
+group by OWNER,TABLE_NAME, num_rows,STATTYPE_LOCKED 
+order by OWNER, TABLE_NAME;
+
+
+
+When you use LOCK_TABLE_STATS, the lock type is set to ALL.  
+There are internal calls, meant only for Oracle personnel that will use different granularity lock. 
+One call will only lock the stats in the cache, until the instance restart, that is "CACHE", 
+another call will only lock table stats, not the index stats. 
+On a normal databases, you should only see NULL and ALL
+
+
+Deverrouillage
+--------------
+SQL> exec dbms_stats.unlock_schema_stats('SIEBEL');
+
+SQL> select STATTYPE_LOCKED from dba_tab_statistics where  OWNER ='SIEBEL';

@@ -1,0 +1,25 @@
+#!/bin/ksh
+ORAENV_ASK=NO
+for i in $(ps -edf|grep -v grep|grep smon|sed "1,\$s/^.*smon_//")
+do
+  echo $i
+  export ORACLE_SID=$i
+  . oraenv
+  sqlplus / as sysdba <<FIN
+   declare
+    ret  varchar2(100);
+    host varchar2(300);
+    chaine varchar2(300);
+   begin
+     select 'PRIMAIRE' ,host_name  into ret,host from v\$instance
+     where 'PRIMARY_INSTANCE'=(select  INSTANCE_ROLE  from v\$instance);
+     if ret='PRIMAIRE' then
+       chaine:='execute dbms_stats.gather_system_stats('interval',60)';
+       execute immediate chaine;
+     end if;
+   end;
+   /
+   exit
+FIN
+done
+ORAENV_ASK=Y

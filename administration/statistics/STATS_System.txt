@@ -1,0 +1,94 @@
+#################
+SYSTEM STATISTICS
+#################
+
+What is system statistics:
+-------------------------
+System statistics are statistics about CPU speed and IO performance, it enables the CBO to
+effectively cost each operation in an execution plan. Introduced in Oracle 9i.
+
+Why gathering system statistics:
+------------------------------
+Oracle highly recommends gathering system statistics during a representative workload,
+ideally at peak workload time, in order to provide more accurate CPU/IO cost estimates to the optimizer.
+You only have to gather system statistics once.
+
+There are two types of system statistics (NOWORKLOAD statistics & WORKLOAD statistics):
+
+NOWORKLOAD statistics:
+--------------------------
+This will simulates a workload -not the real one but a simulation- and will not collect full statistics, it's less accurate than "WORKLOAD
+
+statistics" but if you can't capture the statistics during a typical workload you can use noworkload statistics.
+
+To gather noworkload statistics:
+
+SQL> execute dbms_stats.gather_system_stats();
+
+WORKLOAD statistics:
+----------------------
+This will gather statistics during the current workload -which supposed to be representative of actual system I/O and CPU workload on the DB-.
+
+To gather WORKLOAD statistics:
+
+SQL> execute dbms_stats.gather_system_stats('start');
+
+Once the workload window ends after 1,2,3.. hours or whatever, stop the system statistics gathering:
+
+SQL> execute dbms_stats.gather_system_stats('stop');
+
+You can use time interval (minutes) instead of issuing start/stop command manually:
+
+SQL> execute dbms_stats.gather_system_stats('interval',60);
+
+Check the system values collected:
+-------------------------------
+col pname format a20
+col pval2 format a40
+set linesize 500
+select * from sys.aux_stats$;
+
+col pname format a20
+col pval2 format a40
+set linesize 500
+select * from sys.aux_stats$;
+
+[PRIMARY] sys@SIE1FRP0 SQL> [PRIMARY] sys@SIE1FRP0 SQL> [PRIMARY] sys@SIE1FRP0 SQL>
+
+SNAME                          PNAME                     PVAL1 PVAL2
+------------------------------ -------------------- ---------- ----------------------------------------
+SYSSTATS_INFO                  STATUS                          COMPLETED
+SYSSTATS_INFO                  DSTART                          03-07-2014 11:17
+SYSSTATS_INFO                  DSTOP                           03-07-2014 15:17
+SYSSTATS_INFO                  FLAGS                         0
+SYSSTATS_MAIN                  CPUSPEEDNW                 1288
+SYSSTATS_MAIN                  IOSEEKTIM                     4
+SYSSTATS_MAIN                  IOTFRSPEED                26717
+SYSSTATS_MAIN                  SREADTIM              30892.662
+SYSSTATS_MAIN                  MREADTIM              50340.002
+SYSSTATS_MAIN                  CPUSPEED                   1352
+SYSSTATS_MAIN                  MBRC                         17
+SYSSTATS_MAIN                  MAXTHR                207432704
+SYSSTATS_MAIN                  SLAVETHR                 151552
+
+13 rows selected.
+
+
+cpuspeedNW: Shows the noworkload CPU speed, in terms of the average number of CPU cycles per
+                           second.
+ioseektim:  The sum of seek time, latency time, and OS overhead time.
+iotfrspeed: I/O transfer speed,tells the optimizer how fast the database can read data in a single read
+                           request.
+cpuspeed:   Stands for CPU speed during a workload statistics collection.
+maxthr:        The maximum I/O throughput.
+slavethr:   Average parallel slave I/O throughput.
+sreadtim:   The Single Block Read Time statistic shows the average time for a random single block read.
+mreadtim:   The average time (seconds) for a sequential multiblock read.
+mbrc:       The average multiblock read count in blocks.
+
+According to Oracle, collecting workload statistics doesn't impose an additional overhead on your system.
+
+Delete system statistics:
+-------------------------
+SQL> execute dbms_stats.delete_system_stats();
+

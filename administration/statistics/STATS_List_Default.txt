@@ -1,0 +1,50 @@
+
+set head off
+set echo off
+SET NEWPAGE NONE
+SET PAGESIZE 0
+SET SPACE 0
+SET LINESIZE 16000
+SET ECHO OFF
+SET FEEDBACK OFF
+SET VERIFY OFF
+SET HEADING OFF
+SET TERMOUT OFF
+
+ 
+select ' -- GRANULARITY : Determines granularity of statistics to collect (only pertinent if the table is partitioned). DEFAULT : AUTO ' FROM dual
+union
+select ' -- AUTO   : Determines the granularity based on the partitioning type ' FROM dual
+union
+select ' -- ALL    : Gathers all (subpartition, partition, and global) statistics ' FROM dual
+union
+select ' -- GLOBAL : Gathers global statistics ' FROM dual
+union
+select ' -- GLOBAL AND PARTITION : Gathers the global and partition level statistics. No subpartition level statistics are gathered even if it is a composite partitioned object. ' FROM dual
+union
+select ' -- PARTITION : Gathers partition-level statistics ' FROM dual
+union
+select ' -- SUBPARTITION : Gathers subpartition-level statistics ' FROM dual
+union
+SELECT 'Value for granularity :' || dbms_stats.get_prefs('granularity') FROM dual;
+
+
+select '-- CASDADE : Determines whether or not index statistics are collected as part of gathering table statistics. DEFAULT : TRUE ' from dual
+union
+select '-- The default value for CASCADE set by SET_PARAM is not used by export/import procedures. It is used only by gather procedures' from dual
+union
+SELECT 'Value for cascade :' || dbms_stats.get_prefs('cascade') FROM dual;
+
+
+
+Select '-- DEGREE : Determines degree of parallelism used for gathering statistics. -- Default: NULL' from dual
+union
+select '-- NULL means:  "use the table default value specified by the DEGREE clause in the CREATE TABLE or ALTER TABLE statement' from dual
+union
+SELECT 'Value for degree :' || dbms_stats.get_prefs('degree') FROM dual   
+union
+select '-- ESTIMATE_PERCENT : Determines the percentage of rows to estimate - Default: DBMS_STATS.AUTO_SAMPLE_SIZE' from dual
+Union
+select '-- Possible Values: DBMS_STATS.AUTO_SAMPLE_SIZE - (Valid range is 0.000001 to 100) - NULL - compute will be used (100%)' from dual
+Union
+SELECT 'Value for estimate_percent :' || dbms_stats.get_prefs('estimate_percent') FROM dual;  
