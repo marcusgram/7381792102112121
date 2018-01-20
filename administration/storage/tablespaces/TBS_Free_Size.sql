@@ -1,5 +1,7 @@
 
+-------------------------------------------------------------------------------------------------
 -- The following script displays the percentage of free space left in a tablespace and data file:
+-------------------------------------------------------------------------------------------------
 
 SET PAGESIZE 100 LINES 132 ECHO OFF VERIFY OFF FEEDB OFF SPACE 1 TRIMSP ON
 COMPUTE SUM OF a_byt t_byt f_byt ON REPORT
