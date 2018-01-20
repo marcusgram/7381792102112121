@@ -149,3 +149,47 @@ END;
 
 
 
+
+-----------------------------------------------	  
+-- PROCEDURE PL/SQL  --
+-- Prend en parametre SID et SERIAL
+-- prerequis :
+-- CREATE PUBLIC SYNONYM KILL_SESSION FOR SYS.KILL_SESSION;
+-- GRANT EXECUTE ON KILL_SESSION TO user;
+-----------------------------------------------
+CREATE OR REPLACE PROCEDURE kill_session (p_sid IN NUMBER, p_serial IN NUMBER)
+AS
+  my_requestor_username VARCHAR2(30);
+  my_kill_username      VARCHAR2(30);
+  my_msg                VARCHAR2(200);
+BEGIN
+  DBMS_OUTPUT.ENABLE(1000000);
+
+  SELECT username
+  INTO   my_requestor_username
+  FROM   v$session
+  WHERE  audsid = USERENV('SESSIONID');
+
+  SELECT username
+  INTO   my_kill_username
+  FROM   v$session
+  WHERE  sid = p_sid
+  AND    serial# = p_serial;
+
+  IF my_requestor_username = my_kill_username
+  THEN
+    EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION '''||p_sid||','||p_serial||''' IMMEDIATE';
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('YOU ARE NOT ALLOWED TO KILL OTHER USERS');
+  END IF;
+EXCEPTION WHEN OTHERS
+THEN
+  my_msg := SQLERRM;
+  DBMS_OUTPUT.PUT_LINE(my_msg);
+END;
+/
+
+CREATE PUBLIC SYNONYM KILL_SESSION FOR SYS.KILL_SESSION;
+GRANT EXECUTE ON KILL_SESSION TO GEN$HUIS;
+
+
