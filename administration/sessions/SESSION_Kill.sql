@@ -139,7 +139,7 @@ ALTER SYSTEM KILL SESSION '7,10239' IMMEDIATE;                                  
 
 -----------------------------------------
 -- identifier les sessions 
--- par username
+-- par SID
 -- Retourne la requete du KILL, le SID et le SERIAL à utiliser,
 -- le username
 ----------------------------------------
@@ -163,12 +163,37 @@ SELECT 'ALTER SYSTEM KILL SESSION ' ||CHR(39)|| s.sid ||','|| s.serial# ||CHR(39
              AND s.sid='&1'
              ;
 
+SQL> ALTER SYSTEM KILL SESSION '198,25895' IMMEDIATE;
+
+
+
+
 
 -----------------------------------------------	  
--- Supprimer ces sessions => Kill -9 du SPID --
+-- Supprimer les sessions => Kill -9 du SPID --
 -----------------------------------------------
 
-SQL> ALTER SYSTEM KILL SESSION '198,25895' IMMEDIATE;
+ALTER SESSION SET NLS_DATE_FORMAT ='YYYY-MM-DD HH:MI:SS';
+
+SET LINESIZE 100
+COLUMN spid FORMAT A10
+COLUMN username FORMAT A10
+COLUMN program FORMAT A45
+
+SELECT s.inst_id,
+       s.sid,
+       s.serial#,
+       p.spid,
+       s.username,
+       s.program,
+       s.logon_time 
+FROM   gv$session s
+       JOIN gv$process p ON p.addr = s.paddr AND p.inst_id = s.inst_id
+WHERE  s.type != 'BACKGROUND';
+
+--------
+as root :
+kill -9 SPID
 
 
 
