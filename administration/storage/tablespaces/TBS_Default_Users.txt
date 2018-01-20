@@ -1,0 +1,34 @@
+		
+
+    SET echo off
+    SET feedback off
+    SET linesize 512
+     
+    prompt ----------------------------------------
+    prompt - Liste des tablespaces par d?faut -
+    prompt - et le nombre d'utilisateurs associ?s -
+    prompt ----------------------------------------
+     
+    column count(username) heading 'Nbre utilisateurs'
+     
+    SELECT
+    default_tablespace,
+    count(username)
+    FROM
+    dba_users
+    WHERE
+    username not in ('PUBLIC','_NEXT_USER')
+    GROUP BY
+    default_tablespace;
+     
+    SELECT
+    temporary_tablespace,
+    count(username)
+    FROM
+    dba_users
+    WHERE
+    username not in ('PUBLIC','_NEXT_USER')
+    GROUP BY
+    temporary_tablespace;
+
+	
