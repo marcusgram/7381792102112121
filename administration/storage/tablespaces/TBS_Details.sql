@@ -78,3 +78,290 @@ Average %:                                                                      
 Total SUM:                          6209     6      2,549.625   1,648.126    196,607.904    194,959.780
  
 6 rows selected.
+
+
+
+
+
+
+-----------------------------------------------------------
+1 a) Combine query with sm$ts_avail,sm$ts_used,sm$ts_free:
+----------------------------------------------------------
+set pages 1000
+break on report
+compute sum of Total_MB on report
+compute sum of Used_MB on report
+compute sum of Free_MB on report
+
+select a.TABLESPACE_NAME, round(Curr_Size,1) Total_MB,round(Used,1) Used_MB,round(Free,1) Free_MB, round(100*(1-free/Curr_Size),1) Usage
+from (select TABLESPACE_NAME,BYTES/(1024*1024) Curr_Size from sm$ts_avail) a
+,(select TABLESPACE_NAME,BYTES/(1024*1024) Used from sm$ts_used) b,
+(select TABLESPACE_NAME,BYTES/(1024*1024) Free from sm$ts_free) c
+where a.TABLESPACE_NAME=b.TABLESPACE_NAME(+) and
+a.TABLESPACE_NAME=c.TABLESPACE_NAME order by 1 ASC;
+
+
+\Tablespace Fragmentation Details\
+TABLESPACE_NAME                  TOTAL_MB    USED_MB    FREE_MB      USAGE
+------------------------------ ---------- ---------- ---------- ----------
+DATA0001                              127        .10      125.9         .9
+EIM_ADDR_PER_DATA                     110                   109         .9
+EIM_ADDR_PER_INDEX                   1500                  1499         .1
+EIM_GROUP_INDEX                      2700                  2699          0
+EIM_OTHER_DATA                       1600    1436.90      162.1       89.9
+EIM_OTHER_INDEX                      2300    1748.10      550.9         76
+ERR_DATA                            15800    1088.00      14711        6.9
+INDX0001                             3527    2019.30     1506.8       57.3
+PURGE_DATA                            410     351.00         58       85.9
+PURGE_INDEX                           100      10.90       88.1       11.9
+REPRISE_PCOM_DATA                    8500    7848.40      923.9       89.1
+REPRISE_PCOM_INDEX                   4900    3572.40     1326.6       72.9
+STATSPACK                             127        .10      125.9         .8
+SYSAUX                              28300    6519.00      21780         23
+SYSTEM                               5120    1051.90     4067.1       20.6
+S_1M_INDEX                         160000   75676.50    84318.5       47.3
+S_4M_DATA                           39520   38424.00       1094       97.2
+S_50M_DATA                           7400    6144.00       1255         83
+S_60M_DATA                          37300   27264.00      10034       73.1
+S_70M_DATA                          17700   16768.00        931       94.7
+S_8M_DATA                           17400   16192.00       1207       93.1
+S_ADDR_INDEX                         6100    5755.60      343.4       94.4
+S_ADDR_PER_INDEX     
+-------
+UNDOTBS1                           243840    4408.30   239420.7        1.8
+USERS                                 100        .30         99          1
+                               ---------- ---------- ----------
+sum                               1030371  566287.10     464279
+
+57 rows selected.
+
+
+---------------------------------------------------------------------
+1 b) If you want to know the usage details of particular tablespace, 
+you can add and tablespace_name='&tablespace_name' in the where condition of the above query. 
+For example
+--------------------------------------------------------------------
+
+set pages 1000
+break on report
+compute sum of Total_MB on report
+compute sum of Used_MB on report
+compute sum of Free_MB on report
+select a.TABLESPACE_NAME, round(Curr_Size,1) Total_MB,round(Used,1) Used_MB,round(Free,1) Free_MB, round(100*(1-free/Curr_Size),1) Usage
+from (select TABLESPACE_NAME,BYTES/(1024*1024) Curr_Size from sm$ts_avail) a
+,(select TABLESPACE_NAME,BYTES/(1024*1024) Used from sm$ts_used) b,
+(select TABLESPACE_NAME,BYTES/(1024*1024) Free from sm$ts_free) c
+where a.TABLESPACE_NAME=b.TABLESPACE_NAME(+) and
+a.TABLESPACE_NAME=c.TABLESPACE_NAME and a.TABLESPACE_NAME='&TBS' order by 1 ASC;
+
+
+------------------------------------------------------------------------------------------
+--If your tablespace is auto extendable, you can use the below query given in 2 a) and 2 b) 
+--to get space usage of tablespace
+--2 a) Below query will give you the free space details with extendable space of the tablespace 
+--if the tablespace is auto extendable.
+------------------------------------------------------------------------------------------
+set pages 1000
+set lines 500
+break on report
+compute sum of CURR_SIZE_MB on report
+compute sum of Used_MB on report
+compute sum of MAXSIZE_MB on report
+compute sum of Free+extendable_MB on report
+col TABLESPACE_NAME for a30
+col file_name for a45
+select
+   a.TABLESPACE_NAME,
+   round(avail,1) curr_size_MB,
+   round(used,1) used_MB,
+   round(total,1) Maxsize_MB,
+   round(free+extentable_MB,1) "Free+extendable_MB",
+   round(100*(1-(free+extentable_MB)/total),1)"Usage %"
+from (
+      select
+        TABLESPACE_NAME,
+        sum(BYTES)/(1024*1024) avail,
+        sum(MAXBYTES)/(1024*1024) total,
+        (sum(MAXBYTES)/(1024*1024) - sum(BYTES)/(1024*1024)) extentable_MB
+      from dba_data_files
+      group by TABLESPACE_NAME) a,
+     (
+      select
+         TABLESPACE_NAME,
+         sum(BYTES)/(1024*1024) free
+      from dba_free_space group by TABLESPACE_NAME) b,
+     (
+      select
+         TABLESPACE_NAME,
+         BYTES/(1024*1024) Used
+      from sm$ts_used) c
+where a.TABLESPACE_NAME=b.TABLESPACE_NAME and
+      a.TABLESPACE_NAME=c.TABLESPACE_NAME
+order by 4 DESC;
+
+
+
+
+-----------------------------------------------------------------------
+--2 b) Here also you can get the same details for a particular tablespace 
+--by adding "and  a.TABLESPACE_NAME='&tablespace_name' 
+--in the where condition of the above query.
+----------------------------------------------------------------------
+set pages 1000
+set lines 500
+break on report
+compute sum of CURR_SIZE_MB on report
+compute sum of Used_MB on report
+compute sum of MAXSIZE_MB on report
+compute sum of Free+extendable_MB on report
+col TABLESPACE_NAME for a30
+col file_name for a45
+select
+   a.TABLESPACE_NAME,
+   round(avail,1) curr_size_MB,
+   round(used,1) used_MB,
+   round(total,1) Maxsize_MB,
+   round(free+extentable_MB,1) "Free+extendable_MB",
+   round(100*(1-(free+extentable_MB)/total),1)"Usage %"
+from (
+      select
+        TABLESPACE_NAME,
+        sum(BYTES)/(1024*1024) avail,
+        sum(MAXBYTES)/(1024*1024) total,
+        (sum(MAXBYTES)/(1024*1024) - sum(BYTES)/(1024*1024)) extentable_MB
+      from dba_data_files
+      group by TABLESPACE_NAME) a,
+     (
+      select
+         TABLESPACE_NAME,
+         sum(BYTES)/(1024*1024) free
+      from dba_free_space group by TABLESPACE_NAME) b,
+     (
+      select
+         TABLESPACE_NAME,
+         BYTES/(1024*1024) Used
+      from sm$ts_used) c
+where a.TABLESPACE_NAME=b.TABLESPACE_NAME and
+      a.TABLESPACE_NAME=c.TABLESPACE_NAME and
+      a.TABLESPACE_NAME='SE3_DATA'
+order by 4 DESC;
+
+
+
+
+
+--------------------------------------------------------------------------------------
+--3) Below query will give you each datafiles' free space,used space of the tablespace.
+--------------------------------------------------------------------------------------
+set lines 500
+col FILE_NAME for a45
+compute sum of ALLOCATED_MB on report
+compute sum of Used_MB on report
+compute sum of FREE_SPACE_MB on report
+set lines 500
+COLUMN free_space_mb format 999999.90
+COLUMN allocated_mb format 999999.90
+COLUMN used_mb format 999999.90
+col file_name for a60
+SELECT   SUBSTR (df.NAME, 1, 60) file_name, df.bytes / 1024 / 1024 allocated_mb,
+         ((df.bytes / 1024 / 1024) - NVL (SUM (dfs.bytes) / 1024 / 1024, 0))
+               used_mb,
+         NVL (SUM (dfs.bytes) / 1024 / 1024, 0) free_space_mb
+    FROM v$datafile df, dba_free_space dfs
+   WHERE df.file# = dfs.file_id(+) 
+   --and dfs.TABLESPACE_NAME='TEK_DATA'
+GROUP BY dfs.file_id, df.NAME, df.file#, df.bytes
+ORDER BY file_name;
+
+
+
+-----------------------------------------------------------------------------------
+--4a) You can use the below query to find the current tablespace structure details 
+--like current size,max size,auto extendable or not, next increment by
+-----------------------------------------------------------------------------------
+set lines 500
+set pages 100
+col TABLESPACE_NAME for a30
+col FILE_NAME for a60
+break on report
+compute sum of Size_MB on report
+compute sum of Maxsize_MB on report
+compute sum of extentable_MB on report
+select 
+TABLESPACE_NAME,
+FILE_NAME,BYTES/(1024*1024) Size_MB,MAXBYTES/(1024*1024) Maxsize_MB,
+AUTOEXTENSIBLE,
+(MAXBYTES - BYTES)/(1024*1024) extentable_MB,INCREMENT_BY*(8192/1024) "Next (in KB)"
+from dba_data_files 
+order by 2;
+
+
+------------------------------------------------------------------------------
+--4b) You can get the details for particular tablespace also using below query
+------------------------------------------------------------------------------
+set lines 500
+set pages 100
+col TABLESPACE_NAME for a30
+col FILE_NAME for a60
+break on report
+compute sum of Size_MB on report
+compute sum of Maxsize_MB on report
+compute sum of extentable_MB on report
+select 
+TABLESPACE_NAME,
+FILE_NAME,BYTES/(1024*1024) Size_MB,
+MAXBYTES/(1024*1024) Maxsize_MB,
+AUTOEXTENSIBLE,
+(MAXBYTES - BYTES)/(1024*1024) extentable_MB,
+INCREMENT_BY*(8192/1024) "Next (in KB)"
+from dba_data_files 
+where TABLESPACE_NAME='&tb_name' 
+order by 2;
+
+
+
+---------------------------------------------------
+--5) query to find growth history for a tablespace:
+---------------------------------------------------
+SELECT TO_CHAR (sp.begin_interval_time,'YYYY-MM-DD') days
+, ts.tsname
+, max(round((tsu.tablespace_size* dt.block_size )/(1024*1024),2) ) cur_size_MB
+, max(round((tsu.tablespace_usedsize* dt.block_size )/(1024*1024),2)) usedsize_MB
+FROM DBA_HIST_TBSPC_SPACE_USAGE tsu
+, DBA_HIST_TABLESPACE_STAT ts
+, DBA_HIST_SNAPSHOT sp
+, DBA_TABLESPACES dt
+WHERE tsu.tablespace_id= ts.ts#
+AND tsu.snap_id = sp.snap_id
+AND ts.tsname = dt.tablespace_name
+AND ts.tsname IN ('&tb_name')
+GROUP BY TO_CHAR (sp.begin_interval_time,'YYYY-MM-DD'), ts.tsname
+ORDER BY ts.tsname, days desc;
+
+
+
+---------------------------------------------------------------------------
+--6) Query to find average Growth MB/Day of a tablespace in last 30 days:
+---------------------------------------------------------------------------
+SELECT b.tsname tablespace_name
+, MAX(b.used_size_mb) cur_used_size_mb
+, round(AVG(inc_used_size_mb),2)avg_growth_mb_per_day
+FROM (
+  SELECT a.days, a.tsname, used_size_mb
+  , used_size_mb - LAG (used_size_mb,1)  OVER ( PARTITION BY a.tsname ORDER BY a.tsname,a.days) inc_used_size_mb
+  FROM (
+      SELECT TO_CHAR(sp.begin_interval_time,'MM-DD-YYYY') days
+       ,ts.tsname
+       ,MAX(round((tsu.tablespace_usedsize* dt.block_size )/(1024*1024),2)) used_size_mb
+      FROM DBA_HIST_TBSPC_SPACE_USAGE tsu, DBA_HIST_TABLESPACE_STAT ts
+       ,DBA_HIST_SNAPSHOT sp, DBA_TABLESPACES dt
+      WHERE tsu.tablespace_id= ts.ts# AND tsu.snap_id = sp.snap_id
+       AND ts.tsname = dt.tablespace_name  AND sp.begin_interval_time > sysdate-30
+      GROUP BY TO_CHAR(sp.begin_interval_time,'MM-DD-YYYY'), ts.tsname
+      ORDER BY ts.tsname, days
+  ) A
+) b where b.tsname='&tb_name' GROUP BY b.tsname ORDER BY b.tsname
+/
+
+
+
