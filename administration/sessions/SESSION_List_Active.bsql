@@ -1,3 +1,8 @@
+
+-----------------------------------------------------------------------------------
+-- Description  : Displays information on all active database sessions.
+-- --------------------------------------------------------------------------------
+
 SET LINESIZE 5000
 SET PAGESIZE 1000
 SET HEADING ON 
