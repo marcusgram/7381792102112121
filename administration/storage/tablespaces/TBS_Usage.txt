@@ -1,0 +1,26 @@
+#generates tablespace usage trend/growth.
+
+    SET MARKUP HTML ON ENTMAP ON SPOOL ON PREFORMAT OFF;
+    set linesize 125
+    set numwidth 20
+    set pagesize 50
+    COL NAME FOR A30
+    col SNAP_ID for 9999999
+    set serveroutput off;
+    SPOOL TBS_TREND.xls;
+    set verify off;
+    set echo off;
+
+    SELECT
+    distinct DHSS.SNAP_ID,VTS.NAME,
+    TO_CHAR(DHSS.END_INTERVAL_TIME, ‘DD-MM HH:MI’) AS SNAP_Time,
+    ROUND((DHTS.TABLESPACE_USEDSIZE*8192)/1024/1024)/&&max_instance_num AS USED_MB,
+    ROUND((DHTS.TABLESPACE_SIZE*8192)/1024/1024)/&&max_instance_num AS SIZE_MB
+    FROM DBA_HIST_TBSPC_SPACE_USAGE DHTS,V$TABLESPACE VTS,DBA_HIST_SNAPSHOT DHSS
+    WHERE VTS.TS#=DHTS.TABLESPACE_ID
+    AND DHTS.SNAP_ID=DHSS.SNAP_ID
+    AND DHSS.INSTANCE_NUMBER=1
+    AND TABLESPACE_ID=&id
+    ORDER BY 1;
+    SPOOL OFF;
+
