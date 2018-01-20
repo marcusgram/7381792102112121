@@ -1,0 +1,36 @@
+
+http://www.idevelopment.info/data/Oracle/DBA_tips/Tablespaces/TBS_3.shtml
+
+
+Gestion du tablespace TEMP
+--------------------------
+
+** Creation en OMF
+------------------
+
+CREATE TABLESPACE temp ADD TEMPFILE SIZE 2048M AUTOEXTEND ON NEXT 100M MAXSIZE 4096M;
+
+
+** Lister les tempfiles de TEMP
+--------------------------------
+ SELECT tablespace_name, file_name, bytes FROM dba_temp_files WHERE tablespace_name = 'TEMP';
+
+=> /apps/oradata01/PFC1WDR0/datafile/o1_mf_temp_b7vf1d5h_.tmp
+
+
+
+** Rajouter un tempfile
+-----------------------
+ALTER TABLESPACE temp ADD TEMPFILE SIZE 2048M AUTOEXTEND ON NEXT 100M MAXSIZE 4096M;
+
+
+
+** Supprimer un tempfile
+------------------------
+alter database tempfile '/apps/oradata01/PFC1WDR0/datafile/o1_mf_temp_b7vf6vxp_.tmp' drop including datafiles;
+
+
+
+** Supprimer le tablespace TEMP
+-------------------------------
+DROP TABLESPACE temp INCLUDING CONTENTS AND DATAFILES;
