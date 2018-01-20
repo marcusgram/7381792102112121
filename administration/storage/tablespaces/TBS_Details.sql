@@ -83,6 +83,89 @@ Total SUM:                          6209     6      2,549.625   1,648.126    196
 
 
 
+-- volumetrie detaillee des tablespaces ---
+
+clear breaks
+clear computes
+clear columns
+set pagesize 50
+set linesize 120
+set heading on
+column tablespace_name heading 'Tablespace' justify left format a20 truncated
+column tbsize heading 'Size|(Mb) ' justify left format 9,999,999.99
+column tbused heading 'Used|(Mb) ' justify right format 9,999,999.99
+column tbfree heading 'Free|(Mb) ' justify right format 9,999,999.99
+column tbusedpct heading 'Used % ' justify left format a8
+column tbfreepct heading 'Free % ' justify left format a8
+break on report
+compute sum label 'Totals:' of tbsize tbused tbfree on report
+select t.tablespace_name, round(a.bytes,2) tbsize,
+nvl(round(c.bytes,2),'0') tbfree,
+nvl(round(b.bytes,2),'0') tbused,
+to_char(round(100 * (nvl(b.bytes,0)/nvl(a.bytes,1)),2)) || '%' tbusedpct,
+to_char(round(100 * (nvl(c.bytes,0)/nvl(a.bytes,1)),2)) || '%' tbfreepct
+from dba_tablespaces t,
+(select tablespace_name, round(sum(bytes)/1024/1024,2) bytes
+from dba_data_files
+group by tablespace_name
+union
+select tablespace_name, round(sum(bytes)/1024/1024,2) bytes
+from dba_temp_files
+group by tablespace_name ) a,
+(select e.tablespace_name, round(sum(e.bytes)/1024/1024,2) bytes
+from dba_segments e
+group by e.tablespace_name
+union
+select tablespace_name, sum(max_size) bytes
+from v$sort_segment
+group by tablespace_name) b,
+(select f.tablespace_name, round(sum(f.bytes)/1024/1024,2) bytes
+from dba_free_space f
+group by f.tablespace_name
+union
+select tmp.tablespace_name, (sum(bytes/1024/1024) - sum(max_size)) bytes
+from dba_temp_files tmp, v$sort_segment sort
+where tmp.tablespace_name = sort.tablespace_name
+group by tmp.tablespace_name) c
+where
+t.tablespace_name = a.tablespace_name (+)
+and t.tablespace_name = b.tablespace_name (+)
+and t.tablespace_name = c.tablespace_name (+)
+order by t.tablespace_name;
+
+
+                     Size                   Free          Used
+Tablespace           (Mb)                  (Mb)          (Mb)  Used %   Free %
+-------------------- ------------- ------------- ------------- -------- --------
+DATA0001                  1,171.00      1,167.00           .00 0%       99.66%
+DATAAUDIT                 8,705.00      8,133.50        568.44 6.53%    93.43%
+DATACOL                  16,649.00     15,283.13      1,362.81 8.19%    91.8%
+DATACOL32K               66,832.00     64,627.25      2,200.75 3.29%    96.7%
+DATACOLPRL               11,696.00     11,692.94           .00 0%       99.97%
+DATACOLVIR                1,045.00      1,041.94           .00 0%       99.71%
+DATAMAND                  7,237.00      5,952.69      1,281.25 17.7%    82.25%
+DATAREF                   1,045.00        986.50         55.44 5.31%    94.4%
+DATATECH                 62,016.00     61,831.25        181.69 .29%     99.7%
+IDXAUDIT                  2,070.00      1,946.63        120.31 5.81%    94.04%
+IDXCOL                    6,497.00      6,054.50        439.44 6.76%    93.19%
+IDXCOLPRL                 9,900.00      9,387.75        509.19 5.14%    94.83%
+IDXCOLVIR                 1,045.00      1,040.31          1.63 .16%     99.55%
+IDXMAND                   4,753.00      4,043.19        706.75 14.87%   85.07%
+IDXREF                    1,045.00      1,013.44         28.50 2.73%    96.98%
+IDXTECH                   1,045.00      1,036.31          5.63 .54%     99.17%
+INDX0001                  1,171.00      1,167.00           .00 0%       99.66%
+STATSPACK                 1,171.00      1,167.00           .00 0%       99.66%
+SYSAUX                    1,444.00        860.56        579.44 40.13%   59.6%
+SYSTEM                    1,544.00      1,046.25        493.75 31.98%   67.76%
+TEMP                     11,534.00    -41,906.00     10,688.00 92.67%   -363.33%
+UNDOTBS1                 24,950.00     24,711.69        234.31 .94%     99.04%
+                     ------------- ------------- -------------
+Totals:                 244,565.00    182,284.83     19,457.33
+
+22 rows selected.
+
+
+
 
 -----------------------------------------------------------
 1 a) Combine query with sm$ts_avail,sm$ts_used,sm$ts_free:
