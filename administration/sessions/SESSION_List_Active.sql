@@ -52,3 +52,31 @@ ORDER BY s.username, s.osuser;
 SET PAGESIZE 14
 SPOOL OFF
 
+
+-----------------------------------------------------------------------------------
+-- Description  : Displays information on all active database sessions.
+-- filter on username 
+-- --------------------------------------------------------------------------------
+set linesize 150
+column Name format a14
+column SID format 9999
+column PID format 99999
+column TERM format a15
+column OSUSER format a15
+column Program format a30
+column Stats format a10
+column Logon_time format a20
+select a.username Name, a.sid SID, a.serial#, b.spid PID,
+       SUBSTR(A.TERMINAL,1,9) TERM, SUBSTR(A.OSUSER,1,9) OSUSER,
+       substr(a.program,1,10) Program, a.status Status,
+       to_char(a.logon_time,'MM/DD/YYYY hh24:mi') Logon_time
+from v$session a, v$process b
+where a.paddr = b.addr
+  and a.serial# <> '1'
+  and a.status = 'ACTIVE'
+  and a.username like upper('%&user%') -- if you want to filter by username
+order by a.logon_time;
+
+
+
+
