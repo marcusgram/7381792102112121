@@ -1,4 +1,26 @@
 
+----------------------------------------------------------------------------------------------------
+--Required privileges to allow users to kill a session. 
+--Description
+--What privileges are required so that a user can view and kill a session in DBA | Kill/Trace Session
+----------------------------------------------------------------------------------------------------
+
+-- Required object grants:
+ GRANT SELECT ON sys.v_$sess_io TO <username>;
+ GRANT SELECT ON sys.v_$session TO <username>;
+ GRANT SELECT ON sys.v_$transaction TO <username>;
+ GRANT SELECT ON sys.v_$rollname TO <username>;
+ GRANT SELECT ON sys.V$open_cursor TO <username>;
+ GRANT SELECT ON sys.v_$process TO <username>;
+ GRANT SELECT ON sys.v$lock TO <username>;
+ GRANT SELECT ON sys.v$Locked_object TO <username>;
+ GRANT SELECT ON sys.v$sqltext_with_newlines TO <username>;
+ GRANT SELECT ON sys.v_$transaction TO <username>;
+
+-- Required system grants:
+ GRANT ALTER SESSION TO <username>;
+ GRANT ALTER SYSTEM FROM <username>;
+
 
 
 
@@ -66,7 +88,6 @@ INST_ID   SID  SERIAL# SPID                     USERNAME   PROGRAM
 -- Retourne la requete, le SID et le SERIAL à utiliser,
 -- le username
 ----------------------------------------
-
  COLUMN KILL FORMAT 40
  COLUMN inst_id FORMAT 9999
  COLUMN sid FORMAT 9999
