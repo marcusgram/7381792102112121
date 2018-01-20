@@ -54,6 +54,31 @@ INST_ID   SID  SERIAL# SPID                     USERNAME   PROGRAM
 
 
 
+
+---------------------------------------------------------
+-- Purpose:     find os pid from sid, or sid from os pid
+---------------------------------------------------------
+set lines 132
+SELECT s.username, s.user#, s.sid, s.serial#, s.sql_id, p.spid os_pid
+ FROM V$SESSION S, v$process p
+ WHERE sid = nvl('&sid',sid)
+and p.spid = nvl('&os_pid',p.spid)
+and p.addr = s.paddr
+ and s.username is not null
+/
+
+USERNAME                             USER#         SID     SERIAL# SQL_ID        OS_PID
+------------------------------ ----------- ----------- ----------- ------------- ------------------------
+DBSNMP                                  30         319       18109               8269928
+NATURALPERSON_APP                       54         347       51131               2678964
+PUBLIC                                   1         470        2505               9744406
+NATURALPERSON_APP                       54          19       62039               2510890
+DBSNMP                                  30          33       16913               7532794
+DBSNMP                                  30          47          15               11071584
+NATURALPERSON_APP                       54          83        7513               5845226
+
+
+
 -----------------------------------------
 -- identifier les sessions 
 -- par username
@@ -170,6 +195,28 @@ END;
 
 
 
+-----------------------------------------------	  
+-- BLOC PL/SQL  --
+-- Supprimer en auto toutes les sessions 
+-- pour un ACTION en parametre
+-----------------------------------------------
+set serveroutput on;
+BEGIN
+    FOR r IN (
+        SELECT 'ALTER SYSTEM KILL SESSION ''' || s.sid || ',' || s.serial# || ''' IMMEDIATE;' AS ddl
+        FROM   gv$session s
+             JOIN gv$process p ON p.addr = s.paddr 
+             AND p.inst_id = s.inst_id
+             AND s.action='&action'
+    )
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(r.ddl);
+       -- EXECUTE IMMEDIATE r.ddl
+    END LOOP;
+END;
+/
+
+
 
 -----------------------------------------------	  
 -- PROCEDURE PL/SQL  --
@@ -212,5 +259,10 @@ END;
 
 CREATE PUBLIC SYNONYM KILL_SESSION FOR SYS.KILL_SESSION;
 GRANT EXECUTE ON KILL_SESSION TO GEN$HUIS;
+
+-----------------------------------------------------
+
+
+
 
 
