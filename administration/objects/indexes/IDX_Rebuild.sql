@@ -22,6 +22,39 @@ SPOOL Al_Indexes.log
 spool off
 
 
+-- -----------------------------------------------------------------------------------
+-- Description  : Rebuilds the specified index, or all indexes.
+-- Call Syntax  : @rebuild_index (index-name or all) (schema-name)
+-- -----------------------------------------------------------------------------------
+SET PAGESIZE 0
+SET FEEDBACK OFF
+SET VERIFY OFF
+
+SPOOL temp.sql
+
+SELECT 'ALTER INDEX ' || a.index_name || ' REBUILD PARALLEL;'
+FROM   all_indexes a
+WHERE  index_name  = DECODE(Upper('&1'),'ALL',a.index_name,Upper('&1'))
+AND    table_owner = Upper('&2')
+ORDER BY 1
+/
+SPOOL OFF
+
+-- Comment out following line to prevent immediate run
+--@temp.sql
+
+
+
+
+
+
+
+set pages 200
+set lines 200
+
+Select 'alter index ' || owner || '.' || index_name || ' rebuild online;'
+from dba_indexes where status = 'INVALID'
+/
 
 
 
