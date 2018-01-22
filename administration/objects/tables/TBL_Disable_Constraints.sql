@@ -1,8 +1,5 @@
 
 
-
-
-
 -- -----------------------------------------------------------------------------------
 -- File Name    : http://www.oracle-base.com/dba/constraints/disable_chk.sql
 -- Description  : Disables all check constraints for a specified table, or all tables.
