@@ -1,5 +1,41 @@
 
 
+REM ***********************************************************************************
+REM REQUIRES:   dba_indexes
+REM
+REM INPUTS:		1 = Index owner
+REM			2 = Index name
+REM ******************** Knowledge Xpert for Oracle Administration ********************
+
+SET pages 20 lines 600 verify off feedback off
+COLUMN owner                   format a20            heading "Owner"
+COLUMN index_name              format a30           heading "Index"
+COLUMN status                  format a7            heading "Status"
+COLUMN blevel                  format 999999          heading " Tree| Level"
+COLUMN leaf_blocks             format 9999999         heading " Leaf| Blk"
+COLUMN distinct_keys           format 99999999       heading " # Keys"
+COLUMN avg_leaf_blocks_per_key format 999999          heading " Avg| Leaf Blocks| Key"
+COLUMN avg_data_blocks_per_key format 999999         heading " Avg| Data Blocks| Key"
+COLUMN clustering_factor       format 99999999        heading " Cluster| Factor"
+COLUMN num_rows                format 99999999       heading " Number| Rows"
+COLUMN sample_size             format 99999999       heading " Sample| Size"
+COLUMN last_analyzed                                heading " Analysis| Date"
+REM
+ttitle "Index Statistics Report"
+REM
+SELECT   owner, index_name, status, blevel, leaf_blocks, distinct_keys,
+         avg_leaf_blocks_per_key, avg_data_blocks_per_key, clustering_factor,
+         num_rows, sample_size, last_analyzed
+    FROM dba_indexes
+   WHERE owner LIKE UPPER ('&&iowner')
+     --AND index_name LIKE UPPER ('&&iname')
+     AND num_rows > 0
+     AND BLEVEL > 1 
+ORDER BY 1, 2;
+
+
+
+
 -----------------------------------------------
 -- for the given table
 -- list the indexes on the table
