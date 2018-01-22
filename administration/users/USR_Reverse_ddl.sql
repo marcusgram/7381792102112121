@@ -144,6 +144,73 @@ set linesize 80 pagesize 14 feedback on trimspool on verify on
 
 
 
+-- -----------------------------------------------------------------------------------
+-- PL/SQL to get the DDL for a specific user.
+-- Require username
+-- get : Rules - Grants - PWD
+-- -----------------------------------------------------------------------------------
+ set serveroutput on
+ 
+ declare
+    curr varchar2(30):='GEN$HUIS';
+    v_ext varchar2(3);
+    Text varchar2(4000):=NULL;
+    begin
+    -- Recuperation de la definition du USER .
+    -- =====================================
+    DBMS_OUTPUT.ENABLE(2000000);
+    Text:=DBMS_METADATA.GET_DDL('USER', curr);
+    dbms_output.put_line('-- Definition du USER :'||curr);
+    dbms_output.put_line(Text||';');
+    dbms_output.put_line('--');
+   
+   -- Recuperation des Roles.
+   -- ======================
+   dbms_output.put_line('-- Definition des roles sur User :'||curr);
+   for role in (select * from dba_role_privs where grantee=curr)
+   loop
+       if role.admin_option = 'YES'
+          then
+            dbms_output.put_line('grant '||role.granted_role||' to '||role.grantee||' with admin option'||';');
+          else
+            dbms_output.put_line('grant '||role.granted_role||' to '||role.grantee||';');
+        end if;
+   end loop;
+   
+   -- Recuperation des Privileges systemes.
+   -- ====================================
+   dbms_output.put_line('-- Definition des Privileges systemes sur User :'||curr);
+   for sys_priv in (select * from dba_sys_privs where grantee=curr)
+   loop
+      if sys_priv.admin_option = 'YES'
+       then
+          dbms_output.put_line('grant '||sys_priv.privilege||' to '||sys_priv.grantee||'  with admin option'||';');
+       else
+          dbms_output.put_line('grant '||sys_priv.privilege||' to '||sys_priv.grantee||';');
+       end if;
+   end loop;
+   
+   -- Recuperation des privileges sur les objets.
+   -- ==========================================
+   dbms_output.put_line('-- Definition des Privileges sur les objets sur User :'||curr);
+   for tab_priv in(select * from dba_tab_privs where grantee=curr)
+   loop
+      if (tab_priv.grantable = 'YES')
+      then
+   	dbms_output.put_line('grant '||tab_priv.privilege||' on '||tab_priv.owner||'.'||tab_priv.table_name||' to '
+   			   ||tab_priv.grantee||' with grant option;');
+      else
+   	dbms_output.put_line('grant '||tab_priv.privilege||' on '||tab_priv.owner||'.'||tab_priv.table_name||' to '
+   			   ||tab_priv.grantee||';');
+      end if;
+   end loop;
+   end;
+   /
+
+
+
+
+
 
 -- -----------------------------------------------------------------------------------
 -- Description  : Displays the DDL for a specific user.
