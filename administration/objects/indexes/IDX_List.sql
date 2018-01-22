@@ -24,3 +24,30 @@ where table_name = upper('&&2')
 and table_owner = upper('&&1')
 order by 1,column_position
 /
+
+
+-- -----------------------------------------------------------------------------------
+-- Description  : Displays information about specified indexes.
+-- Requirements : Access to the DBA views.
+-- Call Syntax  : @show_indexes (schema) (table-name or all)
+-- -----------------------------------------------------------------------------------
+SET VERIFY OFF
+SET LINESIZE 200
+
+COLUMN table_owner FORMAT A20
+COLUMN index_owner FORMAT A20
+COLUMN index_type FORMAT A12
+COLUMN tablespace_name FORMAT A20
+
+SELECT table_owner,
+       table_name,
+       owner AS index_owner,
+       index_name,
+       tablespace_name,
+       num_rows,
+       status,
+       index_type
+FROM   dba_indexes
+WHERE  table_owner = UPPER('&tabowner')
+AND    table_name = DECODE(UPPER('&tabname'), 'ALL', table_name, UPPER('&tabname'))
+ORDER BY table_owner, table_name, index_owner, index_name;
