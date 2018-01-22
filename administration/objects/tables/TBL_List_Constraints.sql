@@ -28,6 +28,17 @@ ANALYSE                        CHECK_ANA_VAL_REC              ENABLED  C
 
 
 
+-----------------------------------------
+Les valeurs de CONSTRAINT_TYPE :
+
+    P (Primary key).
+    U (Unique key).
+    R (Referential integrity).
+    C (Check constraint).
+    V (with check option on a view).
+    O (with read only on a view).
+-----------------------------------------
+
 REPHEADER PAGE CENTER 'LISTE DES CONTRAINTES D''UNE TABLE OU VIEW'
 
 SET LINESIZE 100
