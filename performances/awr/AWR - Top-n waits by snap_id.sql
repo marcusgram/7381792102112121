@@ -1,9 +1,11 @@
+---------------------------------------------------------------
 -- Query to find Top N wait events in database by snap_id
 -- Updated 29-Oct-2013 RDCornejo [added PCT]
 -- Usage: provide integer number for top # of waits
 --       can leave blank (optional):
 --        -  hour range (e.g. 3 - 15 for  03:00 to 15:00 hours)
 --        -  snap_id range
+----------------------------------------------------------------
 with et as 
 (SELECT et1.instance_number
 , et1.snap_id
@@ -92,6 +94,9 @@ where row_number <= :top_n
 order by snap_id desc, Total_wait_time desc
 ;
 
+
+
+------------------------------------------------------
 -- the top-N daily events
 -- ---------------------------------------------------
 with et as 
@@ -188,6 +193,8 @@ where rn <= :top_n
 ;
 
 
+
+------------------------------------------------------
 -- overall top-N events for all the top-N daily events
 -- ---------------------------------------------------
 with et as 
@@ -291,8 +298,11 @@ select * from overall_agregate
 where rn <= :top_n
 ;
 
+
+------------------------------------------------
 -- generate a sql fragment for top-N wait events
 -- hour range version
+------------------------------------------------
 with et as 
 (SELECT et1.instance_number
 , et1.snap_id
@@ -411,7 +421,7 @@ select * from the_in_list
 order by 1, 2
 ;
 
-
+--------------------------------------------------------------------------------------------------------
 -- generate a sql fragment for top-N wait events (can be used to pivot events across snapshot periods:
 -- in snap_id range
 -- -----------------------------------------------------------------------------------------------------
@@ -582,7 +592,10 @@ select position, row_num, CMD from the_in_list
 order by position, row_num
 ;
 
+
+----------------
 -- top 5 pivoted
+----------------
 Select snap_id
 , max(decode(event_name,'DB CPU', time_waited_micro, null)) DB_CPU
 , max(decode(event_name,'db file scattered read', time_waited_micro, null)) db_file_scattered_read
@@ -668,7 +681,10 @@ order by data.snap_id desc
 ;
 
 
+
+---------
 -- events
+---------
 select
        btime, event_name,
        (time_ms_end-time_ms_beg)/nullif(count_end-count_beg,0) avg_ms,
