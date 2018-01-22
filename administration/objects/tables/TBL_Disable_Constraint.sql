@@ -1,29 +1,33 @@
 
 
-----------------------------------------------------------------------------------------------
---Script permettant de lister les Contraintes d'intégrités à désactiver
---ici sur la table ANALYSE et pour le user Scott
----------------------------------------------------------------------------------------------- 
-
-SELECT   TABLE_NAME,
-             CONSTRAINT_NAME,
-             STATUS,
-             CONSTRAINT_TYPE
-      FROM   ALL_CONSTRAINTS
-     WHERE       CONSTRAINT_TYPE = 'C'
-             AND OWNER = UPPER ('SCOTT')
-             AND TABLE_NAME = UPPER ('ANALYSE')
-             AND STATUS = 'ENABLED';
-
-TABLE_NAME                     CONSTRAINT_NAME                STATUS   C
------------------------------- ------------------------------ -------- -
-ANALYSE                        SYS_C0013527                   ENABLED  C
-ANALYSE                        CHECK_A_PRE                    ENABLED  C
-ANALYSE                        CHECK_VER_PRE                  ENABLED  C
-ANALYSE                        CHECK_ANA_E_PR                 ENABLED  C
-ANALYSE                        CHECK_ANA_VAL_REC              ENABLED  C
 
 
+
+-- -----------------------------------------------------------------------------------
+-- File Name    : http://www.oracle-base.com/dba/constraints/disable_chk.sql
+-- Description  : Disables all check constraints for a specified table, or all tables.
+-- Call Syntax  : @disable_chk (table-name or all) (schema-name)
+-- -----------------------------------------------------------------------------------
+SET PAGESIZE 0
+SET FEEDBACK OFF
+SET VERIFY OFF
+
+SPOOL temp.sql
+
+SELECT 'ALTER TABLE "' || a.table_name || '" DISABLE CONSTRAINT "' || a.constraint_name || '";'
+FROM   all_constraints a
+WHERE  a.constraint_type = 'C'
+AND    a.owner           = UPPER('&2');
+AND    a.table_name      = DECODE(UPPER('&1'),'ALL',a.table_name,UPPER('&1'));
+
+SPOOL OFF
+
+-- Comment out following line to prevent immediate run
+@temp.sql
+
+SET PAGESIZE 14
+SET FEEDBACK ON
+SET VERIFY ON
 
 
 
