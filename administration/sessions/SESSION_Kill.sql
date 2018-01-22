@@ -285,9 +285,92 @@ END;
 CREATE PUBLIC SYNONYM KILL_SESSION FOR SYS.KILL_SESSION;
 GRANT EXECUTE ON KILL_SESSION TO GEN$HUIS;
 
------------------------------------------------------
 
 
+
+
+-----------------------------------------------	  
+-- PROCEDURE PL/SQL  --
+-- http://searchoracle.techtarget.com/tip/Allow-a-user-to-kill-certain-sessions-without-giving-them-the-alter-system-privilege
+-- Prend en parametre SID et SERIAL
+-- prerequis :
+-- CREATED ON USER SYS or HAVING DBA PRIVILEGES
+-- CREATE PUBLIC SYNONYM KILL_SESSION FOR SYS.KILL_SESSION;
+-- GRANT EXECUTE ON KILL_SESSION TO user;
+-----------------------------------------------
+CREATE or replace procedure kill_session(p_1 in varchar2) 
+is 
+
+v_1      varchar2(64) := upper(p_1); 
+v_sid    varchar2(254) := null; 
+v_sid2   v$session.sid%TYPE := 0; 
+v_sn     v$session.serial#%TYPE := 0; 
+cid      integer := 0; 
+v_pid    v$process.spid%TYPE := 0; 
+v_sqlstr varchar2(254) := null; 
+v_usr    v$session.username%TYPE := null; 
+rows_processed integer := 0; 
+
+BEGIN 
+
+if v_1 = 'LIST' then 
+
+   dbms_output.put_line('SID, DB User, O/S user, Application' || chr(13) || '====================================='); 
+   
+   for v_sid in (select sid,username, osuser, program from V$SESSION where type != 'BACKGROUND' and username not in ('SYS', 'SYSTEM', 'DBSNMP', 'REPADMIN', 'OUTLN') and status != 'KILLED' and sid != (select sid from V$SESSION where audsid = (select userenv('sessionid') from dual)))
+
+   loop 
+        dbms_output.put_line(v_sid.sid || ', ' || v_sid.username || ', ' || v_sid.osuser || ', ' || v_sid.program); 
+   end loop; 
+
+elsif v_1 is null or v_1 = '' then 
+
+   raise VALUE_ERROR; 
+
+else 
+
+   v_sid2 := to_number(v_1); 
+
+   select serial#,username into v_sn,v_usr from V$SESSION 
+   where type != 'BACKGROUND' 
+   and username not in ('SYS', 'SYSTEM', 'DBSNMP', 'REPADMIN', 'OUTLN') 
+   and status != 'KILLED' 
+   and sid != (select sid from V$SESSION 
+   where audsid = (select userenv('sessionid') from dual)) 
+   and sid = v_sid2;
+  
+   if SQL%FOUND then 
+      select spid into v_pid from v$session s, v$process p 
+      where s.username = v_usr and sid = v_sid2 and s.paddr = p.addr;
+
+      v_sqlstr := 'ALTER SYSTEM KILL SESSION ''' || v_sid2 || ',' || v_sn || ''''; 
+
+      cid := Dbms_Sql.Open_Cursor; 
+
+      Dbms_Sql.parse(cid, v_sqlstr, Dbms_Sql.Native); 
+
+      rows_processed := dbms_sql.execute(cid); 
+
+      DBMS_SQL.CLOSE_CURSOR(cid); 
+
+      dbms_output.put_line('User ' || v_usr || ' with SID ' || v_sid2 || ' was killed successfully.' || chr(13) || 'The O/S Process ID to kill is ' || v_pid || '.');
+
+   end if; 
+
+end if; 
+
+exception 
+   when NO_DATA_FOUND then 
+      dbms_output.put_line(v_1 || ' is not a valid SID.  Please try another one.'); 
+   when INVALID_NUMBER or VALUE_ERROR then 
+      dbms_output.put_line('Invalid parameter.' || chr(13) || 'Syntax: execute kill_session(''<LIST|<SID value>>'');'); 
+   when others then 
+      dbms_output.put_line('kill_session() encountered error ' || to_char(SQLCODE) || '.  Please try again.'); 
+END; 
+/ 
+
+grant  execute on sys.kill_session to (user_name);
+create synonym (user_name).kill_session for sys.kill_session; 
 
 
 
