@@ -43,3 +43,4 @@ BEGIN
  
 END;
 /
+SET VERIFY ON
