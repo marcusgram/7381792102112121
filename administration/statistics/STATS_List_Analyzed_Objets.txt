@@ -12,11 +12,22 @@ SELECT SYSDATE - last_analyzed,
 
 ---------
 
+select table_name, to_char(last_analyzed,'dd/mm/yyyy hh24:mi:ss') tarih
+from all_tables
+where owner = upper('&owner') 
+and last_analyzed is not null
+order by last_analyzed desc
+
+---------
+
 set ver off
 set linesize 100
 col table_name format a15
 col last_analyzed format a40
-select TABLE_NAME "Table Name",to_char(LAST_ANALYZED,'DD-MON-YY HH24:MI:SS') "Date and Time", num_rows from dba_TABLES
+select TABLE_NAME "Table Name",
+to_char(LAST_ANALYZED,'DD-MON-YY HH24:MI:SS') "Date and Time", 
+num_rows 
+from dba_TABLES
 where owner = '&user'
 and table_name = '&tabname'
 order by 2 asc;
