@@ -60,3 +60,9 @@ select begin_interval_time, inst_id
 from metrics
 order by 2,1
 /
+
+
+
+BEGIN_INTERVAL_TIME               INST_ID                            RESIZE_COUNT                           RESIZE_STDDEV                           RESIZE_METRIC ACTION   
+------------------------------ ---------- --------------------------------------- --------------------------------------- --------------------------------------- ----------
+2018-01-24 00:44:51                     1                                      16                                       0                                       1 No Worries
