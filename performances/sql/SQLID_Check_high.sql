@@ -1,153 +1,88 @@
-/*
+break on sql_id skip 1
 
- Name:          high_sql_ck.sql
+col sql_id       format a13           heading 'SQL Id'
+col sqt          format a50  trunc    heading 'SQL Text'
+col execs        format    999,999,990  heading 'Execs'
+col gets         format  9,999,999,990  heading 'Gets'
+col bpe          format  9,999,999,990  heading 'per Exec'
+col reads        format    999,999,990  heading 'Reads'
+col rpe          format  9,999,999,990  heading 'per Exec'
+col rws          format    999,999,990  heading 'Rows'
+col rwpe         format  9,999,999,990  heading 'per Exec'
+col cpu_time     format     999,990.90  heading 'CPU (s)'
+col cppe         format     999,990.90   heading 'per Exec(s)'
+col elapsed_time format   9,999,990.90  heading 'Ela (s)'
+col elpe         format   9,999,990.999   heading 'per Exec(s)'
+col clwait_time  format     999,990.90  heading 'Clu (s)'
+col clpe         format     999,990.90  heading 'per Exe(s)'
+col iowait_time  format     999,990.90  heading 'IOWait (s)'
+col iope         format     999,990.90  heading 'per Exe(s)'
 
- Purpose:       List worse 10 SQL based on buffer gets, disk reads and elapsed time in terms of per execution and overall 
+col nl           format  a13 newline  heading ''
+col bp           heading ''
+col ela_pct_dbt  format  9,999,990.90  heading '% of DB time'
+col cpu_pct      format    999,990.90  heading '% of DB CPU'
+col gets_pct     format 99,999,990.90 heading '% of Gets'
+col rds_pct      format   9999,990.90  heading '% of Reads'
+col execs_pct    format   9999,990.90  heading '% of Execs'
+col clwait_pct   format    999,990.90  heading '% of CluTm'
+col iowait_pct   format    999,990.90  heading '% of IO Tm'
 
- Date            Who             Description
+col ep           format a12       heading ''
+col sqtn         format a50 trunc heading ''
 
- 2nd Apr 2008    Aidan Lawrence  Sanity check and general tidy up
- 14th Sep 2009   Aidan Lawrence  Validated for Oracle 9.2 and 10.2 for publication 
- 26th Sep 2017   Aidan Lawrence  Changed to access from views and col definitions to login.sql   
-
-*/
-
--- See login.sql for basic formatting
-      
-set heading off
-set termout off
-
-define script_name = 'high_sql_ck'
---
--- Set the Spool output name as combination of script, database and time
---
-
-column spool_name new_value spool_name noprint;
-       
-select '&script_name'
-       || '_'
-       || lower(d.name)
-       || '_'
-       || 'D'
-       || to_char(sysdate,'YYYYMMDD_HH24MI') 
-       || '.lst' spool_name      
-  from v$database d;
-  
-select 'Output report name is ' 
-       || '&spool_name'
-  from dual;  
-
-spool &spool_name
-
-prompt 
-prompt Report Details are &spool_name                     
-
-set heading off
-set feedback off 
-
-SELECT 'Database Name: ' || value FROM v$parameter where name='db_name'
-/
-
-SELECT 'Generated On ' ||  to_char(sysdate,'dd Month YYYY  HH24:MI') today from dual
-/
-
-set heading on
---set feedback on (Not needed for this specific top 10 report) 
-set feedback off 
-
-prompt 
-prompt Top 10 Buffer Gets per execution
-
-SELECT
-  rank
-, parsing_schema
-, sql_id
-, SUBSTR(sql_text,1,50) AS sql_text_extract
-, buffer_gets_per_execution          
-, total_executions                   
-, rows_processed                     
-, last_active_time                   
-FROM highsql_2_buffer_gets_per_exec
-/
-
-prompt 
-prompt Top 10 Buffer Gets Total
-
-SELECT
-  rank
-, parsing_schema
-, sql_id
-, SUBSTR(sql_text,1,50) AS sql_text_extract
-, buffer_gets_total          
-, rows_processed                     
-, last_active_time                   
-FROM highsql_3_buffer_gets_total
-/
-
-prompt 
-prompt Top 10 Disk Reads per execution 
-
-SELECT
-  rank
-, parsing_schema
-, sql_id
-, SUBSTR(sql_text,1,50) AS sql_text_extract
-, disk_reads_per_execution
-, total_executions
-, rows_processed                     
-, last_active_time                   
-FROM highsql_4_disk_reads_per_exec
-/
-
-prompt 
-prompt Top 10 Disk Reads Total 
-
-SELECT
-  rank
-, parsing_schema
-, sql_id
-, SUBSTR(sql_text,1,50) AS sql_text_extract
-, disk_reads_total
-, rows_processed                     
-, last_active_time                   
-FROM highsql_5_disk_reads_total
-/
-
-prompt 
-prompt Top 10 Elapsed Time per execution 
-
-SELECT
-  rank
-, parsing_schema
-, sql_id
-, SUBSTR(sql_text,1,50) AS sql_text_extract
-, elapsed_time_per_execution
-, total_executions
-, rows_processed                     
-, last_active_time                   
-FROM highsql_6_elapse_time_per_exec
-/
-
-prompt 
-prompt Top 10 Elapsed Time Total 
-
-SELECT
-  rank
-, parsing_schema
-, sql_id
-, SUBSTR(sql_text,1,50) AS sql_text_extract
-, elapsed_time_total
-, rows_processed                     
-, last_active_time                   
-FROM highsql_7_elapsed_time_total
-/
-
-prompt
-prompt end of report
-
-spool off
--- Can turn the edit on if running script manually - saves a couple of key strokes :-)
--- Leave edit commented out if running from batch
-
-edit &spool_name
-exit
+-- top sql by elapsed time
+select 
+       s.sql_id
+     , elapsed_time/&ustos   elapsed_time
+     , cpu_time/&ustos       cpu_time
+     , iowait_time/&ustos    iowait_time
+     , gets
+     , reads
+     , rws
+     , clwait_time/&ustos    clwait_time
+     , execs
+     , substr(regexp_replace(st.sql_text,'(\s)+',' '),1,50) sqt
+     , '             ' nl
+     , elapsed_time/&ustos/decode(execs,0,null,execs)          elpe
+     , cpu_time/&ustos/decode(execs,0,null,execs)              cppe
+     , iowait_time/&ustos/decode(execs,0,null,execs)           iope
+     , gets/decode(execs,0,null,execs)                         bpe
+     , reads/decode(execs,0,null,execs)                        rpe
+     , rws/decode(execs,0,null,execs)                          rwpe
+     , clwait_time/&ustos/decode(execs,0,null,execs)           clpe
+     , '          '    ep
+     , substr(regexp_replace(st.sql_text,'(\s)+',' '),51,50)   sqtn
+     , '            ' nl
+     , elapsed_time/decode(:tdbtim,0,null,:tdbtim)*100         ela_pct_dbt
+     -- , '                                                                ' bp
+     , cpu_time/decode(:tdbcpu,0,null,:tdbcpu)*100             cpu_pct
+     , iowait_time/decode(:tiowtm,0,null,:tiowtm)*100          iowait_pct
+     , gets/decode(:tgets,0,null,:tgets)*100                   gets_pct
+     , reads/decode(:trds,0,null,:trds)*100                    rds_pct
+     , '            '                                        bp
+     , clwait_time/decode(:tclutm,0,null,:tclutm)*100          clwait_pct
+     , execs/decode(:texecs,0,null,:texecs)*100                execs_pct
+     , substr(regexp_replace(st.sql_text,'(\s)+',' '),101,50)  sqtn
+ from  
+  (select * from
+     ( select sql_id
+          , sum(executions_delta)      execs
+          , sum(buffer_gets_delta)     gets
+          , sum(disk_reads_delta)      reads
+          , sum(rows_processed_delta)  rws
+          , sum(cpu_time_delta)        cpu_time
+          , sum(elapsed_time_delta)         elapsed_time
+          , sum(clwait_delta)         clwait_time
+          , sum(iowait_delta)         iowait_time
+       from dba_hist_sqlstat
+      where snap_id  > :bid
+        and snap_id <= :eid
+        and dbid     = :dbid
+      group by sql_id
+      order by sum(elapsed_time_delta) desc)
+      where rownum <= &&top_n ) s
+ , dba_hist_sqltext st
+where st.dbid = :dbid
+  and st.sql_id = s.sql_id
+ order by elapsed_time desc, sql_id;
