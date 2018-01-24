@@ -48,6 +48,14 @@ AND l1.id2     = l2.id2;
 
 
 
+------------------------
+-- Generate kill blokers
+------------------------
+set linesize 200
+select 'alter system kill session '''||a.sid||','||a.serial#||''';'
+from v$session a, dba_blockers b
+where a.sid = b.holding_session
+/
 
 
 ---------------------------------------------------------------
