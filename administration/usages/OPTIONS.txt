@@ -1,0 +1,145 @@
+with db_size as
+(select target_guid, sum(file_size) as dbsz
+    from MGMT$DB_DATAFILES t
+   group by target_guid)
+select d.rel_status, 
+       d.target_name,
+       d.host_name,
+       d.dbversion,
+       d.is_64bit,
+         (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name ='Real Application Clusters (RAC)'
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "Real Application Cluster",
+       (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name like 'Active%'
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "Active Dataguard",
+      (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name = 'Data Guard'
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "Dataguard",
+	   (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name = 'Data Guard Broker'
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "Dataguard Broker",
+	   (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name = 'GoldenGate'
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "GoldenGate",
+       (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name = 'Partitioning (user)'
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "User Partitioning",
+      (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name = 'Partitioning (system)'
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "System Partitioning",
+       (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where (name like '%encryption%' or name like '%Transparent%')
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "ASO Advanced Security",
+       (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name in ('SecureFile Deduplication (user)',
+                               'SecureFile Compression (user)')
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "Advanced Compression",
+	   (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name like '%Parallel%'
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "Parallelism",
+	      (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where name ='Automatic Maintenance - SQL Tuning Advisor'
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "Tuning Pack",
+	   (case
+         when (select count(*)
+                 from MGMT$DB_FEATUREUSAGE M
+                where (name in ('ADDM','Automatic Workload Repository','Real-Time SQL Monitoring','SQL Monitoring and Tuning pages'))
+                  and currently_used = 'TRUE'
+                  and M.database_name = d.target_name) > 0 THEN
+          'TRUE'
+         ELSE
+          'FALSE'
+       END) "Diagnostic Pack",
+       db_size.dbsz / (1024 * 1024 * 1024) as "Database Size",
+       os.os_summary,
+       os.freq,
+       os.mem,
+       os.disk,
+       os.cpu_count
+  from MGMT$DB_DBNINSTANCEINFO d, MGMT$OS_HW_SUMMARY os, db_size
+where os.host_name = d.host_name
+   and db_size.target_guid = d.target_guid
+  -- and d.target_name='VST1FRD0_s00va9930329'
+   
+   
+  select * from MGMT$DB_FEATUREUSAGE
+where database_name='DT1FRR0_parva4117031'
+;
