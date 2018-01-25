@@ -1,0 +1,319 @@
+
+
+
+=================================== TUNING TASK ON SPECIFED SQL_ID ===============================
+
+set serveroutput on;
+
+DECLARE
+  l_sql_tune_task_id VARCHAR2(100);
+  taskname varchar2(30) := 'TASK_SQL_TUNING_2401_COM';
+  task_desc varchar2(256) := 'SQL Tuning Advisor on tuning set 2401';
+  task_or_template varchar2(30) := 'SQLACCESS_EMTASK';
+  sts_name varchar2(50) := 'STS_COM_tuning_set_2401';
+  sts_desc varchar2(256) := 'STS pour COM sur le tuning_set du 2401';
+  sts_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+  num_found number;
+
+   BEGIN
+    /* Check existing task */
+    SELECT count(*) into num_found FROM dba_advisor_log where task_name ='TASK_SQL_TUNING_2401_COM';
+     
+     IF num_found > 0 THEN
+      /* Delete Tuning Task */
+      DBMS_SQLTUNE.DROP_TUNING_TASK (task_name => taskname);
+     END IF;
+
+     /* Create SQLSET */
+     DBMS_SQLTUNE.CREATE_SQLSET(sqlset_name => sts_name, description  => sts_desc);
+
+     /* Select defined sqlid in the SYSTEM_MOVING_WINDOW */
+     OPEN sts_cursor FOR SELECT VALUE(p) FROM TABLE (DBMS_SQLTUNE.SELECT_WORKLOAD_REPOSITORY(
+     baseline_name => 'SYSTEM_MOVING_WINDOW',
+     attribute_list => 'ALL'
+     basic_filter => 'sql_id in (''a6p27zxgwfu7p'',''1jz461rh5xg0g'',''2z1x7bpjffqfb'')')) p;
+
+     /* Load the statements into STS */
+     DBMS_SQLTUNE.LOAD_SQLSET(sqlset_name => sts_name, populate_cursor => sts_cursor);
+     CLOSE sts_cursor;
+       
+    /* Create Tuning Task */
+    l_sql_tune_task_id := DBMS_SQLTUNE.CREATE_TUNING_TASK (
+    sqlset_name => sts_name,
+    scope => DBMS_SQLTUNE.SCOPE_COMPREHENSIVE,
+    time_limit => 60,
+    task_name => taskname,
+    description => task_desc);
+
+    /* Executing Tuning task */
+    DBMS_SQLTUNE.EXECUTE_TUNING_TASK( task_name => taskname );
+
+    DBMS_OUTPUT.PUT_LINE('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+END;
+/
+
+SET LONG 10000;
+SET PAGESIZE 1000
+SET LINESIZE 200
+SELECT DBMS_SQLTUNE.report_tuning_task('TASK_SQL_TUNING_2401_COM') AS recommendations FROM dual;
+
+
+===================================
+
+
+
+=================================== TUNING TASK ON SYSTEM MOVING WINDOW on USER ===============================
+
+set serveroutput on;
+
+DECLARE
+  l_sql_tune_task_id VARCHAR2(100);
+  taskname varchar2(30) := 'TASK_SQL_TUNING_2701_MOVING';
+  task_desc varchar2(256) := 'SQL Tuning Advisor on moving 2701';
+  sts_name varchar2(50) := 'MOVING_tuning_set_2701';
+  sts_desc varchar2(256) := 'STS on Moving 2701';
+  sts_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+  num_found number;
+
+   BEGIN
+    /* Check existing task */
+    SELECT count(*) into num_found FROM dba_advisor_log where task_name ='TASK_SQL_TUNING_2701_MOVING';
+     
+     IF num_found > 0 THEN
+      /* Delete Tuning Task */
+      DBMS_SQLTUNE.DROP_TUNING_TASK (task_name => taskname);
+     END IF;
+
+    select count(*) into num_found from dba_sqlset where name = 'MOVING_tuning_set_2701';
+     IF num_found > 0 THEN
+     DBMS_SQLTUNE.DELETE_SQLSET(sts_name);
+     END IF;
+
+
+    /* Create SQLSET */
+    DBMS_SQLTUNE.CREATE_SQLSET(sqlset_name => sts_name, description  => sts_desc);
+
+    /* Select defined sqlid in the SYSTEM_MOVING_WINDOW */
+    OPEN sts_cursor FOR SELECT VALUE(p) FROM TABLE (DBMS_SQLTUNE.SELECT_WORKLOAD_REPOSITORY(
+    baseline_name => 'SYSTEM_MOVING_WINDOW',
+    basic_filter => 'parsing_schema_name in (''EIM_BATCH'')',
+    ranking_measure1 => 'elapsed_time',
+    attribute_list => 'ALL',
+    result_limit => 10
+    )) p;
+
+    /* Load the statements into STS */
+    DBMS_SQLTUNE.LOAD_SQLSET(sqlset_name => sts_name, populate_cursor => sts_cursor);
+    CLOSE sts_cursor;
+       
+    /* Create Tuning Task */
+    l_sql_tune_task_id := DBMS_SQLTUNE.CREATE_TUNING_TASK (
+    sqlset_name => sts_name,
+    scope => DBMS_SQLTUNE.SCOPE_COMPREHENSIVE,
+    time_limit => 180,
+    task_name => taskname,
+    description => task_desc);
+
+    /* Executing Tuning task */
+    DBMS_SQLTUNE.EXECUTE_TUNING_TASK( task_name => taskname );
+
+    DBMS_OUTPUT.PUT_LINE('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+END;
+/
+
+
+SET LONG 10000;
+SET PAGESIZE 1000
+SET LINESIZE 200
+SELECT DBMS_SQLTUNE.report_tuning_task('TASK_SQL_TUNING_2701_MOVING') AS recommendations FROM dual;
+
+
+
+===========================================
+
+
+
+
+
+
+
+
+
+
+Reset a tuning task allowing it to be re-executed.
+==================================================
+
+
+DECLARE
+  taskname varchar2(30) := 'TASK_SQLACCESS_2401_COM';
+BEGIN
+   DBMS_SQLTUNE.reset_tuning_task (task_name => taskname);
+END;
+/
+
+
+
+
+
+
+
+DECLARE
+  l_sql_tune_task_id VARCHAR2(100);
+  taskname varchar2(30) := 'TASK_SQL_TUNING_2401_COM';
+  task_desc varchar2(256) := 'SQL Tuning Advisor on tuning set 2401';
+  task_or_template varchar2(30) := 'SQLACCESS_EMTASK';
+  sts_name varchar2(50) := 'STS_COM_tuning_set_2401';
+  sts_desc varchar2(256) := 'STS pour COM sur le tuning_set du 2401';
+  sts_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+  num_found number;
+
+   BEGIN
+    /* Check existing task */
+    SELECT count(*) into num_found FROM dba_advisor_log where task_name = '&taskname';
+   end;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------
+
+DECLARE
+
+taskname varchar2(30) := 'TASK_SQLACCESS_2401_COM';
+task_desc varchar2(256) := 'SQL Access Advisor on tuning set 2401';
+task_or_template varchar2(30) := 'SQLACCESS_EMTASK';
+task_id number;
+num_found number;
+sts_name varchar2(50) := 'STS_COM_tuning_set_2401';
+sts_desc varchar2(256) := 'STS pour COM sur le tuning_set du 2401';
+sts_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+	
+	
+BEGIN
+
+--********************************************** TASK **************************************************--
+SELECT count(*) into num_found FROM dba_advisor_log where task_name ='TASK_SQLACCESS_2401_COM';
+IF num_found > 0 THEN
+/* Delete Task */
+DBMS_ADVISOR.DELETE_TASK(taskname);
+END IF;
+
+/* Create Task */
+DBMS_ADVISOR.CREATE_TASK(DBMS_ADVISOR.SQLACCESS_ADVISOR,task_id,taskname,task_desc,task_or_template);
+
+/* Reset Task */
+DBMS_ADVISOR.RESET_TASK(taskname);
+
+--****************************************** WORKLOAD ************************************************--
+/* Delete Previous STS Workload Task Link */
+select count(*) into num_found from user_advisor_sqla_wk_map where task_name = taskname and workload_name = sts_name;
+IF num_found > 0 THEN
+DBMS_ADVISOR.DELETE_SQLWKLD_REF(taskname,sts_name,1);
+END IF;
+
+--*************************************** SQL WORKLOAD ************************************************-- 
+/* Delete Previous STS */
+select count(*) into num_found from user_advisor_sqlw_sum where workload_name = sts_name;
+IF num_found > 0 THEN
+DBMS_SQLTUNE.DELETE_SQLSET(sts_name);
+END IF;
+
+--****************************************** SQL SET **************************************************--
+select count(*) into num_found from dba_sqlset where name = sts_name;
+IF num_found > 0 THEN
+DBMS_SQLTUNE.DELETE_SQLSET(sts_name);
+END IF;
+
+
+--************************************* Create SQLSET ************************************************--
+------DBMS_SQLTUNE.CREATE_SQLSET(sqlset_name => sts_name, description  => sts_desc);
+
+
+--********************** Select all statements in the cursor cache. *********************************--
+--OPEN sts_cursor FOR SELECT VALUE(p) FROM TABLE (DBMS_SQLTUNE.SELECT_CURSOR_CACHE (basic_filter => 'sql_id in (''2z1x7bpjffqfb'')', attribute_list => 'ALL')) p; 
+
+
+--********************** Select defined sqlid in the SYSTEM_MOVING_WINDOW *********************************--
+OPEN sts_cursor FOR SELECT VALUE(p) FROM TABLE (DBMS_SQLTUNE.SELECT_WORKLOAD_REPOSITORY(
+ baseline_name => 'SYSTEM_MOVING_WINDOW',
+ attribute_list => 'ALL'
+ basic_filter => 'sql_id in (''a6p27zxgwfu7p'',''1jz461rh5xg0g'',''2z1x7bpjffqfb'')')) p;
+
+
+--*************************** Load the statements into STS. *****************************************--
+DBMS_SQLTUNE.LOAD_SQLSET(sqlset_name => sts_name, populate_cursor => sts_cursor);
+
+--************************************** Close cursor ***********************************************--
+CLOSE sts_cursor;
+
+--*************************************** DEBUT TRAITEMENT ******************************************--
+
+SELECT count(*) into num_found from TABLE( DBMS_SQLTUNE.SELECT_SQLSET(sqlset_name => sts_name));
+IF num_found > 0 THEN
+ /* Link STS Workload to Task */
+ dbms_advisor.add_sqlwkld_ref(taskname,sts_name,1);
+
+ /***************************** Set STS Workload Parameters *********************************************/
+ dbms_advisor.set_task_parameter(taskname,'VALID_ACTION_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'VALID_MODULE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'SQL_LIMIT',DBMS_ADVISOR.ADVISOR_UNLIMITED);
+ dbms_advisor.set_task_parameter(taskname,'VALID_USERNAME_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'VALID_TABLE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'INVALID_TABLE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'INVALID_ACTION_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'INVALID_USERNAME_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'INVALID_MODULE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'VALID_SQLSTRING_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'INVALID_SQLSTRING_LIST','"@!"');
+
+ /********************************** Set Task Parameters **************************************************/
+ dbms_advisor.set_task_parameter(taskname,'ANALYSIS_SCOPE','INDEX');
+ dbms_advisor.set_task_parameter(taskname,'RANKING_MEASURE','PRIORITY,OPTIMIZER_COST');
+ dbms_advisor.set_task_parameter(taskname,'DEF_PARTITION_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'TIME_LIMIT',10000);
+ dbms_advisor.set_task_parameter(taskname,'MODE','LIMITED');
+ dbms_advisor.set_task_parameter(taskname,'STORAGE_CHANGE',DBMS_ADVISOR.ADVISOR_UNLIMITED);
+ dbms_advisor.set_task_parameter(taskname,'DML_VOLATILITY','TRUE');
+ dbms_advisor.set_task_parameter(taskname,'WORKLOAD_SCOPE','PARTIAL');
+ dbms_advisor.set_task_parameter(taskname,'DEF_INDEX_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'DEF_INDEX_OWNER',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'DEF_MVIEW_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'DEF_MVIEW_OWNER',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'DEF_MVLOG_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+ dbms_advisor.set_task_parameter(taskname,'CREATION_COST','TRUE');
+ dbms_advisor.set_task_parameter(taskname,'JOURNALING','4');
+ dbms_advisor.set_task_parameter(taskname,'DAYS_TO_EXPIRE','10');
+
+ /******************************************* Execute Task ***********************************************/
+ dbms_advisor.execute_task(taskname);
+
+ /************************************ Get Advisor Recommandation ******************************************/
+ DBMS_ADVISOR.CREATE_FILE(DBMS_ADVISOR.GET_TASK_SCRIPT(taskname),'ADVISOR_DIR','ACCESS_ADVISOR_STS_SIE1FRP0_tuning_set_2401.sql');
+
+ /********************************************* Delete Task ***************************************/
+ DBMS_ADVISOR.DELETE_TASK(taskname);
+
+ /******************************************* Delete Workload *************************************/
+
+END IF;
+END;
+/
+
+
+
+
+
+
+
+

@@ -1,0 +1,179 @@
+
+-- create the SQLSET --
+begin
+  DBMS_SQLTUNE.CREATE_SQLSET(
+    sqlset_name => 'my_tuning_set', 
+    description => 'my tuning set');
+end;
+/
+
+---------------------------
+-- Load SQL_ID in SQLSET --
+---------------------------
+DECLARE
+ baseline_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+BEGIN
+ OPEN baseline_cursor FOR
+      SELECT VALUE(p)
+      FROM   TABLE(DBMS_SQLTUNE.SELECT_CURSOR_CACHE
+             (basic_filter      => 'sql_id in (''abcd'',''1254'',''1ad5r4'')',
+              attribute_list    => 'ALL'
+              )) p; 
+    DBMS_SQLTUNE.LOAD_SQLSET(
+             sqlset_name     => 'my_tuning_set',
+             populate_cursor => baseline_cursor);
+END;
+/
+
+-------------
+
+
+begin
+  DBMS_SQLTUNE.CREATE_SQLSET(
+    sqlset_name => 'REC_tuning_set_2401', 
+    description => 'REC tuning set 24012014');
+end;
+/
+
+begin
+  DBMS_SQLTUNE.CREATE_SQLSET(
+    sqlset_name => 'SAVE_tuning_set_2401', 
+    description => 'SAVE tuning set 24012014');
+end;
+/
+
+
+begin
+  DBMS_SQLTUNE.CREATE_SQLSET(
+    sqlset_name => 'COM_tuning_set_2401', 
+    description => 'COM tuning set 24012014');
+end;
+/
+
+
+DECLARE
+ baseline_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+BEGIN
+ OPEN baseline_cursor FOR
+      SELECT VALUE(p)
+      FROM   TABLE(DBMS_SQLTUNE.SELECT_CURSOR_CACHE
+             (basic_filter      => 'sql_id in (''c322z2rh0wzry'')',
+              attribute_list    => 'ALL'
+              )) p; 
+    DBMS_SQLTUNE.LOAD_SQLSET(
+             sqlset_name     => 'REC_tuning_set_2401',
+             populate_cursor => baseline_cursor);
+END;
+/
+
+DECLARE
+ baseline_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+BEGIN
+ OPEN baseline_cursor FOR
+      SELECT VALUE(p)
+      FROM   TABLE(DBMS_SQLTUNE.SELECT_CURSOR_CACHE
+             (basic_filter      => 'sql_id in (''a6p27zxgwfu7p'')',
+              attribute_list    => 'ALL'
+              )) p; 
+    DBMS_SQLTUNE.LOAD_SQLSET(
+             sqlset_name     => 'SAVE_tuning_set_2401',
+             populate_cursor => baseline_cursor);
+END;
+/
+
+
+DECLARE
+ baseline_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+BEGIN
+ OPEN baseline_cursor FOR
+      SELECT VALUE(p)
+      FROM   TABLE(DBMS_SQLTUNE.SELECT_CURSOR_CACHE
+             (basic_filter      => 'sql_id in (''2z1x7bpjffqfb'')',
+              attribute_list    => 'ALL'
+              )) p; 
+    DBMS_SQLTUNE.LOAD_SQLSET(
+             sqlset_name     => 'COM_tuning_set_2401',
+             populate_cursor => baseline_cursor);
+END;
+/
+
+---------
+
+begin
+  DBMS_SQLTUNE.CREATE_SQLSET(
+    sqlset_name => 'REC_tuning_set_2401', 
+    description => 'REC tuning set 24012014');
+end;
+/
+
+
+DECLARE
+ baseline_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+BEGIN
+ OPEN baseline_cursor FOR
+      SELECT VALUE(p)
+      FROM   TABLE(DBMS_SQLTUNE.SELECT_CURSOR_CACHE
+             (basic_filter      => 'sql_id in (''1jz461rh5xg0g'',''a6p27zxgwfu'',''2z1x7bpjffqfb'')',
+              attribute_list    => 'ALL'
+              )) p; 
+    DBMS_SQLTUNE.LOAD_SQLSET(
+             sqlset_name     => 'my_tuning_set',
+             populate_cursor => baseline_cursor);
+END;
+/
+
+
+------------------
+
+
+DECLARE 
+taskname varchar2(30) := 'SQLACCESS_my_tuning_set';
+task_desc varchar2(256) := 'SQL Access Advisor';
+task_or_template varchar2(30) := 'null';
+task_id number := 0;
+num_found number;
+sts_name varchar2(256) := 'my_tuning_set';
+sts_owner varchar2(30) := 'SYS';
+
+BEGIN
+dbms_advisor.reset_task(taskname);
+select count(*) into num_found from user_advisor_sqla_wk_map where task_name = taskname and workload_name = sts_name;
+IF num_found > 0 THEN
+  dbms_advisor.delete_sts_ref(taskname, sts_owner, sts_name);
+END IF;
+dbms_advisor.add_sts_ref(taskname,sts_owner, sts_name);
+dbms_advisor.set_task_parameter(taskname,'VALID_ACTION_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'VALID_MODULE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'SQL_LIMIT',DBMS_ADVISOR.ADVISOR_UNLIMITED);
+dbms_advisor.set_task_parameter(taskname,'VALID_USERNAME_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'VALID_TABLE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'INVALID_TABLE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'INVALID_ACTION_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'INVALID_USERNAME_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'INVALID_MODULE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'VALID_SQLSTRING_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'INVALID_SQLSTRING_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'ANALYSIS_SCOPE','INDEX');
+dbms_advisor.set_task_parameter(taskname,'RANKING_MEASURE','PRIORITY,OPTIMIZER_COST');
+dbms_advisor.set_task_parameter(taskname,'DEF_PARTITION_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'TIME_LIMIT',10000);
+dbms_advisor.set_task_parameter(taskname,'MODE','COMPREHENSIVE');
+dbms_advisor.set_task_parameter(taskname,'STORAGE_CHANGE',DBMS_ADVISOR.ADVISOR_UNLIMITED);
+dbms_advisor.set_task_parameter(taskname,'DML_VOLATILITY','TRUE');
+dbms_advisor.set_task_parameter(taskname,'WORKLOAD_SCOPE','PARTIAL');
+dbms_advisor.set_task_parameter(taskname,'DEF_INDEX_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'DEF_INDEX_OWNER',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'DEF_MVIEW_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'DEF_MVIEW_OWNER',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'DEF_MVLOG_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+dbms_advisor.set_task_parameter(taskname,'CREATION_COST','TRUE');
+dbms_advisor.set_task_parameter(taskname,'JOURNALING','4');
+dbms_advisor.set_task_parameter(taskname,'DAYS_TO_EXPIRE','30');
+dbms_advisor.execute_task(taskname);
+END;
+/
+
+
+
+
+

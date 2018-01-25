@@ -1,0 +1,158 @@
+ SQL Tuning Advisor - The commands
+===================================
+
+Using Enterprise Manager or dbconsole is the convenient way for using SQL Advisor, 
+the problem is that these options not always exists, and there are some scenarios that you are not authorized to activate dbconsole.
+
+So we are left with the PL/SQL option which appears to be not so complicated.
+In order to access the SQL tuning advisor API, a user must be granted the ADVISOR privilege:
+
+    CONN sys/password AS SYSDBA
+    GRANT ADVISOR TO my_user;
+    CONN my_user/my_password
+
+
+Creating tuning task
+=====================
+
+  DECLARE
+    l_sql VARCHAR2(3200);
+    l_sql_tune_task_id VARCHAR2(100);
+   BEGIN
+    l_sql := 'SELECT COUNT (*) FROM MY_TABLE';
+    l_sql_tune_task_id := DBMS_SQLTUNE.create_tuning_task (
+    sql_text => l_sql,
+    scope => DBMS_SQLTUNE.scope_comprehensive,
+    time_limit => 360,
+    task_name => 'Yossi_Nixon_tuning_task1',
+    description => 'Tuning task for sql');
+    DBMS_OUTPUT.put_line('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+  END;
+/
+
+
+Running the tuning task
+=======================
+
+    EXEC DBMS_SQLTUNE.execute_tuning_task(task_name => 'Yossi_Nixon_tuning_task1');
+
+
+Tracking after the tuning task
+==============================
+
+    SELECT * FROM dba_advisor_log
+    WHERE task_name ='Yossi_Nixon_tuning_task1';
+
+
+Checking the recommendations of the advisor after the task is completed;
+========================================================================
+
+    SET LONG 10000;
+    SET PAGESIZE 1000
+    SET LINESIZE 200
+    SELECT DBMS_SQLTUNE.report_tuning_task('Yossi_Nixon_tuning_task1') AS recommendations FROM dual;
+
+
+
+When You done, you can delete the task
+======================================
+
+    BEGIN
+    DBMS_SQLTUNE.drop_tuning_task (task_name => 'Yossi_Nixon_tuning_task1');
+    END;
+    /
+
+
+
+Other ways to add new tuning task
+
+1. Tuning task created for specific a statement from the AWR.
+=============================================================
+
+   SET SERVEROUTPUT ON
+
+   DECLARE
+     l_sql_tune_task_id VARCHAR2(100);
+
+    BEGIN
+     l_sql_tune_task_id := DBMS_SQLTUNE.create_tuning_task (
+     begin_snap => 764,
+     end_snap => 938,
+     sql_id => '19v5guvsgcd1v',
+     scope => DBMS_SQLTUNE.scope_comprehensive,
+     time_limit => 60,
+     task_name => '19v5guvsgcd1v_AWR_tuning_task',
+     description => 'Tuning task for statement 19v5guvsgcd1v in AWR.');
+     DBMS_OUTPUT.put_line('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+    END;
+   /
+
+
+2. Tuning task created for specific a statement from the cursor cache.
+======================================================================
+
+    DECLARE
+     l_sql_tune_task_id VARCHAR2(100);
+ 
+    BEGIN
+     l_sql_tune_task_id := DBMS_SQLTUNE.create_tuning_task (
+     sql_id => '19v5guvsgcd1v',
+     scope => DBMS_SQLTUNE.scope_comprehensive,
+     time_limit => 60,
+     task_name => '19v5guvsgcd1v_tuning_task',
+     description => 'Tuning task for statement 19v5guvsgcd1v.');
+     DBMS_OUTPUT.put_line('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+    END;
+    /
+
+
+3. Tuning task created from an SQL tuning set.
+==============================================
+
+   DECLARE
+     l_sql_tune_task_id VARCHAR2(100);
+ 
+   BEGIN
+    l_sql_tune_task_id := DBMS_SQLTUNE.create_tuning_task (
+    sqlset_name => 'test_sql_tuning_set',
+    scope => DBMS_SQLTUNE.scope_comprehensive,
+    time_limit => 60,
+    task_name => 'sqlset_tuning_task',
+    description => 'Tuning task for an SQL tuning set.');
+    DBMS_OUTPUT.put_line('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+   END;
+   /
+
+
+If the TASK_NAME parameter is specified, its value is returned as the SQL tune task identifier. If omitted, a system generated name such as "TASK_1478" is returned. If the SCOPE parameter is set to scope_limited the SQL profiling analysis is omitted. The TIME_LIMIT parameter simply restricts the time the optimizer can spend compiling the recommendations.
+During the execution phase, you may wish to pause and restart the task, cancel it or reset the task to allow it to be re-executed:
+
+
+
+Interrupt and resume a tuning task.
+===================================
+
+    EXEC DBMS_SQLTUNE.interrupt_tuning_task (task_name => 'emp_dept_tuning_task');
+    EXEC DBMS_SQLTUNE.resume_tuning_task (task_name => 'emp_dept_tuning_task');
+
+
+Cancel a tuning task.
+=====================
+
+    EXEC DBMS_SQLTUNE.cancel_tuning_task (task_name => 'emp_dept_tuning_task');
+
+
+Reset a tuning task allowing it to be re-executed.
+==================================================
+
+    EXEC DBMS_SQLTUNE.reset_tuning_task (task_name => 'emp_dept_tuning_task');
+
+
+The status of the tuning task can be monitored using the DBA_ADVISOR_LOG view:
+==============================================================================
+
+    SELECT task_name, status FROM dba_advisor_log WHERE owner = 'SCOTT';
+
+    TASK_NAME STATUS
+    ------------------------------ -----------
+    emp_dept_tuning_task COMPLETED

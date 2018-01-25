@@ -1,0 +1,356 @@
+
+
+===============================================
+Sql Tuning Advisory & SQL Access Advisory Steps
+===============================================
+
+http://oracle-info.com/tools-scripts/sql-tuning-advisory-sql-access-advisory-steps/
+
+
+
+--/* Manage Directory */
+  ---------------------
+CREATE OR REPLACE DIRECTORY ADVISOR_DIR as '/tmp';
+GRANT READ,WRITE ON DIRECTORY ADVISOR_DIR TO PUBLIC;
+
+
+
+
+--/* To see if the same task name exists */
+  ----------------------------------------
+	SQL> 
+
+        SELECT OWNER,
+               TASK_ID,
+               TASK_NAME,
+               ADVISOR_NAME,
+               CREATED,
+               LAST_MODIFIED,
+               LAST_EXECUTION, 
+	       EXECUTION_TYPE,
+               STATUS,
+               STATUS_MESSAGE,
+               RECOMMENDATION_COUNT 
+        FROM dba_advisor_tasks 
+	WHERE ADVISOR_NAME in ('SQL Access Advisor','SQL Tuning Advisor'); 
+
+
+
+
+
+set echo off;
+set veri off;
+set feedback off;
+
+
+
+
+
+prompt
+prompt Specify TASK_NAME
+prompt ~~~~~~~~~~~~~~~~~
+prompt Enter 'TASK_NAME' for an HTML report, or 'text' for plain text
+prompt  Defaults to 'OEM_TUNING_TASKhtml'
+
+set termout off;
+-- set task_name
+column task_name new_value task_name noprint;
+select task_name from dual;
+
+
+
+sts_name
+-- set task_name
+column sts_name new_value sts_name noprint;
+select sts_name from dual;
+
+
+
+   ---------------------
+--/* Manage Directory */
+  ---------------------
+CREATE OR REPLACE DIRECTORY ADVISOR_DIR as '/tmp';
+GRANT READ,WRITE ON DIRECTORY ADVISOR_DIR TO PUBLIC;
+
+
+   ----------------------------------
+--/*Creating a Access Advisor task */
+  ----------------------------------
+
+DECLARE 
+
+
+--taskname varchar2(30) := 'TASK_SQLACCESS_2401_COM';
+task_desc varchar2(256) := 'SQL Access Advisor on tuning set 2401';
+task_or_template varchar2(30) := 'SQLACCESS_EMTASK';
+task_id number;
+num_found number;
+sts_name varchar2(50) := 'STS_COM_tuning_set_2401';
+sts_desc varchar2(256) := 'STS pour COM sur le tuning_set du 2401';
+sts_cursor DBMS_SQLTUNE.SQLSET_CURSOR;
+
+
+BEGIN
+
+   -----------------
+--/* Prepare TASK */
+ -----------------
+
+        SELECT count(*) into num_found FROM dba_advisor_log where task_name ='TASK_SQLACCESS_2401_COM';
+	 IF num_found > 0 THEN
+	  /* Delete Task */
+	  DBMS_ADVISOR.DELETE_TASK(taskname);
+	END IF;
+
+	 /* Create Task */
+        DBMS_ADVISOR.CREATE_TASK(DBMS_ADVISOR.SQLACCESS_ADVISOR,task_id,taskname,task_desc,task_or_template);
+
+	/* Reset Task */
+        DBMS_ADVISOR.RESET_TASK(taskname);
+
+	/* Delete Previous STS Workload Task Link */
+	SELECT count(*) into num_found FROM user_advisor_sqla_wk_map WHERE task_name = taskname and workload_name = sts_name;
+	 IF num_found > 0 THEN
+	  DBMS_ADVISOR.DELETE_SQLWKLD_REF(taskname,sts_name,1);
+	 END IF;
+
+
+   -----------------
+--/* Prepare STS */
+  ----------------
+
+	/* Delete Previous STS */
+	SELECT count(*) into num_found FROM user_advisor_sqlw_sum WHERE workload_name = sts_name;
+	 IF num_found > 0 THEN
+	  DBMS_SQLTUNE.DELETE_SQLSET(sts_name);
+	 END IF;
+
+	SELECT count(*) into num_found FROM dba_sqlset WHERE name = sts_name;
+	IF num_found > 0 THEN
+	 DBMS_SQLTUNE.DELETE_SQLSET(sts_name);
+	END IF;
+
+
+
+   ----------------------------
+--/* Create a Sql Tuning Set */
+  ----------------------------
+	
+	DBMS_SQLTUNE.CREATE_SQLSET(sqlset_name => sts_name, description  => sts_desc);
+
+
+   --------------------------------------------------------
+--/* Create a STS workload repository from MOWING_WINDOW */
+  --------------------------------------------------------
+
+	OPEN sts_cursor FOR SELECT VALUE(p) FROM TABLE (DBMS_SQLTUNE.SELECT_WORKLOAD_REPOSITORY(
+ 	baseline_name => 'SYSTEM_MOVING_WINDOW',
+ 	attribute_list => 'ALL', 	
+	basic_filter => 'parsing_schema_name in (''EIM_BATCH'')',
+   	ranking_measure1 => 'elapsed_time',
+	result_limit => 10
+        )) p;
+
+
+   ----------------------------------
+--/* Load the statements into STS  */
+  ----------------------------------
+
+	DBMS_SQLTUNE.LOAD_SQLSET(sqlset_name => sts_name, populate_cursor => sts_cursor);
+
+   -----------------
+--/* Close cursor */
+  -----------------
+
+	CLOSE sts_cursor;
+
+
+
+   ------------------------
+--/* Traitement  ADVISOR */
+  ------------------------
+
+
+SELECT count(*) into num_found FROM TABLE( DBMS_SQLTUNE.SELECT_SQLSET(sqlset_name => sts_name));
+
+IF num_found > 0 THEN
+
+-- /* Link STS Workload to Task */
+ DBMS_ADVISOR.ADD_SQLWKLD_REF(taskname,sts_name,1);
+
+ ***************************** Set STS Workload Parameters *********************************************/
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'VALID_ACTION_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'VALID_MODULE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'SQL_LIMIT',DBMS_ADVISOR.ADVISOR_UNLIMITED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'VALID_USERNAME_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'VALID_TABLE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'INVALID_TABLE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'INVALID_ACTION_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'INVALID_USERNAME_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'INVALID_MODULE_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'VALID_SQLSTRING_LIST',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'INVALID_SQLSTRING_LIST','"@!"');
+
+ ********************************** Set Task Parameters **************************************************/
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'ANALYSIS_SCOPE','INDEX');
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'RANKING_MEASURE','PRIORITY,OPTIMIZER_COST');
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'DEF_PARTITION_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'TIME_LIMIT',10000);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'MODE','LIMITED');
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'STORAGE_CHANGE',DBMS_ADVISOR.ADVISOR_UNLIMITED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'DML_VOLATILITY','TRUE');
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'WORKLOAD_SCOPE','PARTIAL');
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'DEF_INDEX_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'DEF_INDEX_OWNER',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'DEF_MVIEW_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'DEF_MVIEW_OWNER',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'DEF_MVLOG_TABLESPACE',DBMS_ADVISOR.ADVISOR_UNUSED);
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'CREATION_COST','TRUE');
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'JOURNALING','4');
+ DBMS_ADVISOR.SET_TASK_PARAMETER(taskname,'DAYS_TO_EXPIRE','10');
+
+
+ ******************************************* Execute Task ***********************************************/
+ DBMS_ADVISOR.EXECUTE_TASK(taskname);
+
+
+ ************************************ Get Advisor Recommandation ******************************************/
+ DBMS_ADVISOR.CREATE_FILE(DBMS_ADVISOR.GET_TASK_SCRIPT(taskname),'ADVISOR_DIR','ACCESS_ADVISOR_STS_SIE1FRP0_tuning_set_2401.sql');
+
+
+ ******************************************** Delete Task ***************************************/
+ DBMS_ADVISOR.DELETE_TASK(taskname);
+
+
+ ******************************************* Delete Workload *************************************/
+
+END IF;
+
+
+
+
+
+
+
+
+
+
+
+
+
+--*************************************** DEBUT TRAITEMENT ******************************************--
+
+
+
+	    task_id NUMBER; 
+	    task_name VARCHAR2(30); 
+	  BEGIN 
+	    task_name := 'ACCESSFORTEST01'; 
+	    DBMS_ADVISOR.CREATE_TASK(DBMS_ADVISOR.SQLACCESS_ADVISOR, task_id, task_name); 
+	  END; 
+	  / 
+
+
+
+
+/* to check details of the sts created */
+----------------------------------------
+	SQL>
+        SELECT * FROM DBA_SQLNET WHERE name='SQLTUNINGSET_TEST01_01'; 
+
+
+/* For checking any previous workload */
+---------------------------------------
+	SQL> 
+        SELECT * FROM DBA_ADVISOR_SQLA_WK_MAP; 
+
+
+
+ -----------------------------------------------
+/* Create a STS workload repository from AWR */
+----------------------------------------------
+	DECLARE 
+	  cur sys_refcursor; 
+	BEGIN 
+	open cur for 
+	   select value(p) from table(dbms_sqltune.select_workload_repository( 
+	      begin_snap => 12496,  
+	      end_snap => 12513,    
+	      basic_filter => 'parsing_schema_name not in 
+			 (''DBSNMP'',''SYS'',''ORACLE_OCM'')', 
+	      ranking_measure1 => 'elapsed_time', 
+	      result_limit => 250)) p; 
+	    dbms_sqltune.load_sqlset('SQLTUNINGSET_TEST01_01',cur);
+	  close cur; 
+	END; 
+	/ 
+
+
+
+
+
+/* We can either load the STS to Access Advisor or SQL Tuning Advisor
+
+ ------------------------------------------
+/* Loading the STS to Sql Tuning Advisor */
+/* Load the STS to SQL Tuning Advisor */
+---------------------------------------
+
+	DECLARE 
+	l_sql_tune_task_id  VARCHAR2(100); 
+	BEGIN 
+	 l_sql_tune_task_id := DBMS_SQLTUNE.create_tuning_task ( 
+	 	sqlset_name => 'SQLTUNINGSET_TEST01_01',  
+	 	scope       => DBMS_SQLTUNE.scope_comprehensive, 
+	 	time_limit  => 30000,
+	 	task_name   => 'sqlset_tuning_task_TEST01_1',
+	 	description => 'Tuning task for an SQL tuning set.'); 
+	 	DBMS_OUTPUT.put_line('l_sql_tune_task_id: ' || l_sql_tune_task_id); 
+	END; 
+	/ 
+
+
+
+
+=========== SQL_TUNING ==============
+
+
+ -----------------------------
+/* Execute the tuning task */
+----------------------------
+	
+	EXEC DBMS_SQLTUNE.execute_tuning_task(task_name => 'sqlset_tuning_task_TEST01_1'); 
+
+/* To see recommendations from SQL Tuning Advisor */
+---------------------------------------------------
+
+	SET LONGCHUNKSIZE 1000000; 
+	SET LONG 100000; 
+	SET PAGESIZE 1000 
+	SET LINESIZE 200 
+	SELECT DBMS_SQLTUNE.REPORT_TUNING_TASK('sqlset_tuning_task_TEST01_1') as recommendations from dual
+
+
+
+
+
+
+
+
+
+
+=========== SQL_ADVISOR ==============
+
+ --------------------------------------------------
+/* Link STS Workload to SQL Access Advisor Task */
+-------------------------------------------------
+
+	EXECUTE DBMS_ADVISOR.ADD_STS_REF ('ACCESSFORTEST01','SYS','SQLTUNINGSET_TEST01_01'); 
+
+
+/* Execute Task */
+-----------------
+
+	EXECUTE DBMS_ADVISOR.EXECUTE_TASK('ACCESSFORTEST01'); 
+	END; 
+	/

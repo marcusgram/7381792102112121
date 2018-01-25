@@ -1,0 +1,89 @@
+
+
+
+-- To disable the job, use the DISABLE procedure as shown:
+----------------------------------------------------------
+BEGIN
+DBMS_AUTO_TASK_ADMIN.DISABLE(
+client_name => 'sql tuning advisor',
+operation => NULL,
+window_name => NULL);
+END;
+/
+
+
+-- To re-enable the job, use the ENABLE procedure as shown:
+-----------------------------------------------------------
+BEGIN
+DBMS_AUTO_TASK_ADMIN.ENABLE(
+client_name => 'sql tuning advisor',
+operation => NULL,
+window_name => NULL);
+END;
+/
+
+
+
+
+
+SELECT client_name, status, consumer_group, window_group
+FROM dba_autotask_client
+ORDER BY client_name;
+
+
+
+
+SELECT task_name, status, TO_CHAR(execution_end,'DD-MON-YY HH24:MI')
+FROM dba_advisor_executions
+WHERE task_name='SYS_AUTO_SQL_TUNING_TASK'
+ORDER BY execution_end;
+
+TASK_NAME                      STATUS      TO_CHAR(EXECUTION_END,'D
+------------------------------ ----------- ------------------------
+SYS_AUTO_SQL_TUNING_TASK       COMPLETED   31-DEC-13 21:00
+SYS_AUTO_SQL_TUNING_TASK       COMPLETED   01-JAN-14 21:00
+SYS_AUTO_SQL_TUNING_TASK       COMPLETED   02-JAN-14 21:02
+SYS_AUTO_SQL_TUNING_TASK       COMPLETED   03-JAN-14 21:00
+SYS_AUTO_SQL_TUNING_TASK       COMPLETED   04-JAN-14 05:00
+SYS_AUTO_SQL_TUNING_TASK       COMPLETED   05-JAN-14 05:00
+SYS_AUTO_SQL_TUNING_TASK       COMPLETED   06-JAN-14 21:01
+
+
+---------
+
+
+set linesize 200;
+SELECT window_name,TO_CHAR(window_next_time,'DD-MON-YY HH24:MI:SS')
+,sql_tune_advisor, optimizer_stats, segment_advisor
+FROM dba_autotask_window_clients;
+
+WINDOW_NAME                    TO_CHAR(WINDOW_NEXT_TIME,'D SQL_TUNE OPTIMIZE SEGMENT_
+------------------------------ --------------------------- -------- -------- --------
+MONDAY_WINDOW                  13-JAN-14 22:00:00          ENABLED  ENABLED  ENABLED
+TUESDAY_WINDOW                 07-JAN-14 22:00:00          ENABLED  ENABLED  ENABLED
+WEDNESDAY_WINDOW               08-JAN-14 22:00:00          ENABLED  ENABLED  ENABLED
+THURSDAY_WINDOW                09-JAN-14 22:00:00          ENABLED  ENABLED  ENABLED
+FRIDAY_WINDOW                  10-JAN-14 22:00:00          ENABLED  ENABLED  ENABLED
+SATURDAY_WINDOW                11-JAN-14 06:00:00          ENABLED  ENABLED  ENABLED
+SUNDAY_WINDOW                  12-JAN-14 06:00:00          ENABLED  ENABLED  ENABLED
+
+-----------
+
+
+SET LINESIZE 80 PAGESIZE 0 LONG 100000;
+SELECT DBMS_AUTO_SQLTUNE.REPORT_AUTO_TUNING_TASK FROM DUAL;
+
+
+
+----------
+
+Verifier les parametres par defaut pour AUTO_TUNING
+
+SELECT parameter_name ,parameter_value
+FROM dba_advisor_parameters
+WHERE task_name = 'SYS_AUTO_SQL_TUNING_TASK'
+AND parameter_name IN ('ACCEPT_SQL_PROFILES',
+'MAX_SQL_PROFILES_PER_EXEC',
+'MAX_AUTO_SQL_PROFILES',
+'EXECUTION_DAYS_TO_EXPIRE');
+
