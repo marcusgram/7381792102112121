@@ -1,0 +1,9 @@
+
+
+SPPYW -lvl:3 pour chaque jour d’une semaine représentative de l’activité du traitement à analyser de la base de données et pour chaque jour du traitement :
+
+Avec les paramètres suivant :
+./v9sppyw.ksh  -sid:<SID> -grp:ZASP  -day:<yyyy-mm-dd>  -html  -lvl:3 -awr -nmon: <directory_des_nmon>
+
+    <directory_des_nmon> : chemin où l'on trouve les données produites par l'outil nmon (généralement : /opt/nmon/data).
+    (Si archivage des fichiers nmon (format dézippé attendu) est fait dans un répertoire autre pour conservation : choisir ce répertoire d'entreposage)
