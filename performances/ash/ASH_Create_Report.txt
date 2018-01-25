@@ -1,0 +1,77 @@
+ASH Report
+---------
+In Oracle, ASH stands for Active Session History. 
+An ASH report details statistics from the in-memory performance monitoring tables. 
+The report provides:
+	Top User Events (frequent wait events)
+	Details to the wait events
+	Top Queries
+	Top Sessions
+	Top Blocking Sessions
+	Top DB Objects 
+		(Note: be wary of the QRTZ_LOCKS result. 
+		This table is what Quartz, our third-party Java scheduler, uses as a locking  mechanism. 
+		As a result, any contention is intentional and will not affect  performance).
+	Activity Over Time
+ 
+The simplest way to generate this report is through the Oracle Enterprise  Manager tool (OEM); 
+however, there are times when this tool is not available. 
+
+On those occasions, the DBA user can generate the report from the machine hosting Oracle, as described in the steps below.
+
+
+To generate the ASH report:
+----------------------------
+
+1/ Log in to the machine hosting Oracle.
+2/ At a command prompt issue the following command: sqlplus system @$ORACLE_HOME/rdbms/admin/ashrpt.sql
+   When you are asked for the system password, type it in and press Enter.
+3/ Specify a format for the report and press Enter.
+4/ Specify the begin time for the report and press Enter (e.g., -1:30 is one hour and 30 minutes before from the present time).
+5/ Specify the duration for the report and press Enter 
+	(for example, a value of 30 indicates that the report should cover from the begin time to 30 minutes after that time; 
+	leaving the duration empty specifies that the report should cover from the begin time to the current time).
+6/ Name the report and press Enter.
+7/ Issue the quit command to exit from SQLPlus.
+8/ The report is generated at the path where the SQLPlus command was issued.
+
+
+
+how to enter in time for an ASH report:
+---------------------------------------
+
+Specify the timeframe to generate the ASH report
+
+Enter begin time for report:
+--    Valid input formats:
+
+--      To specify absolute begin time:
+
+--        [MM/DD[/YY]] HH24:MI[:SS]
+--        Examples: 02/23/03 14:30:15
+--                  02/23 14:30:15
+--                  14:30:15
+--                  14:30
+
+--      To specify relative begin time: (start with '-' sign)
+--        -[HH24:]MI
+--        Examples: -1:15  (SYSDATE - 1 Hr 15 Mins)
+--                  -25    (SYSDATE - 25 Mins)
+
+
+
+
+@$ORACLE_HOME/rdbms/admin/ashrpt.sql
+@$ORACLE_HOME/rdbms/admin/ashrpti.sql
+
+
+
+                              29625 01 Apr 2014 00:00      1
+                              29626 01 Apr 2014 00:30      1
+                              29627 01 Apr 2014 01:00      1
+                              29628 01 Apr 2014 01:30      1
+                              29629 01 Apr 2014 02:00      1
+                              29630 01 Apr 2014 02:30      1
+                              29631 01 Apr 2014 03:00      1
+                              29632 01 Apr 2014 03:30      1
+
