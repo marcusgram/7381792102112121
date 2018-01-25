@@ -1,0 +1,47 @@
+#--------------------------------------------------------------------------------#
+# Copying SQL Profiles from one database to another involves the following steps:
+#--------------------------------------------------------------------------------#
+
+---------------------------------------------------
+Creating a staging table to store the SQL Profiles
+Packing the SQL Profiles to the staging table
+Export the table using Datapump or Export/Import
+Importing the SQL Profiles to the target database
+Unpack the SQL Profiles in the target database
+---------------------------------------------------
+
+
+ 1. Creating a staging table to store the SQL Profiles
+------------------------------------------------------
+ SQL> exec DBMS_SQLTUNE.CREATE_STGTAB_SQLPROF (table_name=>'SQL_PROFILES_TT',schema_name=>'SCOTT');
+
+2. Packing the SQL Profiles to the staging table
+------------------------------------------------
+
+--Select SQL profiles names available in the source database.
+SQL> SELECT name FROM dba_sql_profiles; 
+
+NAME
+---------
+SYS_SQLPROF_012f26136ae90001
+SYS_SQLPROF_012f260d3e1a0000
+SYS_SQLPROF_012ed90a425b0003
+SYS_SQLPROF_012f2622a4620003
+
+SQL> 
+EXEC DBMS_SQLTUNE.PACK_STGTAB_SQLPROF (staging_table_name => 'SQL_PROFILES_TT',profile_name=>'SYS_SQLPROF_012f26136ae90001'); 
+EXEC DBMS_SQLTUNE.PACK_STGTAB_SQLPROF (staging_table_name => 'SQL_PROFILES_TT',profile_name=>'SYS_SQLPROF_012f260d3e1a0000'); 
+EXEC DBMS_SQLTUNE.PACK_STGTAB_SQLPROF (staging_table_name => 'SQL_PROFILES_TT',profile_name=>'SYS_SQLPROF_012ed90a425b0003'); 
+EXEC DBMS_SQLTUNE.PACK_STGTAB_SQLPROF (staging_table_name => 'SQL_PROFILES_TT',profile_name=>'SYS_SQLPROF_012f2622a4620003');
+
+3. Export table using “exp” tool from the source database
+---------------------------------------------------------
+$ exp SCOTT/password file=SQL_PROFILES.dmp tables=SQL_PROFILES_TT
+
+4. Import table using “imp” tool into the target database
+---------------------------------------------------------
+$ imp SCOTT/password file=SQL_PROFILES.dmp full=y
+
+5. Unpack the SQL Profiles in the target database
+-------------------------------------------------
+SQL> EXEC DBMS_SQLTUNE.UNPACK_STGTAB_SQLPROF(REPLACE => TRUE,staging_table_name => 'SQL_PROFILES_TT');

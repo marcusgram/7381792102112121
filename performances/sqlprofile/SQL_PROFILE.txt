@@ -1,0 +1,133 @@
+
+https://docs.oracle.com/database/121/TGSQL/tgsql_profiles.htm#TGSQL596
+
+------------------------------
+-- 22 Managing SQL Profiles --
+------------------------------
+
+A SQL profile is a database object that contains auxiliary statistics specific to a SQL statement.
+A SQL profile is to a SQL statement what object-level statistics are to a table or index. 
+SQL profiles are created when a DBA invokes SQL Tuning Advisor.
+A SQL profile is a collection of auxiliary statistics on a query, including all tables and columns referenced in the query. 
+The profile is stored in the data dictionary. 
+The optimizer uses this information during optimization to determine the most optimal plan.
+The SQL profile contains supplemental statistics for the entire statement, not individual plans. 
+The profile does not itself determine a specific plan.
+
+Internally, a SQL profile is implemented using hints that address different types of problems. 
+These hints do not specify any particular plan. 
+Rather, the hints correct errors in the optimizer estimation algorithm that lead to suboptimal plans. 
+For example, a profile may use the TABLE_STATS hint to set object statistics for tables when the statistics are missing or stale.
+
+When you implement (or accept) a SQL profile, the database creates the profile and stores it persistently in the data dictionary. 
+However, the SQL profile information is not exposed through regular dictionary views.
+
+
+
+
+
+--------------------------
+Implementing a SQL Profile
+--------------------------
+
+Connect SQL*Plus to the database with the appropriate privileges, and then execute the ACCEPT_SQL_PROFILE function.
+
+DECLARE
+  my_sqlprofile_name VARCHAR2(30);
+BEGIN
+  my_sqlprofile_name := DBMS_SQLTUNE.ACCEPT_SQL_PROFILE ( 
+    task_name    => 'STA_SPECIFIC_EMP_TASK'
+,   name         => 'my_sql_profile'
+,   profile_type => DBMS_SQLTUNE.PX_PROFILE
+,   force_match  => true 
+);
+END;
+/
+
+
+--------------------
+Listing SQL Profiles
+--------------------
+
+Connect SQL*Plus to the database with the appropriate privileges, and then query the DBA_SQL_PROFILES view.
+
+COLUMN category FORMAT a10
+COLUMN sql_text FORMAT a50
+
+SELECT NAME, SQL_TEXT, CATEGORY, STATUS
+FROM   DBA_SQL_PROFILES;
+
+
+
+
+
+--------------------------
+Transporting a SQL Profile
+--------------------------
+
+You can export a SQL profile from the SYS schema in one database to a staging table, and then import it from the staging table into another database. 
+You can transport a SQL profile to any Oracle database created in the same release or later.
+
+
+Step 01 : Profile is accepted
+
+DECLARE
+  my_sqlprofile_name VARCHAR2(30);
+BEGIN
+  my_sqlprofile_name := DBMS_SQLTUNE.ACCEPT_SQL_PROFILE ( 
+    task_name    => 'STA_SPECIFIC_EMP_TASK'
+,   name         => 'my_sql_profile'
+,   profile_type => DBMS_SQLTUNE.PX_PROFILE
+,   force_match  => true 
+);
+END;
+/
+
+
+Step 1 : example creates my_staging_table in the dba1 schema:
+=> CREATE_STGTAB_SQLPROF
+Creates the staging table used for copying SQL profiles from one system to another.
+
+BEGIN
+  DBMS_SQLTUNE.CREATE_STGTAB_SQLPROF ( 
+    table_name  => 'my_staging_table'
+,   schema_name => 'dba1' 
+);
+END;
+/
+
+
+
+Step 2: populates dba1.my_staging_table with the SQL profile my_profile
+=> PACK_STGTAB_SQLPROF
+Moves profile data out of the SYS schema into the staging table.
+
+BEGIN
+  DBMS_SQLTUNE.PACK_STGTAB_SQLPROF (  
+    profile_name         => 'my_profile'
+,   staging_table_name   => 'my_staging_table'
+,   staging_schema_owner => 'dba1' 
+);
+END;
+/ 
+
+
+Step 3 : 
+Move the staging table to the database where you plan to unpack the SQL profiles.
+Move the table using your utility of choice. For example, use Oracle Data Pump or a database link.
+
+
+Step 4 : On the database where you plan to import the SQL profiles, use UNPACK_STGTAB_SQLPROF to unpack SQL profiles from the staging table
+=> UNPACK_STGTAB_SQLPROF
+Uses the profile data stored in the staging table to create profiles on this system.
+
+BEGIN
+  DBMS_SQLTUNE.UNPACK_STGTAB_SQLPROF(
+     replace            => true
+,    staging_table_name => 'my_staging_table'
+);
+END;
+/
+
+
+

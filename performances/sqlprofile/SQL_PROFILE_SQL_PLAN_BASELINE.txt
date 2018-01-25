@@ -1,0 +1,31 @@
+
+------------------------------------
+-- 23 Managing SQL Plan Baselines --
+------------------------------------
+https://docs.oracle.com/database/121/TGSQL/tgsql_spm.htm#TGSQL615
+
+SQL plan management :
+A preventative mechanism that enables the optimizer to automatically manage execution plans, 
+ensuring that the database uses only known or verified plans.
+
+-------------------------------------------------------------
+-- Differences Between SQL Plan Baselines and SQL Profiles --
+-------------------------------------------------------------
+
+Both SQL profiles and SQL plan baselines help improve the performance of SQL statements by ensuring that the optimizer uses only optimal plans.
+
+Both profiles and baselines are internally implemented using hints. 
+However, these mechanisms have significant differences, including the following:
+
+In general :
+* SQL plan baselines are PROACTIVE.
+* SQL profiles are REACTIVE.
+
+Typically, you create SQL plan baselines before significant performance problems occur. 
+SQL Plan Baselines prevent the optimizer from using suboptimal plans in the future.
+
+-- 
+The database creates SQL profiles when you invoke SQL Tuning Advisor, which you do typically only after a SQL statement has shown high-load symptoms. 
+SQL profiles are primarily useful by providing the ongoing resolution of optimizer mistakes that have led to suboptimal plans. 
+Because the SQL profile mechanism is reactive, it cannot guarantee stable performance as drastic database changes occur.
+--
