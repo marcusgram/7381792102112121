@@ -1,0 +1,55 @@
+Reporting ADDM Analysis on a Pair of Specific Snapshots
+-------------------------------------------------------
+
+
+
+CREATE OR REPLACE FUNCTION run_addm(start_time IN DATE, end_time IN DATE )
+  RETURN VARCHAR2
+IS
+  begin_snap          NUMBER;
+  end_snap            NUMBER;
+  tid                 NUMBER;          -- Task ID
+  tname               VARCHAR2(30);    -- Task Name
+  tdesc               VARCHAR2(256);   -- Task Description
+BEGIN
+  -- Find the snapshot IDs corresponding to the given input parameters.
+  SELECT max(snap_id)INTO begin_snap
+    FROM DBA_HIST_SNAPSHOT
+   WHERE trunc(end_interval_time, 'MI') <= start_time;
+  SELECT min(snap_id) INTO end_snap
+    FROM DBA_HIST_SNAPSHOT
+   WHERE  end_interval_time >= end_time;
+  --
+  -- set Task Name (tname) to NULL and let create_task return a
+  -- unique name for the task.
+  tname := '';
+  tdesc := 'run_addm( ' || begin_snap || ', ' || end_snap || ' )';
+  --
+  -- Create a task, set task parameters and execute it
+  DBMS_ADVISOR.CREATE_TASK( 'ADDM', tid, tname, tdesc );
+  DBMS_ADVISOR.SET_TASK_PARAMETER( tname, 'START_SNAPSHOT', begin_snap );
+  DBMS_ADVISOR.SET_TASK_PARAMETER( tname, 'END_SNAPSHOT' , end_snap );
+  DBMS_ADVISOR.EXECUTE_TASK( tname );
+  RETURN tname;
+END;
+/
+
+-- set SQL*Plus variables and column formats for the report
+SET PAGESIZE 0 LONG 1000000 LONGCHUNKSIZE 1000;
+COLUMN get_clob FORMAT a80;
+
+-- execute run_addm() with 7pm and 9pm as input
+
+VARIABLE task_name VARCHAR2(30);
+BEGIN
+  :task_name := run_addm( TO_DATE('19:00:00 (10/20)', 'HH24:MI:SS (MM/DD)'),
+                          TO_DATE('21:00:00 (10/20)', 'HH24:MI:SS (MM/DD)') );
+END;
+/
+
+-- execute GET_TASK_REPORT to get the textual ADDM report.
+
+SELECT DBMS_ADVISOR.GET_TASK_REPORT(:task_name)
+  FROM DBA_ADVISOR_TASKS t
+ WHERE t.task_name = :task_name
+  AND t.owner = SYS_CONTEXT( 'userenv', 'session_user' );

@@ -1,0 +1,31 @@
+
+CREATE OR REPLACE FUNCTION run_addm(start_time IN DATE, end_time IN DATE )
+  RETURN VARCHAR2
+IS
+  begin_snap          NUMBER;
+  end_snap            NUMBER;
+  tid                 NUMBER;          -- Task ID
+  tname               VARCHAR2(30);    -- Task Name
+  tdesc               VARCHAR2(256);   -- Task Description
+BEGIN
+  -- Find the snapshot IDs corresponding to the given input parameters.
+  SELECT max(snap_id)INTO begin_snap
+    FROM DBA_HIST_SNAPSHOT
+   WHERE trunc(end_interval_time, 'MI') <= start_time;
+  SELECT min(snap_id) INTO end_snap
+    FROM DBA_HIST_SNAPSHOT
+   WHERE  end_interval_time >= end_time;
+  --
+  -- set Task Name (tname) to NULL and let create_task return a
+  -- unique name for the task.
+  tname := '';
+  tdesc := 'run_addm( ' || begin_snap || ', ' || end_snap || ' )';
+  --
+  -- Create a task, set task parameters and execute it
+  DBMS_ADVISOR.CREATE_TASK( 'ADDM', tid, tname, tdesc );
+  DBMS_ADVISOR.SET_TASK_PARAMETER( tname, 'START_SNAPSHOT', begin_snap );
+  DBMS_ADVISOR.SET_TASK_PARAMETER( tname, 'END_SNAPSHOT' , end_snap );
+  DBMS_ADVISOR.EXECUTE_TASK( tname );
+  RETURN tname;
+END;
+/

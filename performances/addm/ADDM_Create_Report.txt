@@ -1,0 +1,31 @@
+ADDM
+----
+ 
+In Oracle, ADDM stands for Automatic Database Diagnostic Monitor. 
+An ADM report details potential performance bottlenecks and recommendations on what actions can be perform to alleviate the problems. 
+
+The report provides:
+* Findings
+* Recommendations
+* Estimated Impact on Performance
+ 
+The simplest way to generate this report is through the Oracle Enterprise Manager tool (OEM); however, there are times when this tool is not available. 
+
+On those occasions, the DBA user can generate the report from the machine hosting Oracle, as described in the steps below.
+
+To generate the ADDM report:
+---------------------------
+
+1/ Log in to the machine hosting Oracle.
+In the command prompt issue the following 
+
+	command: sqlplus system @$ORACLE_HOME/rdbms/admin/addmrpt.sql
+
+When you are asked for a system password, type it in and press Enter.
+
+2/ Specify a begin_snap from the list and press Enter.
+3/ Specify the end_snap from the list and press Enter.
+4/ Name the report and press Enter.
+5/ Issue the quit command to exit from SQLPlus.
+
+The report is generated at the path where the SQLPlus command was issued.

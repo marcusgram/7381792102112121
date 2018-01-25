@@ -1,0 +1,39 @@
+Can ADDM report be mailed to user automatically.?
+
+The ADDM report cannot be mailed automatically. 
+
+The Grid Control reporting system is designed to run against the Grid Control repository, 
+
+while the ADDM reports are stored in the AWR repository of each database target.
+
+There is however a way to get the ADDM reports mailed to users. 
+
+You could set up a SQL job in grid control, and have the output emailed to users.
+
+Here is some sample SQL that could generate a report. 
+
+It outputs the most recently created ADDM report for a given database. 
+
+The code needs to run in the target database.  This sample code works for only 11g databases.
+============================================
+col tname new_value l_task_name
+SET LONG 1000000 PAGESIZE 0;
+
+select task_name tname
+from dba_advisor_tasks
+where created =
+(select max(created)
+from dba_advisor_tasks);
+
+SELECT DBMS_ADDM.GET_REPORT('&l_task_name') FROM DUAL;
+============================================
+
+TNAME
+------------------------------
+ADDM:2588290705_1_3649
+
+
+
+For further information about generating ADDM reports, refer the below mentioned link:
+http://download.oracle.com/docs/cd/B28359_01/server.111/b28274/diag.htm#i37241
+
