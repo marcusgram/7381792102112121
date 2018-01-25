@@ -1,0 +1,82 @@
+SQL> @unstable_plans
+Enter value for min_stddev:
+Enter value for min_etime:
+ 
+SQL_ID        SUM(EXECS)   MIN_ETIME   MAX_ETIME   NORM_STDDEV
+------------- ---------- ----------- ----------- -------------
+0qa98gcnnza7h          4       42.08      208.80        2.8016
+ 
+SSQL> @awr_plan_stats
+Enter value for sql_id: 0qa98gcnnza7h
+ 
+SQL_ID        PLAN_HASH_VALUE        EXECS          ETIME    AVG_ETIME        AVG_LIO
+------------- --------------- ------------ -------------- ------------ --------------
+0qa98gcnnza7h       568322376            3          126.2       42.079      124,329.7
+0qa98gcnnza7h      3723858078            1          208.8      208.796   28,901,466.0
+ 
+SQL> @create_sql_profile_awr
+Enter value for sql_id: 0qa98gcnnza7h
+Enter value for plan_hash_value: 568322376
+Enter value for category:
+Enter value for force_matching:
+ 
+PL/SQL procedure successfully completed.
+ 
+SQL> @list-sql-profiles
+Enter value for sql_text:
+Enter value for name: PROFIL%
+ 
+NAME                           CATEGORY        STATUS   SQL_TEXT                            FOR
+------------------------------ --------------- -------- ----------------------------------- ---
+PROFILE_0qa98gcnnza7h          DEFAULT         ENABLED  select avg(pk_col) from kso.skew    NO
+ 
+SQL> set echo on
+SQL> @sql-profile-hints
+SQL> set lines 155
+SQL> col hint for a150
+SQL> select attr_val hint
+  2  from dba_sql_profiles p, sqlprof$attr h
+  3  where p.signature = h.signature
+  4  and name like ('&profile_name')
+  5  order by attr#
+  6  /
+Enter value for profile_name: PROFILE_0qa98gcnnza7h
+ 
+HINT
+-------------------------------------------------
+IGNORE_OPTIM_EMBEDDED_HINTS
+OPTIMIZER_FEATURES_ENABLE('10.2.0.3')
+ALL_ROWS
+OUTLINE_LEAF(@"SEL$1")
+FULL(@"SEL$1" "SKEW"@"SEL$1")
+ 
+SQL> @sql_hints_awr
+SQL> select
+  2  extractvalue(value(d), '/hint') as outline_hints
+  3  from
+  4  xmltable('/*/outline_data/hint'
+  5  passing (
+  6  select
+  7  xmltype(other_xml) as xmlval
+  8  from
+  9  dba_hist_sql_plan
+ 10  where
+ 11  sql_id = '&sql_id'
+ 12  and plan_hash_value = &plan_hash_value
+ 13  and other_xml is not null
+ 14  )
+ 15  ) d;
+Enter value for sql_id: 0qa98gcnnza7h
+Enter value for plan_hash_value: 568322376
+ 
+OUTLINE_HINTS
+-------------------------------------------------
+IGNORE_OPTIM_EMBEDDED_HINTS
+OPTIMIZER_FEATURES_ENABLE('10.2.0.3')
+ALL_ROWS
+OUTLINE_LEAF(@"SEL$1")
+FULL(@"SEL$1" "SKEW"@"SEL$1")
+
+
+
+-- See http://kerryosborne.oracle-guy.com/2009/04/oracle-sql-profiles/ for more!
