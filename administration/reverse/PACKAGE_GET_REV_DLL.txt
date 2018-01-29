@@ -1,0 +1,28 @@
+
+
+ACCEPT OWNER PROMPT "Enter username (you can use 'USER1' or 'USER1','USER2' ...):"
+
+SET LONG 20000 LONGCHUNKSIZE 20000 PAGESIZE 0 LINESIZE 1000 FEEDBACK OFF VERIFY OFF TRIMSPOOL ON TERMOUT OFF HEADING OFF TAB OFF 
+
+DEFINE LOGNAME=date
+COLUMN clogname new_value logname
+
+SELECT 'GET_PKG_DLL_'||to_char(sysdate, 'yyyymmdd') clogname from dual;
+
+SPOOL &OWNER._&logname..out
+
+
+BEGIN
+   DBMS_METADATA.set_transform_param (DBMS_METADATA.session_transform, 'SQLTERMINATOR', true);
+   DBMS_METADATA.set_transform_param (DBMS_METADATA.session_transform, 'PRETTY', true);
+END;
+/
+
+SELECT DBMS_METADATA.GET_DDL(REPLACE(object_type, ' ', '_'), object_name, owner)
+FROM all_OBJECTS
+WHERE (OWNER = 'OWNER1')
+and object_type not like '%PARTITION'
+and object_type not like '%BODY'
+order by object_type, object_name;
+
+SPOOL OFF

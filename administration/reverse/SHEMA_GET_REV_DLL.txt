@@ -1,0 +1,28 @@
+
+execute DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'SQLTERMINATOR',true);
+execute DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM, 'PRETTY', true);
+
+---
+
+ACCEPT OWNER PROMPT "Enter username (you can use 'USER1' or 'USER1','USER2' ...):"
+
+SET LONG 20000 LONGCHUNKSIZE 20000 PAGESIZE 0 LINESIZE 1000 FEEDBACK OFF VERIFY OFF TRIMSPOOL ON
+
+DEFINE LOGNAME=date
+COLUMN clogname new_value logname
+
+SELECT 'GET_ALL_DLL_'||to_char(sysdate, 'yyyymmdd') clogname from dual;
+SPOOL &OWNER._&logname..out
+
+
+BEGIN
+   DBMS_METADATA.set_transform_param (DBMS_METADATA.session_transform, 'SQLTERMINATOR', true);
+   DBMS_METADATA.set_transform_param (DBMS_METADATA.session_transform, 'PRETTY', true);
+END;
+/
+
+SELECT DBMS_METADATA.GET_DDL(REPLACE(object_type,' ','_'), object_name, owner)
+  FROM all_OBJECTS 
+  WHERE (OWNER = '&OWNER');
+
+SPOOL OFF

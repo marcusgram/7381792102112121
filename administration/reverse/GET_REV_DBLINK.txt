@@ -1,0 +1,56 @@
+
+SET LONG 20000 LONGCHUNKSIZE 20000 PAGESIZE 0 LINESIZE 1000 FEEDBACK OFF VERIFY OFF TRIMSPOOL ON
+
+BEGIN
+   DBMS_METADATA.set_transform_param (DBMS_METADATA.session_transform, 'SQLTERMINATOR', true);
+   DBMS_METADATA.set_transform_param (DBMS_METADATA.session_transform, 'PRETTY', true);
+END;
+/
+
+--SELECT DBMS_METADATA.get_ddl ('INDEX', index_name, table_owner)
+--FROM   user_indexes
+--WHERE  table_owner = UPPER('&owner_name')
+
+
+select dbms_metadata.get_ddl('DB_LINK', 'DBLINK', user) as ddl from dual;
+
+select DBMS_METADATA.GET_DDL('DB_LINK',object_name,'&&owner') 
+from dba_objects 
+where owner=upper('&&owner') 
+and object_type ='DATABASE LINK'
+
+
+
+SELECT 'create '
+  ||DECODE(U.NAME,'PUBLIC','public ')
+  ||'database link '
+  ||CHR(10)
+  ||DECODE(U.NAME,'PUBLIC',NULL, U.NAME
+  ||'.')
+  || L.NAME
+  ||chr(10)
+  ||'connect to '
+  || L.USERID
+  || ' identified by '
+  ||L.PASSWORD
+  ||' using '''
+  || L.host
+  || ''''
+  ||chr(10)
+  ||';' TEXT
+FROM sys.link$ L,
+  sys.user$ U
+WHERE L.OWNER# = U.USER#;
+
+
+
+create public database link DBL_PPH2_NATURALPERSON_OWN
+connect to NATURALPERSON_OWN identified by NATURALPERSON_OWN using '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=parva4117033)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=PPH2WDR0)))'
+
+drop public database link DBL_PPH3_NATURALPERSON_OWN;
+create public database link DBL_PPH3_NATURALPERSON_OWN
+connect to NATURALPERSON_OWN identified by NATURALPERSON_OWN using '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=parva4117033.sun.ctlmcof.fr)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=PPH3WDR0)))'
+
+create public database link DBL_PPH1WDR0_NATURALPERSON_OWN
+connect to NATURALPERSON_OWN identified by NATURALPERSON_OWN using '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=parva4117037.sun.ctlmcof.fr)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=PPH1WDR0)))'
+

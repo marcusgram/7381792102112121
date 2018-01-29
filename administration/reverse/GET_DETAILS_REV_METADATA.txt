@@ -1,0 +1,125 @@
+
+
+
+execute DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'SQLTERMINATOR',true);
+execute DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM, 'PRETTY', true);
+
+---- To create ddl for all tables and indexes in a user's schema ----
+
+SET  PAGESIZE 0
+SET  LONG     90000
+SET  FEEDBACK off
+SET  ECHO     off 
+
+SPOOL filename.sql 
+
+SELECT DBMS_METADATA.GET_DDL('TABLE',u.table_name) FROM user_tables u;
+SELECT DBMS_METADATA.GET_DDL('INDEX',u.index_name) FROM user_indexes u;
+SELECT DBMS_METADATA.GET_DDL('FUNCTION',u.object_name) FROM user_objects u WHERE object_type = 'FUNCTION'
+select DBMS_METADATA.GET_DLL('TABLESPACE',tb.tablespace_name) from DBA_TABLESPACES tb;
+select dbms_metadata.get_ddl('CONSTRAINT',constraint_name) from dba_constraints where owner = 'MBUTEST_OWN' ;
+
+SPOOL off;
+
+----------
+
+The different types of DDL you can retrieve are listed below: 
+
+ASSOCIATION 
+AUDIT 
+AUDIT_OBJ 
+CLUSTER 
+COMMENT 
+CONSTRAINT 
+CONTEXT 
+DB_LINK 
+DEFAULT_ROLE 
+DIMENSION 
+DIRECTORY 
+FUNCTION 
+INDEX 
+INDEXTYPE 
+JAVA_SOURCE 
+LIBRARY 
+MATERIALIZED_VIEW 
+MATERIALIZED_VIEW_LOG 
+OBJECT_GRANT 
+OPERATOR 
+OUTLINE 
+PACKAGE 
+PACKAGE_SPEC 
+PACKAGE_BODY 
+PROCEDURE 
+PROFILE 
+PROXY 
+REF_CONSTRAINT 
+ROLE 
+ROLE_GRANT 
+ROLLBACK_SEGMENT 
+SEQUENCE 
+SYNONYM 
+SYSTEM_GRANT 
+TABLE 
+TABLESPACE 
+TABLESPACE_QUOTA 
+TRIGGER 
+TRUSTED_DB_LINK 
+TYPE 
+TYPE_SPEC 
+TYPE_BODY 
+USER 
+VIEW 
+XMLSCHEMA 
+
+
+----------
+
+
+
+SET LONG 20000 LONGCHUNKSIZE 20000 PAGESIZE 0 LINESIZE 1000 FEEDBACK OFF VERIFY OFF TRIMSPOOL ON
+
+BEGIN
+   DBMS_METADATA.set_transform_param (DBMS_METADATA.session_transform, 'SQLTERMINATOR', true);
+   DBMS_METADATA.set_transform_param (DBMS_METADATA.session_transform, 'PRETTY', true);
+END;
+/
+
+SELECT DBMS_METADATA.get_ddl ('CONSTRAINTS_AS_ALTER', constraint_name, owner)
+FROM   all_constraints
+WHERE  owner      = UPPER('&1')
+AND    table_name = DECODE(UPPER('&2'), 'ALL', table_name, UPPER('&2'))
+AND    constraint_type IN ('U', 'P');
+
+SET PAGESIZE 14 LINESIZE 100 FEEDBACK ON VERIFY ON
+
+---------
+
+SELECT REPLACE(dbms_metadata.get_ddl('CONSTRAINT', constraint_name, USER)
+                 ,' USING INDEX '
+                 ,' USING INDEX "' || index_name || '" ' ) ddl
+  FROM user_constraints
+  WHERE index_name IS NOT NULL
+    AND constraint_name NOT LIKE 'BIN$%';
+	
+	
+in order to pass from : 
+ALTER TABLE "ME"."MYTABLE" ADD CONSTRAINT "MYCONSTRAINT" PRIMARY KEY  ("COL1") ENABLE;	
+to : 
+ALTER TABLE "ME"."MYTABLE" ADD CONSTRAINT "MYCONSTRAINT" PRIMARY KEY ("COL1") USING INDEX MYINDEX);
+
+--------
+
+REMAP schema_name while generating DDL
+dbms_metadata.set_remap_param(th, 'REMAP_SCHEMA', 'SCOTT', 'FRED');
+
+--------
+
+
+
+dbms_metadata.set_transform_param (dbms_metadata.session_transform,'STORAGE',false);
+dbms_metadata.set_transform_param (dbms_metadata.session_transform,'TABLESPACE',false);
+dbms_metadata.set_transform_param (dbms_metadata.session_transform,'SEGMENT_ATTRIBUTES', false);
+dbms_metadata.set_transform_param (dbms_metadata.session_transform,'REF_CONSTRAINTS', FALSE);
+dbms_metadata.set_transform_param (dbms_metadata.session_transform,'CONSTRAINTS', FALSE);
+dbms_metadata.set_transform_param (dbms_metadata.session_transform,'PRETTY',FALSE);
+dbms_metadata.set_transform_param (dbms_metadata.session_transform,'SQLTERMINATOR',TRUE);
