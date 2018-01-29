@@ -1,5 +1,5 @@
 
-à tester :
+Ã  tester :
 
 http://carlos-sierra.net/2013/04/24/monitoring-a-sql-that-executes-well-thousands-of-times-but-sometimes-it-takes-longer/#comments
 
@@ -31,11 +31,11 @@ WHERE  username = 'EIM_BATCH';
 
 
 
-Several different parameters are available that allow you to adjust the report output to suit your needs.
+-- Several different parameters are available that allow you to adjust the report output to suit your needs.
 
 set pagesize 0 echo off timing off linesize 1000 trimspool on trim on long 2000000 longchunksize 2000000 feedback off
 spool sqlmon_4vbqtp97hwqk8.html
-select dbms_sqltune.report_sql_monitor(type=&gt;'EM', sql_id=&gt;'4vbqtp97hwqk8') monitor_report from dual;
+ select dbms_sqltune.report_sql_monitor(type=&gt;'EM', sql_id=&gt;'4vbqtp97hwqk8') monitor_report from dual;
 spool off
 
 
@@ -57,3 +57,4 @@ as report
 from dual;
 set lines 155
 undef SID
+/
