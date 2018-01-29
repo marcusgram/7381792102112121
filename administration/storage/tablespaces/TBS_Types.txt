@@ -1,13 +1,13 @@
 https://community.oracle.com/thread/996723
 http://www.dba-oracle.com/phys_70.htm
 ----------------------------------
-Locally Managed Tablespaces (LMT)—
+Locally Managed Tablespaces (LMT)â€”
 ----------------------------------
 The LMT tablespace is implemented by adding the EXTENT MANAGEMENT LOCAL clause to the tablespace definition. 
 LMT tablespaces automate extent management and remove the ability to specify the NEXT storage parameter. 
  
 ------------------------------------------
-Automatic Segment Space Management (ASSM)—
+Automatic Segment Space Management (ASSM)â€”
 ------------------------------------------
 The ASSM tablespace is new in Oracle9i and is implemented by adding the SEGMENT SPACE MANAGEMENT AUTO clause to the tablespace definition. 
 ASM tablespaces automate freelist management and remove the ability to specify PCTUSED, FREELISTS, and FREELIST GROUPS storage parameters. 
