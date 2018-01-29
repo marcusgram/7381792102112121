@@ -1,0 +1,84 @@
+
+PROFILE Method
+--------------
+
+=> will output a script to install that plan hash value as the one to be used for that SQLID by use of a SQL profile
+
+•The PROFILE requires that you first execute the XTRACT or XECUTE method on a particular SQLID.
+
+•The script accepts a SQLID as input. When the sqltprofile script is executed,
+ it will prompt for a plan hash value from a list of plan hash values captured 
+ from previous executions of XTRACT or XECUTE on the indicated SQLID.
+
+
+•The user can choose a particular one of these plan hash values and the sqltprofile.sql script will output a script to install 
+ that plan hash value as the one to be used for that SQLID by use of a SQL profile.
+
+
+•To execute this method, navigate to the <SQLT_HOME>/run/ directory, 
+
+invoke SQL*Plus and connect to the main application user that executes the SQL in question, 
+
+and execute this command: SQL> sqltprofile <SQLID>
+
+
+Exemple :
+
+
+su - oracle
+cd /apps/oracle/sqlt/utl
+export ORACLE_SID=SIE1FRP0
+sqlplus / as sysdba
+
+SQL> @sqltprofile 81568 896472372
+
+@sqltprofile 81568 3292157621
+
+... please wait ...
+
+STAID MET INSTANCE SQL_TEXT
+----- --- -------- ------------------------------------------------------------
+81566 XTR SIE1FRP0 SELECT       T24.CONFLICT_ID,       T24.LAST_UPD,       T24.
+81567 XTR SIE1FRP0 SELECT       T15.CONFLICT_ID,       T15.LAST_UPD,       T15.
+81568 XTR SIE1FRP0 SELECT       T15.CONFLICT_ID,       T15.LAST_UPD,       T15.
+
+Parameter 1:
+STATEMENT_ID (required)
+
+
+
+PLAN_HASH_VALUE ATTRIBUTE
+--------------- ---------
+     2959590303 [W]
+     3292157621
+     3395277615 [B]
+
+Parameter 2:
+PLAN_HASH_VALUE (required)
+
+
+Values passed to sqltprofile:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+STATEMENT_ID   : "81568"
+PLAN_HASH_VALUE: "896472372"
+
+08:46:48    0 sqlt$r: -> custom_sql_profile
+08:46:48    0 sqlt$a: -> common_initialization
+08:46:48    0 sqlt$a: ALTER SESSION SET NLS_NUMERIC_CHARACTERS = ".,"
+08:46:48    0 sqlt$a: ALTER SESSION SET NLS_SORT = BINARY
+08:46:48    0 sqlt$a: <- common_initialization
+08:46:49    1 sqlt$r: <- custom_sql_profile
+... getting sqlt_s81568_p896472372_sqlprof.sql out of sqlt repository ...
+
+sqlt_s81568_p896472372_sqlprof.sql has been generated
+
+SQLTPROFILE completed.
+
+
+
+oracle@parva4119291:SIE1FRP0:11.2.0.2:/apps/oracle/sqlt/utl/
+-rw-r--r--    1 oracle   dba            7391 Apr 24 08:46 sqlt_s81568_p896472372_sqlprof.sql
+
+START sqlt_s89915_p3005811457_sqlprof.sql; - This is how you run the SQL
+script. As it says in the notes you should use a suitably privileged account, such as SYS.
+

@@ -1,0 +1,23 @@
+
+XECUTE Method
+-------------
+
+•Takes as its input a text file containing a SQL statement or STS.
+
+
+•Invoke SQL*Plus from the <SQLT_HOME>/run/ directory 
+and connect as the database user that would normally execute a particular SQL statement or set of statements 
+
+execute this command: 
+
+cd <SQLT_HOME>/run/ 
+SQL> start sqltxecute <full_pathname_of_sql_script>
+
+
+•The sqltxecute.sql script executes the SQL statement or statements in the STS.
+
+•Therefore, the length of time that the sqltxecute.sql script takes is bound by what those SQL statements take to execute.
+
+•The product of executing the script is a zipfile produced in the <SQLT_HOME>/run/ directory. 
+
+To use this file, unzip it in any directory and open the *main.html file.

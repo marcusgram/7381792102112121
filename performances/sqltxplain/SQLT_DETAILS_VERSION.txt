@@ -1,0 +1,16 @@
+
+col sqlt_version for a15
+col sqlt_version_date for a15
+col install_date for a50
+
+SELECT /*+ NO_MERGE */
+sqltxplain.sqlt$a.get_param('tool_version') sqlt_version,
+sqltxplain.sqlt$a.get_param('tool_date') sqlt_version_date,
+sqltxplain.sqlt$a.get_param('install_date') install_date
+FROM DUAL;
+
+
+
+SQLT_VERSION    SQLT_VERSION_DA INSTALL_DATE
+--------------- --------------- --------------------------------------------------
+12.1.08         2014-04-18      2014-05-07/15:03:11

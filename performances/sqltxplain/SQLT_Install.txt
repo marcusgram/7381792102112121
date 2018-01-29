@@ -1,0 +1,68 @@
+
+
+My Oracle Support (MOS) 215187.1
+
+Download tool (sqlt.zip file)
+Unzip into database server
+
+
+
+SQLT_HOME = /apps/oracle/adm/scripts/tuning/sqlt
+
+su - oracle
+
+mkdir -p /apps/oracle/adm/scripts/tuning/
+
+cd /apps/oracle/adm/scripts/tuning/
+
+unzip SQLT_BIN.zip
+
+
+
+sqlplus / as sysdba
+
+
+Execute $SQLT_HOME/install/sqcreate.sql connected as SYS
+
+ @/apps/oracle/adm/scripts/tuning/sqlt/install/sqcreate.sql
+
+Input installation parameters
+
+
+
+
+SQLT Installation Overview
+--------------------------
+
+
+
+requires about 10MB of space for the installation.
+ 
+Allocate 50-100MB of space for this schema to allow for data creation in the schema as the utility is used. 
+
+
+Installation prompts:
+
+1.Connect identifier for TNS connections (optional).
+
+2.SQLTXPLAIN database user password.
+
+3.Default and temp tablespaces for SQLTXPLAIN user.
+
+4.Main application user of the SQLT utility. 
+This user will be the one to execute the SQLT scripts. 
+Note that additional users can be added to the configuration later.
+
+5.Management Pack license, if any:
+•"T" if you have license for Diagnostic and Tuning
+•"D" if you have license only for Oracle Diagnostic
+•"N" if you do not have these two licenses
+•After the last prompt, the remainder of the installation should take just a few minutes to complete.
+
+
+
+
+To remove :
+
+Execute $SQLT_HOME/install/sqdrop.sql connected as SYS
+

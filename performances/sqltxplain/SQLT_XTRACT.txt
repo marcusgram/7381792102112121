@@ -1,0 +1,84 @@
+Main Methods :
+
+SQLT XTRACT
+SQLT XECUTE
+SQLT XTRXEC
+SQLT XPLAIN
+SQLT XTRSBY
+SQLT XPREXT
+SQLT XPREXC
+
+
+XTRACT Method
+-------------
+•Probably the most common SQLT usage method.
+
+•This method captures information about the particular SQL from the library cache.
+
+•Invoke SQL*Plus from the <SQLT_HOME>/run/ directory and connect as the database user 
+that would normally execute a particular SQL statement or set of statements and execute this command: 
+
+
+
+SQL> start sqltxtract <SQLID>
+@/apps/oracle/adm/scripts/tuning/sqlt/run/sqltxtract axwrf1bjr4mfv
+
+
+
+To monitor progress, login into another session and execute:
+SQL> SELECT * FROM SQLTXADMIN.sqlt$_log_v;
+
+
+•The sqltxtract.sql script will produce a zip file in the <SQLT_HOME>/run/ directory. 
+Unzip this zip file and open the *main.html file in a browser.
+
+
+
+
+
+
+Exemple : (SQL_ID : 8bjxh4tzh0c3x)
+
+
+SQLT_HOME = /apps/oracle/adm/scripts/tuning/sqlt
+
+su - oracle
+cd /apps/oracle/adm/scripts/tuning/sqlt/run
+export ORACLE_SID=SIE1FRP0
+
+
+SQL> start sqltxtract 8bjxh4tzh0c3x
+
+PL/SQL procedure successfully completed.
+
+Parameter 1:
+SQL_ID or HASH_VALUE of the SQL to be extracted (required)
+
+Paremeter 2:
+SQLTXPLAIN password (required)
+
+Enter value for 2: SQLTXPLAIN
+PL/SQL procedure successfully completed.
+
+
+Value passed:
+SQL_ID_OR_HASH_VALUE: "8bjxh4tzh0c3x"
+PL/SQL procedure successfully completed.
+
+
+SQLT_VERSION
+----------------------------------------
+SQLT version number: 12.1.05
+SQLT version date  : 2013-12-11
+Installation date  : 2014-01-30/16:35:20
+
+... please wait ...
+
+
+  adding: sqlt_s81568_sqldx.zip (stored 0%)
+
+
+SQLTXTRACT completed.
+
+
+

@@ -1,0 +1,40 @@
+
+XTRSET Method
+--------------
+The XTRSET extracts from memory or AWR a list of SQL statements identified by their SQL_ID or HASH_VALUE 
+then it executes the XTRACT on each of the SQL statements. 
+
+At the end it consolidates all the SQLT files into a single compressed file. 
+This XTRSET is used when benchmarking the same set of SQL statements over a series of tests.
+
+When this method is used, it asks once for the SQLTXPLAIN password, which is needed to export the SQLT repository 
+for each execution of XTRACT on the list of SQL statements.
+
+To use this XTRSET method, SQLT has to be installed first. Navigate to the sqlt/run directory 
+and start SQL*Plus connecting as the application user that issued all or most of the SQL statements. 
+
+From there, execute the sqlt/run/sqltxtrset.sql script. When asked, pass the comma-separated list of SQL statements identified by their SQL_ID 
+or HASH_VALUE, and the password for SQLTXPLAIN
+
+
+
+cd /apps/oracle/adm/scripts/tuning/sqlt/run/
+
+# sqlplus [application_user]
+SQL> START sqltxtrset.sql
+
+List of SQL_IDs or HASH_VALUEs: gu6fg7z0gb1kc, fy9s8110n562f, dszg0xggu64qn, cv2dstg77jt24, cqjwt5gpzsy8z, cf1w5w1r053mp, cc91kzqgus16y, 6jwxn8q867qzt, 5q7cu90qy9f6p, 475vwj3n0hnb3, 2nwvbgap8ztr5, 145ynvcg00hrb
+
+ 
+gu6fg7z0gb1kc 
+fy9s8110n562f 
+dszg0xggu64qn 
+cv2dstg77jt24 
+cqjwt5gpzsy8z 
+cf1w5w1r053mp 
+cc91kzqgus16y 
+6jwxn8q867qzt 
+5q7cu90qy9f6p 
+475vwj3n0hnb3 
+2nwvbgap8ztr5 
+145ynvcg00hrb
