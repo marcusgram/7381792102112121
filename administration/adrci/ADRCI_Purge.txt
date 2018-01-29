@@ -1,0 +1,131 @@
+Script:-
+
+#!/usr/bin/ksh
+#
+#
+#
+# Description
+# Shell script to interact with the ADR through ADRCI and purge ADR contents
+#
+###
+
+LOCKFILE=/tmp/adrci_purge_.lck
+
+###
+
+######
+# Start Of Functions
+#
+# tidyup . common fuction called if error has occured
+tidyup () {
+        rm -f ${LOCKFILE}
+        echo "ERROR: Purge aborted at `date` with exit code ${ERR}"
+        exit ${ERR}
+}
+
+######
+# End Of Functions
+
+### Main Program
+
+# Check user is oracle
+USERID=`/usr/bin/id -u -nr`
+if [ $? -ne 0 ]
+then
+        echo "ERROR: unable to determine uid"
+        exit 99
+fi
+#if [ "${USERID}" != "oracle" ]
+#then
+#        echo "ERROR: This script must be run as oracle"
+#        exit 98
+#fi
+
+echo "INFO: Purge started at `date`"
+
+# Check if lockfile exists
+if [ -f ${LOCKFILE} ]
+then
+        echo "ERROR: Lock file already exists"
+        echo "       Purge already active or incorrectly terminated"
+        echo "       If you are sure tidy isn.t active, please remove "
+        echo "       ${LOCKFILE}"
+            #rm -f ${LOCKFILE}
+        exit 97
+fi
+
+# Create lock file
+touch ${LOCKFILE} 2>/dev/null
+if [ $? -ne 0 ]
+then
+        echo "ERROR: Unable to create lock file"
+        exit 96
+fi
+
+# Purge ADR contents
+
+echo "INFO: adrci purge started at `date`"
+
+
+ALL_DATABASES=`cat /etc/oratab|grep -v "^#"|grep -v "N$"|cut -f1 -d: -s`
+
+for DB in $ALL_DATABASES
+do
+   unset  TWO_TASK
+   export ORACLE_SID=$DB
+   export ORACLE_HOME=`grep "^${DB}:" /etc/oratab|cut -d: -f2 -s`
+   export PATH=$ORACLE_HOME/bin:$PATH
+   echo "---> Database $ORACLE_SID, using home $ORACLE_HOME"
+
+  $ORACLE_HOME/bin/adrci exec="set base /data/$DB;show homes"|grep -v : | while read file_line
+  do
+  echo "INFO: adrci purging diagnostic destination " $file_line
+
+  echo "INFO: purging ALERT older than 90 days .."
+  $ORACLE_HOME/bin/adrci exec="set base /data/$DB;set homepath $file_line;purge -age 129600 -type ALERT"
+
+  echo "INFO: purging INCIDENT older than 30 days .."
+  $ORACLE_HOME/bin/adrci exec="set base /data/$DB;set homepath $file_line;purge -age 43200 -type INCIDENT"
+
+  echo "INFO: purging TRACE older than 30 days .."
+  $ORACLE_HOME/bin/adrci exec="set base /data/$DB;set homepath $file_line;purge -age 43200 -type TRACE"
+
+  echo "INFO: purging CDUMP older than 30 days .."
+  $ORACLE_HOME/bin/adrci exec="set base /data/$DB;set homepath $file_line;purge -age 43200 -type CDUMP"
+
+  echo "INFO: purging HM older than 30 days .."
+  $ORACLE_HOME/bin/adrci exec="set base /data/$DB;set homepath $file_line;purge -age 43200 -type HM"
+
+  echo ""
+  echo ""
+
+done
+
+done
+
+
+# All completed
+rm -f ${LOCKFILE}
+echo "SUCC: Purge completed successfully at `date`"
+exit 0
+
+
+Log
+Log:-
+
+XXXXXXXXXXXXXX/users/oracle # sh adrci.sh
+INFO: Purge started at Thu Aug 30 05:31:10 CEST 2012
+INFO: adrci purge started at Thu Aug 30 05:31:10 CEST 2012
+---> Database FDA, using home /logiciel/oracle/ora112
+INFO: adrci purging diagnostic destination  diag/rdbms/uat/UAT
+INFO: purging ALERT older than 90 days ..
+INFO: purging INCIDENT older than 30 days ..
+INFO: purging TRACE older than 30 days ..
+INFO: purging CDUMP older than 30 days ..
+INFO: purging HM older than 30 days ..
+
+
+
+
+
+SUCC: Purge completed successfully at Thu Aug 30 05:31:12 CEST 2012
