@@ -1,0 +1,140 @@
+https://community.oracle.com/thread/996723
+http://www.dba-oracle.com/phys_70.htm
+----------------------------------
+Locally Managed Tablespaces (LMT)—
+----------------------------------
+The LMT tablespace is implemented by adding the EXTENT MANAGEMENT LOCAL clause to the tablespace definition. 
+LMT tablespaces automate extent management and remove the ability to specify the NEXT storage parameter. 
+ 
+------------------------------------------
+Automatic Segment Space Management (ASSM)—
+------------------------------------------
+The ASSM tablespace is new in Oracle9i and is implemented by adding the SEGMENT SPACE MANAGEMENT AUTO clause to the tablespace definition. 
+ASM tablespaces automate freelist management and remove the ability to specify PCTUSED, FREELISTS, and FREELIST GROUPS storage parameters. 
+ 
+------------------------------------
+Automatic Storage Management (ASM) - 
+------------------------------------
+The Automatic Storage Management (ASM) features allows for the automatic stripe-and-mirror everywhere approach 
+to be used to automatically load balance the disk I/O sub-system and remove the need for the DBA 
+to specify physical file locations when allocating a tablespace.
+
+---------------------------------------------------------
+-- To see if a tablespaces is defined as locally managed:
+---------------------------------------------------------
+SQL> SELECT tablespace_name, extent_management FROM dba_tablespaces;
+
+TABLESPACE_NAME                EXTENT_MAN
+------------------------------ ----------
+SYSTEM                         DICTIONARY
+SYSAUX                         LOCAL
+TEMP                           LOCAL
+UNDOTBS02                      LOCAL
+RADIUS_DATA                    LOCAL
+RADUIS_INDEX                   LOCAL
+UNDOTBS03                      LOCAL
+STATSPACK                      LOCAL
+UNDOTBS1                       LOCAL
+
+
+------------------------------
+Conversion between DMT and LMT
+------------------------------
+
+#From DMT to LMT:
+
+SQL> exec dbms_space_admin.Tablespace_Migrate_TO_Local('ts1');
+PL/SQL procedure successfully completed.
+
+#From LMT to DMT:
+SQL> exec dbms_space_admin.Tablespace_Migrate_FROM_Local('ts2');
+PL/SQL procedure successfully completed.
+
+
+
+Locally Managed Tablespace :-
+
+A tablespace that can manage extent allocation by itself is called locally managed tablespace. 
+Using the bitmap in each datafile to keep track of the freed or used status of blocks in that datafile. 
+Each bit in the bitmap corresponds to a block or a group of blocks. 
+When an extent is allocated or freed for reuse, Oracle changes the bitmap values to show the new status of the blocks. 
+These changes do not generate rollback information because they do not update tables in the data dictionary. 
+
+Now remember, storage parameters 
+
+NEXT, 
+PCTINCREASE, 
+MINEXTENTS, 
+MAXEXTENTS, and 
+DEFAULT STORAGE are not valid for extents that are managed locally
+
+-----------------------------
+- Extents allocated in LMT :- > LOCALY MANAGED TBS
+-----------------------------
+
+LMT have extent sizes either UNIFORM or variable extent sizes
+For UNIFORM extents you can specify an extent size. The default size is 1MB.
+and for AUTOALLOCATE extents you can specify the size of the initial extent and Oracle determines the optimal size of the additional extents, with a minimum extent size of 64KB
+
+Example :- 
+
+Extent of uniform size
+
+CREATE TABLESPACE test
+DATAFILE 'tet.dbf'
+EXTENT MANAGEMENT LOCAL
+UNIFORM SIZE 256K;
+
+Specifying Segment Space Management in Locally Managed Tablespaces
+
+When you create a locally managed tablespace using the CREATE TABLESPACE statement, 
+the SEGMENT SPACE MANAGEMENT clause allows you to specify how free and used space within a segment is to be managed. 
+
+MANUAL (MSSM) :- refers to oracle use free lists for managing free space within segments
+because of the need to specify and tune the PCTUSED, FREELISTS, and FREELISTS GROUPS storage parameters for schema objects created in the tablespace
+
+AUTO :- Oracle use bitmaps to manage the free space within segments- automatic segment-space management
+(ASSM)
+
+Example :-
+
+CREATE TABLESPACE lmtbsb DATAFILE '/u02/oracle/data/lmtbsb01.dbf' SIZE 50M
+EXTENT MANAGEMENT LOCAL - LMT
+SEGMENT SPACE MANAGEMENT AUTO; - ASSM
+
+
+--------
+- DMT :- > DICTIONARY MANAGED TBS
+--------
+Example :- 
+
+CREATE TABLESPACE tbsb
+DATAFILE '/u02/oracle/data/tbsa01.dbf' SIZE 50M
+EXTENT MANAGEMENT DICTIONARY -- specified how to manag the extent in DB
+DEFAULT STORAGE (
+INITIAL 50K
+NEXT 50K
+MINEXTENTS 2
+MAXEXTENTS 50
+PCTINCREASE 0); -- you have specified how extents in memory should increase
+
+
+CREATE TABLESPACE TESTREQ DATAFILE 
+'/apps/oracledata/data01/MUT1WDD0/fic1.dbf' SIZE 10M AUTOEXTEND ON NEXT 5M MAXSIZE 2G ,
+'/apps/oracledata/data01/MUT1WDD0/fic2.dbf' SIZE 10M AUTOEXTEND ON NEXT 5M MAXSIZE 2G 
+LOGGING EXTENT MANAGEMENT DICTIONARY 
+DEFAULT STORAGE (
+INITIAL 10M 
+NEXT 50M 
+PCTFREE 30
+PCTINCREASE 0); 
+
+
+In the above example you have created dmt and specified the storage parameter for Extents, that is
+how they much allocated as data get inserted in to the segments(tables)     .
+
+refer : http://www.mpi-inf.mpg.de/departments/d5/teaching/ss05/is05/oracle/server.920/a96521/tspaces.htm#636
+
+- Pavan Kumar N
+Oracle 9i/10g - OCP
+http://oracleinternals.blogspot.com/
