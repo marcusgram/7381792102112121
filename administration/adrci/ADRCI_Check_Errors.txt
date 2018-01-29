@@ -1,0 +1,49 @@
+
+
+[oracle@wissem wissem]$ adrci
+
+ADRCI: Release 11.2.0.1.0 - Production on Wed May 4 10:24:54 2011
+
+Copyright (c) 1982, 2009, Oracle and/or its affiliates.  All rights reserved.
+
+ADR base = "/home/oracle/app/oracle"
+adrci> set homes diag/rdbms/orawiss/ORAWISS/
+adrci> show alert -P "MESSAGE_TEXT LIKE '%ORA-'" -term
+
+ADR Home = /home/oracle/app/oracle/diag/rdbms/orawiss/ORAWISS:
+*************************************************************************
+adrci> show alert -P "MESSAGE_TEXT LIKE '%ORA-%'" -term
+
+ADR Home = /home/oracle/app/oracle/diag/rdbms/orawiss/ORAWISS:
+*************************************************************************
+
+2010-12-11 19:45:41.289000 +01:00
+ORA-1109 signalled during: ALTER DATABASE CLOSE NORMAL...
+ORA-01547: warning: RECOVER succeeded but OPEN RESETLOGS would get error below
+ORA-01152: file 1 was not restored from a sufficiently old backup 
+ORA-01110: data file 1: '/home/oracle/app/oracle/oradata/ORAWISS/system01.dbf'
+ORA-1547 signalled during: ALTER DATABASE RECOVER  database until time '2011-01-21:10:48:00'  ...
+Errors in file /home/oracle/app/oracle/diag/rdbms/orawiss/ORAWISS/trace/ORAWISS_j000_5692.trc:
+ORA-12012: error on auto execute of job 29
+ORA-01435: user does not exist
+2011-03-15 11:39:37.571000 +01:00
+opiodr aborting process unknown ospid (31042) as a result of ORA-609
+2011-03-15 12:04:15.111000 +01:00
+opiodr aborting process unknown ospid (3509) as a result of ORA-609
+adrci> 
+adrci> show alert -P "MESSAGE_TEXT LIKE '%ORA-%' and originating_timestamp > systimestamp-51 " -term 
+
+ADR Home = /home/oracle/app/oracle/diag/rdbms/orawiss/ORAWISS:
+*************************************************************************
+2011-03-15 10:19:45.316000 +01:00
+Errors in file /home/oracle/app/oracle/diag/rdbms/orawiss/ORAWISS/trace/ORAWISS_j006_5536.trc:
+ORA-12012: error on auto execute of job 26
+ORA-01435: user does not exist
+Errors in file /home/oracle/app/oracle/diag/rdbms/orawiss/ORAWISS/trace/ORAWISS_j000_5692.trc:
+ORA-12012: error on auto execute of job 29
+ORA-01435: user does not exist
+2011-03-15 11:39:37.571000 +01:00
+opiodr aborting process unknown ospid (31042) as a result of ORA-609
+2011-03-15 12:04:15.111000 +01:00
+opiodr aborting process unknown ospid (3509) as a result of ORA-609
+adrci> 
