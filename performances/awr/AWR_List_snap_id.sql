@@ -1,4 +1,15 @@
 
+
+
+select * from (
+ select snap_id,min(begin_interval_time), min(end_interval_time) 
+	from dba_hist_snapshot 
+	group by snap_id 
+	order by snap_id desc
+) where rownum <=24
+/
+
+
 select snap_id,
        Substr(begin_interval_time,1,15) as begintime,
        Substr(end_interval_time,1,15) as endtime
