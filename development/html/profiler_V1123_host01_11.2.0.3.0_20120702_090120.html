@@ -1,0 +1,3776 @@
+<html>
+<!-- $Header: 243755.1 profiler.sql 11.4.4.7 2012/07/02 carlos.sierra $ -->
+<!-- Copyright (c) 2000-2012, Oracle Corporation. All rights reserved. -->
+<!-- Author: carlos.sierra@oracle.com -->
+
+<head>
+<title>profiler_V1123_host01_11.2.0.3.0_20120702_090120.html</title>
+
+<style type="text/css">
+body {font:10pt Arial,Helvetica,Verdana,Geneva,sans-serif; color:black; background:white;}
+a {font-weight:bold; color:#663300;}
+pre {font:8pt Monaco,"Courier New",Courier,monospace;} /* for code */
+h1 {font-size:16pt; font-weight:bold; color:#336699;}
+h2 {font-size:14pt; font-weight:bold; color:#336699;}
+h3 {font-size:12pt; font-weight:bold; color:#336699;}
+li {font-size:10pt; font-weight:bold; color:#336699; padding:0.1em 0 0 0;}
+table {font-size:8pt; color:black; background:white;}
+th {font-weight:bold; background:#cccc99; color:#336699; vertical-align:bottom; padding-left:3pt; padding-right:3pt; padding-top:1pt; padding-bottom:1pt;}
+td {text-align:left; background:#fcfcf0; vertical-align:top; padding-left:3pt; padding-right:3pt; padding-top:1pt; padding-bottom:1pt;}
+td.c {text-align:center;} /* center */
+td.l {text-align:left;} /* left (default) */
+td.r {text-align:right;} /* right */
+td.rr {text-align:right; color:crimson; background:#fcfcf0;} /* right and red */
+td.rrr {text-align:right; background:crimson;} /* right and super red  */
+font.n {font-size:8pt; font-style:italic; color:#336699;} /* table footnote in blue */
+font.f {font-size:8pt; color:#999999;} /* footnote in gray */
+</style>
+
+</head>
+<body>
+<h1><a target="MOS" href="https://support.oracle.com/CSP/main/article?cmd=show&type=NOT&id=243755.1">243755.1</a> PROFILER
+11.4.4.7 Report: profiler_V1123_host01_11.2.0.3.0_20120702_090120.html</h1>
+
+<pre>
+RUNID     : 3
+Owner     : QTUNE
+Date      : 2012-05-10/13:40:02
+Comment   : SQLT XECUTE input/sample/script2
+Total Time: 242.520000000 (seconds)
+RDBMS     : 11.2.0.3.0
+Platform  : LINUX
+</pre>
+<ul>
+<li><a href="#tc">Top 10 Lines as per Total Time</a></li>
+<li><a href="#tpl">Top 10 Profiled PL/SQL Libraries</a></li>
+<li><a href="#apl">All Profiled PL/SQL Libraries</a></li>
+</ul>
+<a name="tc"></a><h2>Top 10 Lines as per Total Time</h2>
+
+<table>
+
+<tr>
+<th>Top</th>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r"><a href="#tc_1">1</a></td>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5720</td>
+<td class="r">2</td>
+<td class="rr"><a href="#tc_1">             11.239085744</a></td>
+<td class="r">              5.499081311</td>
+<td class="r">              5.740004433</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+<tr>
+<td class="r"><a href="#tc_2">2</a></td>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3017</td>
+<td class="r">1</td>
+<td class="rr"><a href="#tc_2">              6.387841694</a></td>
+<td class="r">              6.387841694</td>
+<td class="r">              6.387841694</td>
+<td nowrap><pre>    write_log('final_list_of_tables');
+</pre></td>
+</tr>
+<tr>
+<td class="r"><a href="#tc_3">3</a></td>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2351</td>
+<td class="r">1</td>
+<td class="rr"><a href="#tc_3">              2.727243421</a></td>
+<td class="r">              2.727243421</td>
+<td class="r">              2.727243421</td>
+<td nowrap><pre>      BEGIN
+</pre></td>
+</tr>
+<tr>
+<td class="r"><a href="#tc_4">4</a></td>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3539</td>
+<td class="r">1</td>
+<td class="rr"><a href="#tc_4">              1.425019977</a></td>
+<td class="r">              1.425019977</td>
+<td class="r">              1.425019977</td>
+<td nowrap><pre>    BEGIN
+</pre></td>
+</tr>
+<tr>
+<td class="r"><a href="#tc_5">5</a></td>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">701</td>
+<td class="r">116</td>
+<td class="rr"><a href="#tc_5">              1.403814230</a></td>
+<td class="r">              0.001992976</td>
+<td class="r">              0.249819015</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+<tr>
+<td class="r"><a href="#tc_6">6</a></td>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">160</td>
+<td class="r">1254</td>
+<td class="rr"><a href="#tc_6">              1.224672370</a></td>
+<td class="r">              0.000633992</td>
+<td class="r">              0.007474910</td>
+<td nowrap><pre>          INSERT INTO sqlt$_log VALUES log_rec;
+</pre></td>
+</tr>
+<tr>
+<td class="r"><a href="#tc_7">7</a></td>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3933</td>
+<td class="r">334</td>
+<td class="rr"><a href="#tc_7">              0.949135662</a></td>
+<td class="r">              0.002651968</td>
+<td class="r">              0.013020844</td>
+<td nowrap><pre>        INSERT INTO trca$_row_source_plan VALUES rsp_rec;
+</pre></td>
+</tr>
+<tr>
+<td class="r"><a href="#tc_8">8</a></td>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1983</td>
+<td class="r">1</td>
+<td class="rr"><a href="#tc_8">              0.919979010</a></td>
+<td class="r">              0.919979010</td>
+<td class="r">              0.919979010</td>
+<td nowrap><pre>    BEGIN
+</pre></td>
+</tr>
+<tr>
+<td class="r"><a href="#tc_9">9</a></td>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3997</td>
+<td class="r">13</td>
+<td class="rr"><a href="#tc_9">              0.850471840</a></td>
+<td class="r">              0.004154950</td>
+<td class="r">              0.770357797</td>
+<td nowrap><pre>      BEGIN
+</pre></td>
+</tr>
+<tr>
+<td class="r"><a href="#tc_10">10</a></td>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1009</td>
+<td class="r">57116</td>
+<td class="rr"><a href="#tc_10">              0.810692315</a></td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.001928976</td>
+<td nowrap><pre>  PROCEDURE parse_line (
+</pre></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>TOTAL</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="r">             27.937956263</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+</table>
+
+<a name="tc_1"></a><h3>#1 Top Consumer</h3>
+
+Displays 10 lines before and after #1 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5710</td>
+<td class="r">2</td>
+<td class="r">              0.000022999</td>
+<td class="r">              0.000010999</td>
+<td class="r">              0.000011999</td>
+<td nowrap><pre>   *
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5711</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>   * ------------------------- */
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5712</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  PROCEDURE collect_wri$_optstat_aux_hist (
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5713</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    p_statement_id IN NUMBER,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5714</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    p_statid       IN VARCHAR2 )
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5715</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  IS
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5716</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_insert_list VARCHAR2(32767);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5717</td>
+<td class="r">2</td>
+<td class="r">              0.000002999</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000001999</td>
+<td nowrap><pre>    l_select_list VARCHAR2(32767);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5718</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_sql         VARCHAR2(32767);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5719</td>
+<td class="r">0</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000000999</td>
+<td nowrap><pre>    l_count       NUMBER;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5720</td>
+<td class="r">2</td>
+<td class="rr">             11.239085744</td>
+<td class="r">              5.499081311</td>
+<td class="r">              5.740004433</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5721</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  BEGIN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5722</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    write_log('collect_wri$_optstat_aux_hist');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5723</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5724</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>    get_list_of_columns (
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5725</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      p_source_table      =&GT; 'wri$_optstat_aux_history',
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5726</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      p_destination_table =&GT; 'sqlt$_wri$_optstat_aux_history',
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5727</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      x_insert_list       =&GT; l_insert_list,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5728</td>
+<td class="r">2</td>
+<td class="r">              0.000007999</td>
+<td class="r">              0.000003999</td>
+<td class="r">              0.000003999</td>
+<td nowrap><pre>      x_select_list       =&GT; l_select_list );
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5729</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">5730</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_sql :=
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tc_2"></a><h3>#2 Top Consumer</h3>
+
+Displays 10 lines before and after #2 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3007</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      FROM sqlt$_dba_dependencies dp
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3008</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>     WHERE dp.statement_id = p_statement_id
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3009</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>       AND dp.referenced_type IN ('TABLE', 'MATERIALIZED VIEW')
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3010</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>       AND NOT (dp.referenced_name LIKE 'X$%' AND dp.referenced_owner = 'SYS');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3011</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3012</td>
+<td class="r">1</td>
+<td class="r">              0.000002999</td>
+<td class="r">              0.000002999</td>
+<td class="r">              0.000002999</td>
+<td nowrap><pre>    -- preliminary list of indexes
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3013</td>
+<td class="r">1</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td nowrap><pre>    write_log('preliminary_list_of_indexes');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3014</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    list_of_indexes(p_statement_id);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3015</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3016</td>
+<td class="r">1</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td nowrap><pre>    -- final list of tables
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3017</td>
+<td class="r">1</td>
+<td class="rr">              6.387841694</td>
+<td class="r">              6.387841694</td>
+<td class="r">              6.387841694</td>
+<td nowrap><pre>    write_log('final_list_of_tables');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3018</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    INSERT INTO sqlg$_pivot (object_type, object_name, object_owner, partitioned)
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3019</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    SELECT 'TABLE', pt.object_name, pt.object_owner, t.partitioned
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3020</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      FROM sqlg$_pivot pt,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3021</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>           sys.dba_tables t
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3022</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>     WHERE pt.object_type = 'T'
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3023</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>       AND pt.object_owner = t.owner
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3024</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>       AND pt.object_name = t.table_name
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3025</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>     UNION
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3026</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    SELECT 'TABLE', dic.table_name object_name, dic.table_owner object_owner, t.partitioned
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3027</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      FROM sqlg$_pivot pt,
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tc_3"></a><h3>#3 Top Consumer</h3>
+
+Displays 10 lines before and after #3 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2341</td>
+<td class="r">1</td>
+<td class="r">              0.000002999</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000001999</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2342</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      l_dbid := sqlt$a.get_database_id;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2343</td>
+<td class="r">1</td>
+<td class="r">              0.000005999</td>
+<td class="r">              0.000005999</td>
+<td class="r">              0.000005999</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2344</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      l_sql :=
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2345</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      'INSERT INTO sqlt$_dba_hist_parameter (statement_id, statid'||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2346</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      l_insert_list||') SELECT :statement_id, :statid'||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2347</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      l_select_list||' FROM sys.dba_hist_parameter'||sqlt$a.s_db_link||' p '||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2348</td>
+<td class="r">1</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td nowrap><pre>      'WHERE dbid = :dbid';
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2349</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      write_log(l_sql, 'S');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2350</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2351</td>
+<td class="r">1</td>
+<td class="rr">              2.727243421</td>
+<td class="r">              2.727243421</td>
+<td class="r">              2.727243421</td>
+<td nowrap><pre>      BEGIN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2352</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        EXECUTE IMMEDIATE l_sql USING
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2353</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        IN p_statement_id, IN p_statid,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2354</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        IN l_dbid;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2355</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      EXCEPTION
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2356</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        WHEN OTHERS THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2357</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>          write_error(SQLERRM);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2358</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>          write_error(l_sql);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2359</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>          RETURN;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2360</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      END;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">2361</td>
+<td class="r">1</td>
+<td class="r">              0.001202985</td>
+<td class="r">              0.001202985</td>
+<td class="r">              0.001202985</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tc_4"></a><h3>#4 Top Consumer</h3>
+
+Displays 10 lines before and after #4 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3529</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      x_insert_list       =&GT; l_insert_list,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3530</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      x_select_list       =&GT; l_select_list );
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3531</td>
+<td class="r">1</td>
+<td class="r">              0.000005999</td>
+<td class="r">              0.000005999</td>
+<td class="r">              0.000005999</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3532</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_sql :=
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3533</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    'INSERT INTO sqlt$_dba_nested_tables (statement_id, statid'||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3534</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_insert_list||') SELECT DISTINCT :statement_id, :statid'||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3535</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_select_list||' FROM sqlg$_pivot x, sys.dba_nested_tables t '||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3536</td>
+<td class="r">1</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td nowrap><pre>    'WHERE x.object_type = ''TABLE'' AND x.object_name IN (t.table_name, t.parent_table_name) AND x.object_owner = t.owner';
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3537</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    write_log(l_sql, 'S');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3538</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3539</td>
+<td class="r">1</td>
+<td class="rr">              1.425019977</td>
+<td class="r">              1.425019977</td>
+<td class="r">              1.425019977</td>
+<td nowrap><pre>    BEGIN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3540</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      EXECUTE IMMEDIATE l_sql USING
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3541</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      IN p_statement_id, IN p_statid;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3542</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>    EXCEPTION
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3543</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      WHEN OTHERS THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3544</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        write_error(SQLERRM);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3545</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        write_error(l_sql);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3546</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        RETURN;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3547</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    END;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3548</td>
+<td class="r">1</td>
+<td class="r">              0.000216997</td>
+<td class="r">              0.000216997</td>
+<td class="r">              0.000216997</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3549</td>
+<td class="r">1</td>
+<td class="r">              0.001752979</td>
+<td class="r">              0.001752979</td>
+<td class="r">              0.001752979</td>
+<td nowrap><pre>    COMMIT;
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tc_5"></a><h3>#5 Top Consumer</h3>
+
+Displays 10 lines before and after #5 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">691</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  IS
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">692</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  BEGIN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">693</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    IF p_td THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">694</td>
+<td class="r">116</td>
+<td class="r">              0.000777990</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000009999</td>
+<td nowrap><pre>      append('&LT;td nowrap class="l"&GT;'||wrap_and_sanitize_html_clob(p_clob, p_max_line_size)||'&LT;/td&GT;');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">695</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    ELSE
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">696</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      append(wrap_and_sanitize_html_clob(p_clob, p_max_line_size, FALSE));
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">697</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    END IF;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">698</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  END sanitize_and_append;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">699</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">700</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  /*************************************************************************************/
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">701</td>
+<td class="r">116</td>
+<td class="rr">              1.403814230</td>
+<td class="r">              0.001992976</td>
+<td class="r">              0.249819015</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">702</td>
+<td class="r">116</td>
+<td class="r">              0.000334995</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000003999</td>
+<td nowrap><pre>  /* -------------------------
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">703</td>
+<td class="r">68</td>
+<td class="r">              0.001199985</td>
+<td class="r">              0.000012999</td>
+<td class="r">              0.000196997</td>
+<td nowrap><pre>   *
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">704</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>   * private font_sanitize_and_append
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">705</td>
+<td class="r">48</td>
+<td class="r">              0.000669991</td>
+<td class="r">              0.000010999</td>
+<td class="r">              0.000015999</td>
+<td nowrap><pre>   *
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">706</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>   * ------------------------- */
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">707</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  PROCEDURE font_sanitize_and_append (
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">708</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>    p_clob          IN CLOB,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">709</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>    p_td            IN BOOLEAN  DEFAULT TRUE,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">710</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>    p_max_line_size IN INTEGER  DEFAULT 200 )
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$R</td>
+<td class="r">711</td>
+<td class="r">116</td>
+<td class="r">              0.000851989</td>
+<td class="r">              0.000005999</td>
+<td class="r">              0.000009999</td>
+<td nowrap><pre>  IS
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tc_6"></a><h3>#6 Top Consumer</h3>
+
+Displays 10 lines before and after #6 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">150</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">151</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    -- (L)og/(S)ilent/(E)rror: insert line into log table
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">152</td>
+<td class="r">1304</td>
+<td class="r">              0.004848942</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000008999</td>
+<td nowrap><pre>    IF NVL(p_line_type, 'L') IN ('L', 'S', 'E') THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">153</td>
+<td class="r">1299</td>
+<td class="r">              0.001939976</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000088998</td>
+<td nowrap><pre>      log_rec.statement_id := s_log_statement_id;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">154</td>
+<td class="r">1299</td>
+<td class="r">              0.002740967</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000005999</td>
+<td nowrap><pre>      log_rec.statid := s_log_statid;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">155</td>
+<td class="r">1299</td>
+<td class="r">              0.010148878</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000091998</td>
+<td nowrap><pre>      log_rec.time_stamp := SYSTIMESTAMP;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">156</td>
+<td class="r">1299</td>
+<td class="r">              0.003919953</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000070999</td>
+<td nowrap><pre>      log_rec.line_type := p_line_type;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">157</td>
+<td class="r">1299</td>
+<td class="r">              0.005189938</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.002127974</td>
+<td nowrap><pre>      log_rec.line_text := l_line_text;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">158</td>
+<td class="r">1299</td>
+<td class="r">              0.003794954</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000540993</td>
+<td nowrap><pre>      IF log_rec.statement_id IS NOT NULL AND log_rec.statid IS NOT NULL THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">159</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        BEGIN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">160</td>
+<td class="r">1254</td>
+<td class="rr">              1.224672370</td>
+<td class="r">              0.000633992</td>
+<td class="r">              0.007474910</td>
+<td nowrap><pre>          INSERT INTO sqlt$_log VALUES log_rec;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">161</td>
+<td class="r">1254</td>
+<td class="r">              0.443011708</td>
+<td class="r">              0.000135998</td>
+<td class="r">              0.005970928</td>
+<td nowrap><pre>          COMMIT;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">162</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        EXCEPTION
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">163</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>          WHEN OTHERS THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">164</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>            DBMS_OUTPUT.PUT_LINE(SUBSTR('write_log1:'||SQLERRM, 1, MAX_PUT_LINE));
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">165</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>            ROLLBACK;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">166</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        END;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">167</td>
+<td class="r">1254</td>
+<td class="r">              0.001987976</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000156998</td>
+<td nowrap><pre>      END IF;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">168</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    END IF;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">169</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$A</td>
+<td class="r">170</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    -- (L)og/(E)rror/(P)rint: put line into spool file
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tc_7"></a><h3>#7 Top Consumer</h3>
+
+Displays 10 lines before and after #7 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3923</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      BEGIN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3924</td>
+<td class="r">334</td>
+<td class="r">              0.000777990</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000004999</td>
+<td nowrap><pre>        rsp_rec.depth                := depth_table(i.pid) + 1;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3925</td>
+<td class="r">334</td>
+<td class="r">              0.000551993</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000006999</td>
+<td nowrap><pre>        depth_table(i.id)            := rsp_rec.depth;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3926</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      EXCEPTION
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3927</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        WHEN OTHERS THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3928</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        print_log('*** group_id:'||i.group_id||' trca_plan_hash_value:'||i.trca_plan_hash_value||' id:'||i.id||' pid:'||i.pid);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3929</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        print_log('*** '||SQLERRM);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3930</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      END;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3931</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3932</td>
+<td class="r">334</td>
+<td class="r">              0.000828990</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000002999</td>
+<td nowrap><pre>      IF i.pid &GT;= 0 AND i.id &GT;= 0 THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3933</td>
+<td class="r">334</td>
+<td class="rr">              0.949135662</td>
+<td class="r">              0.002651968</td>
+<td class="r">              0.013020844</td>
+<td nowrap><pre>        INSERT INTO trca$_row_source_plan VALUES rsp_rec;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3934</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3935</td>
+<td class="r">334</td>
+<td class="r">              0.000614992</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000004999</td>
+<td nowrap><pre>        IF rsp_rec.sessions &GT; sessions THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3936</td>
+<td class="r">1</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000000999</td>
+<td nowrap><pre>          sessions := rsp_rec.sessions;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3937</td>
+<td class="r">1</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000000999</td>
+<td nowrap><pre>        END IF;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3938</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      END IF;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3939</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    END LOOP;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3940</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3941</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    -- generate row source plans per session
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3942</td>
+<td class="r">1</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td nowrap><pre>    IF sessions &GT; 1 THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$T</td>
+<td class="r">3943</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      depth_table(0) := -1;
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tc_8"></a><h3>#8 Top Consumer</h3>
+
+Displays 10 lines before and after #8 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1973</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      p_destination_table =&GT; 'sqlt$_gv$parameter_cbo', -- sqltxplain table
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1974</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      x_insert_list       =&GT; l_insert_list,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1975</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      x_select_list       =&GT; l_select_list );
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1976</td>
+<td class="r">1</td>
+<td class="r">              0.000004999</td>
+<td class="r">              0.000004999</td>
+<td class="r">              0.000004999</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1977</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_sql :=
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1978</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    'INSERT INTO sqlt$_gv$parameter_cbo (statement_id, statid'||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1979</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_insert_list||') SELECT :statement_id, :statid'||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1980</td>
+<td class="r">1</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000000999</td>
+<td nowrap><pre>    l_select_list||' FROM sys.sqlt$_gv$parameter_cbo_v'||sqlt$a.s_db_link;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1981</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    write_log(l_sql, 'S');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1982</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1983</td>
+<td class="r">1</td>
+<td class="rr">              0.919979010</td>
+<td class="r">              0.919979010</td>
+<td class="r">              0.919979010</td>
+<td nowrap><pre>    BEGIN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1984</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      EXECUTE IMMEDIATE l_sql USING
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1985</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      IN p_statement_id, IN l_statid;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1986</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>    EXCEPTION
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1987</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      WHEN OTHERS THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1988</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        write_error(SQLERRM);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1989</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        write_error(l_sql);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1990</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        RETURN;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1991</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    END;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1992</td>
+<td class="r">1</td>
+<td class="r">              0.000010999</td>
+<td class="r">              0.000004999</td>
+<td class="r">              0.000005999</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">1993</td>
+<td class="r">1</td>
+<td class="r">              0.002345971</td>
+<td class="r">              0.002345971</td>
+<td class="r">              0.002345971</td>
+<td nowrap><pre>    l_value := UPPER(sqlt$a.get_v$parameter_cbo(p_name =&GT; '_optim_peek_user_binds', p_statement_id =&GT; p_statement_id));
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tc_9"></a><h3>#9 Top Consumer</h3>
+
+Displays 10 lines before and after #9 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3987</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_insert_list||') SELECT :statement_id, :statid'||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3988</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_select_list||' FROM sys.dba_ind_statistics '||
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3989</td>
+<td class="r">1</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000001999</td>
+<td nowrap><pre>    'WHERE owner = :owner AND index_name = :name';
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3990</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    write_log(l_sql, 'S');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3991</td>
+<td class="r">3</td>
+<td class="r">              0.006121926</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.005922929</td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3992</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    FOR i IN (SELECT object_name, object_owner
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3993</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>                FROM sqlg$_pivot
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3994</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>               WHERE object_type = 'INDEX')
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3995</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    LOOP
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3996</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      --write_log('owner = "'||i.object_owner||'", name = "'||i.object_name||'"', 'S');
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3997</td>
+<td class="r">13</td>
+<td class="rr">              0.850471840</td>
+<td class="r">              0.004154950</td>
+<td class="r">              0.770357797</td>
+<td nowrap><pre>      BEGIN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3998</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        EXECUTE IMMEDIATE l_sql USING
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">3999</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        IN p_statement_id, IN p_statid,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">4000</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>        IN i.object_owner, IN i.object_name;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">4001</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      EXCEPTION
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">4002</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>        WHEN OTHERS THEN
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">4003</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>          write_error(SQLERRM);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">4004</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>          write_error(l_sql);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">4005</td>
+<td class="r">13</td>
+<td class="r">              0.000022999</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.000001999</td>
+<td nowrap><pre>          RETURN;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">4006</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>      END;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>SQLT$D</td>
+<td class="r">4007</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    END LOOP;
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tc_10"></a><h3>#10 Top Consumer</h3>
+
+Displays 10 lines before and after #10 top consumer.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Line<br>#</th>
+<th>Times<br>Line<br>Exec</th>
+<th>Total<br>Time<br>(seconds)</th>
+<th>Min<br>Time<br>(seconds)</th>
+<th>Max<br>Time<br>(seconds)</th>
+<th>Line Text</th>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">999</td>
+<td class="r">0</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td class="r">              0.000000000</td>
+<td nowrap><pre>      RAISE;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1000</td>
+<td class="r">4</td>
+<td class="r">              0.000013999</td>
+<td class="r">              0.000001999</td>
+<td class="r">              0.000004999</td>
+<td nowrap><pre>  END flush_STAT_cache;
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1001</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1002</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  /*************************************************************************************/
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1003</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1004</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>   /* -------------------------
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1005</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>   *
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1006</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>   * private parse_line
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1007</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>   *
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1008</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>   * ------------------------- */
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1009</td>
+<td class="r">57116</td>
+<td class="rr">              0.810692315</td>
+<td class="r">              0.000000999</td>
+<td class="r">              0.001928976</td>
+<td nowrap><pre>  PROCEDURE parse_line (
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1010</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    p_tool_execution_id IN OUT NOCOPY INTEGER,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1011</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    p_trace_id          IN OUT NOCOPY INTEGER,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1012</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    p_line_len          IN OUT NOCOPY INTEGER,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1013</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    p_line_number       IN OUT NOCOPY INTEGER,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1014</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    p_line_text         IN OUT NOCOPY VARCHAR2,
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1015</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    p_line_clob         IN OUT NOCOPY CLOB )
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1016</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>  IS
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1017</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_line_varchar VARCHAR2(32767);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1018</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_line_text    VARCHAR2(32767);
+</pre></td>
+</tr>
+
+<tr>
+<td class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td>SQLTXPLAIN</td>
+<td>TRCA$P</td>
+<td class="r">1019</td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td class="r"></td>
+<td nowrap><pre>    l_line_clob    CLOB;
+</pre></td>
+</tr>
+
+</table>
+
+<a name="tpl"></a><h2>Top 10 Profiled PL/SQL Libraries</h2>
+
+<table>
+
+Ordered by total time.
+
+<tr>
+<th>Top</th>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Timestamp</th>
+<th>Total Time<br>(seconds)</th>
+<th>Version<br>($Header)</th>
+</tr>
+
+
+<tr>
+<td nowrap class="r">1</td>
+<td nowrap class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$D</td>
+<td nowrap>2012-05-08/11:52:10</td>
+<td nowrap class="r">             36.403186875</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgd.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">2</td>
+<td nowrap class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$P</td>
+<td nowrap>2012-05-08/11:50:41</td>
+<td nowrap class="r">             10.913615730</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgp.pkb 11.4.4.1 2012/01/02 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">3</td>
+<td nowrap class="r">134</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$M</td>
+<td nowrap>2012-05-08/11:52:17</td>
+<td nowrap class="r">              6.345226231</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgm.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">4</td>
+<td nowrap class="r">128</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$T</td>
+<td nowrap>2012-05-08/11:52:34</td>
+<td nowrap class="r">              5.513350195</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgt.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">5</td>
+<td nowrap class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$A</td>
+<td nowrap>2012-05-08/11:52:05</td>
+<td nowrap class="r">              4.576595732</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkga.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">6</td>
+<td nowrap class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$T</td>
+<td nowrap>2012-05-08/11:50:42</td>
+<td nowrap class="r">              4.476337898</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgt.pkb 11.4.4.1 2012/01/02 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">7</td>
+<td nowrap class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$R</td>
+<td nowrap>2012-05-08/11:52:29</td>
+<td nowrap class="r">              4.173901106</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgr.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">8</td>
+<td nowrap class="r">144</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$X</td>
+<td nowrap>2012-05-08/11:50:45</td>
+<td nowrap class="r">              3.596454114</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgx.pkb 11.4.2.7 2011/04/08 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">9</td>
+<td nowrap class="r">141</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$G</td>
+<td nowrap>2012-05-08/11:50:40</td>
+<td nowrap class="r">              2.204858443</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgg.pkb 11.4.4.2 2012/02/02 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">10</td>
+<td nowrap class="r">65</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$I</td>
+<td nowrap>2012-05-08/11:52:16</td>
+<td nowrap class="r">              1.557500128</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgi.pkb 11.4.4.5 2012/05/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td>TOTAL</td>
+<td></td>
+<td></td>
+<td></td>
+<td class="r">             79.761026452</td>
+<td></td>
+</tr>
+
+</table>
+
+<a name="apl"></a><h2>All Profiled PL/SQL Libraries</h2>
+
+Ordered first by library unit number "Lib #" and "ANONYMOUS BLOCK" last.
+Aggregates all "ANONYMOUS BLOCK" libraries, displaying only COUNT under "Lib #" and time SUM.
+
+<table>
+
+<tr>
+<th>Lib<br>#</th>
+<th>Type</th>
+<th>Owner</th>
+<th>Name</th>
+<th>Timestamp</th>
+<th>Total Time<br>(seconds)</th>
+<th>Version<br>($Header)</th>
+</tr>
+
+
+<tr>
+<td nowrap class="r">23</td>
+<td nowrap>PACKAGE SPEC</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$A</td>
+<td nowrap>2012-05-08/11:52:03</td>
+<td nowrap class="r">              0.000171996</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkga.pks 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">24</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$A</td>
+<td nowrap>2012-05-08/11:52:05</td>
+<td nowrap class="r">              4.576595732</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkga.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">34</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$R</td>
+<td nowrap>2012-05-08/11:52:29</td>
+<td nowrap class="r">              4.173901106</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgr.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">65</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$I</td>
+<td nowrap>2012-05-08/11:52:16</td>
+<td nowrap class="r">              1.557500128</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgi.pkb 11.4.4.5 2012/05/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">66</td>
+<td nowrap>PACKAGE SPEC</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$D</td>
+<td nowrap>2012-05-02/15:54:51</td>
+<td nowrap class="r">              0.000198992</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgd.pks 11.4.4.1 2012/01/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">67</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$D</td>
+<td nowrap>2012-05-08/11:52:10</td>
+<td nowrap class="r">             36.403186875</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgd.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">81</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>MDSYS</td>
+<td nowrap>SDO_GEOR_DEF</td>
+<td nowrap>2011-09-18/17:51:28</td>
+<td nowrap class="r">              0.088497921</td>
+<td nowrap><pre></pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">128</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$T</td>
+<td nowrap>2012-05-08/11:52:34</td>
+<td nowrap class="r">              5.513350195</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgt.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">129</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$S</td>
+<td nowrap>2012-05-02/15:55:23</td>
+<td nowrap class="r">              0.001135968</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgs.pkb 11.4.4.2 2012/02/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">134</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$M</td>
+<td nowrap>2012-05-08/11:52:17</td>
+<td nowrap class="r">              6.345226231</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgm.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">135</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$H</td>
+<td nowrap>2012-05-08/11:52:15</td>
+<td nowrap class="r">              1.205440332</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkgh.pkb 11.4.4.6 2012/06/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">136</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>SQLT$E</td>
+<td nowrap>2012-05-08/11:52:14</td>
+<td nowrap class="r">              0.086712946</td>
+<td nowrap><pre>/* $Header: 215187.1 sqcpkge.pkb 11.4.4.1 2012/01/02 carlos.sierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">138</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$I</td>
+<td nowrap>2012-05-08/11:50:43</td>
+<td nowrap class="r">              0.551728329</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgi.pkb 11.4.4.1 2012/01/02 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">139</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$P</td>
+<td nowrap>2012-05-08/11:50:41</td>
+<td nowrap class="r">             10.913615730</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgp.pkb 11.4.4.1 2012/01/02 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">140</td>
+<td nowrap>PACKAGE SPEC</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$G</td>
+<td nowrap>2012-05-08/11:50:38</td>
+<td nowrap class="r">              0.026966666</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgg.pks 11.4.2.7 2011/04/08 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">141</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$G</td>
+<td nowrap>2012-05-08/11:50:40</td>
+<td nowrap class="r">              2.204858443</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgg.pkb 11.4.4.2 2012/02/02 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">142</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$T</td>
+<td nowrap>2012-05-08/11:50:42</td>
+<td nowrap class="r">              4.476337898</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgt.pkb 11.4.4.1 2012/01/02 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">143</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$R</td>
+<td nowrap>2012-05-08/11:50:44</td>
+<td nowrap class="r">              1.269787194</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgr.pkb 11.4.4.1 2012/01/02 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">144</td>
+<td nowrap>PACKAGE BODY</td>
+<td nowrap>SQLTXPLAIN</td>
+<td nowrap>TRCA$X</td>
+<td nowrap>2012-05-08/11:50:45</td>
+<td nowrap class="r">              3.596454114</td>
+<td nowrap><pre>/* $Header: 224270.1 tacpkgx.pkb 11.4.2.7 2011/04/08 csierra $ */
+</pre></td>
+</tr>
+
+<tr>
+<td nowrap class="r">379</td>
+<td nowrap>ANONYMOUS BLOCK</td>
+<td nowrap></td>
+<td nowrap></td>
+<td nowrap></td>
+<td nowrap class="r">              0.196039523</td>
+<td nowrap></td>
+</tr>
+
+<tr>
+<td></td>
+<td>TOTAL</td>
+<td></td>
+<td></td>
+<td></td>
+<td class="r">             83.187706319</td>
+<td nowrap></td>
+</tr>
+
+</table>
+
+
+<!-- 2012-07-02/09:01:21 -->
+<hr size="3">
+<font class="f">243755.1 PROFILER 11.4.4.7 2012-07-02/09:01:20</font>
+</body>
+</html>
