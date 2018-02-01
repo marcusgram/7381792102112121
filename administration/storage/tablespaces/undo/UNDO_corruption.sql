@@ -5,16 +5,16 @@ Unable to drop undo tablespace due to ORA-01548: active rollback segment
 
 Problem:
 
-– create a new undo tablespace and set it to undo tablespace of instance
+â€“ create a new undo tablespace and set it to undo tablespace of instance
 sys@ora11gr2> alter system set undo_tablespace=undotbs2;
 
-– but we can not drop the original one
+â€“ but we can not drop the original one
 
 sys@ora11gr2> drop tablespace undotbs1 including contents and datafiles;
 drop tablespace undotbs1 including contents and datafiles
 *
 ERROR at line 1:
-ORA-01548: active rollback segment ‘_SYSSMU2_6654314$’ found, terminate dropping tablespace
+ORA-01548: active rollback segment â€˜_SYSSMU2_6654314$â€™ found, terminate dropping tablespace
 
 Cause of the problem
 
@@ -24,10 +24,10 @@ Solution:
 
 1) find all active rollback segment in the undo tablespace to be dropped.
 
-sys@ora11gr2> select segment_name, tablespace_name, status from dba_rollback_segs where tablespace_name=’UNDOTBS1'
+sys@ora11gr2> select segment_name, tablespace_name, status from dba_rollback_segs where tablespace_name=â€™UNDOTBS1'
 
 SEGMENT_NAME TABLESPACE_NAME STATUS
-—————————— —————————— —————-
+â€”â€”â€”â€”â€”â€”â€”â€”â€”â€” â€”â€”â€”â€”â€”â€”â€”â€”â€”â€” â€”â€”â€”â€”â€”-
 _SYSSMU10_820739558$ UNDOTBS1 OFFLINE
 _SYSSMU9_2448906239$ UNDOTBS1 OFFLINE
 _SYSSMU8_3066916762$ UNDOTBS1 OFFLINE
@@ -42,7 +42,7 @@ _SYSSMU2_6654314$ UNDOTBS1 PARTLY AVAILABLE
 
 create pfile='/tmp/rescue.ora' from spfile;
 
-_offline_rollback_segments=(_SYSSMU2_6654314$,…..)
+_offline_rollback_segments=(_SYSSMU2_6654314$,â€¦..)
 
 3) shutdown database 
 
@@ -51,17 +51,17 @@ sys@ora11gr2> startup mount pfile='/tmp/rescue.ora'
 
 5) offline undo datafile for drop
 
-sys@ora11gr2> alter database datafile ‘/app/oracle/oradata/ORA11GR2/undotbs1.dbf’ offline drop;
+sys@ora11gr2> alter database datafile â€˜/app/oracle/oradata/ORA11GR2/undotbs1.dbfâ€™ offline drop;
 
 6) open database
 sys@ora11gr2> alter database open;
 
 7)drop the undo segment
 
-sys@ora11gr2> drop rollback segment “_SYSSMU2_6654314$”;
+sys@ora11gr2> drop rollback segment â€œ_SYSSMU2_6654314$â€;
 
-8)Add a new undo tablespace and set it as instance’s undo tablespace
-…
+8)Add a new undo tablespace and set it as instanceâ€™s undo tablespace
+â€¦
 sys@ora11gr2> alter system set undo_tablespace=undotbs2;
 
 9) drop original undo tablespace
