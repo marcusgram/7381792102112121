@@ -1,10 +1,8 @@
 
 
 /* 
-see
-   http://kylehailey.com/oracle-cpu-time/
-output looks like
 
+-- see http://kylehailey.com/oracle-cpu-time/output looks like
 
 
 SQL> /
