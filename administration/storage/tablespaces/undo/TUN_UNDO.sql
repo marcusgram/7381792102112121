@@ -90,7 +90,7 @@ WHERE e.name = 'undo_retention'
 
 ACTUAL UNDO SIZE [MByte] UNDO RETENTION [Sec]      OPTIMAL UNDO RETENTION [Sec]
 ------------------------ ------------------------- ----------------------------
-                   80000 38000                                            12431 : Avec 80G d'undo, on peut esperer 12500 sec de retention => Plus d'espace à prevoir !!
+                   80000 38000                                            12431 : Avec 80G d'undo, on peut esperer 12500 sec de retention => Plus d'espace Ã  prevoir !!
 				   
 				   
 				   
@@ -136,5 +136,5 @@ SELECT d.undo_size/(1024*1024) "ACTUAL UNDO SIZE [MByte]",
 				   
 ACTUAL UNDO SIZE [MByte] UNDO RETENTION [Sec]      NEEDED UNDO SIZE [MByte]
 ------------------------ ------------------------- ------------------------
-           80000         38000                                   244556.224 => 250 Go d'UNDO sont à envisager
+           80000         38000                                   244556.224 => 250 Go d'UNDO sont Ã  envisager
 
