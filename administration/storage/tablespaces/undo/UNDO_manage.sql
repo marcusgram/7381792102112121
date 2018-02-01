@@ -1,7 +1,11 @@
 
 
- select count(segment_name),sum(bytes/1024/1024),status from dba_undo_extents group by status
 
+-- UNDO content
+ select count(segment_name),sum(bytes/1024/1024),status 
+ from dba_undo_extents 
+ group by status
+/
 
 COUNT(SEGMENT_NAME) SUM(BYTES/1024/1024) STATUS
 ------------------- -------------------- ---------
@@ -9,38 +13,26 @@ COUNT(SEGMENT_NAME) SUM(BYTES/1024/1024) STATUS
 1116                  3599.67578         EXPIRED
 601                    153.375         UNEXPIRED
 
-
 8M = (Active) + 153M(Unexpired) = 161M Busy
 
 3599M = (Expired)= Free, and can be reutilized.
 
 
-
-system-setup-keyboard
-system-config-keyboard
-
-Recreate UNDO
-
-
-create undo tablespace UNDOTBS2 datafile  '/apps/oracledata/PPH1WDR0/osys2/undo03.dbf' size 500M;
+-- Recreate UNDO
+create undo tablespace UNDOTBS2 datafile  '/apps/oracledata/ODB1WDR0/osys2/undo03.dbf' size 500M;
 
 alter system set UNDO_TABLESPACE=UNDOTBS2;
 
 drop tablespace UNDOTBS1 including contents and datafiles;
 
-create undo tablespace UNDOTBS1 datafile  '/apps/oracledata/PPH1WDR0/data0001/undo01.dbf' size 1024M AUTOEXTEND ON MAXSIZE 2048M;
-ALTER DATABASE DATAFILE '/apps/oracledata/PPH1WDR0/data0001/undo01.dbf' AUTOEXTEND ON NEXT 100M;
+create undo tablespace UNDOTBS1 datafile  '/apps/oracledata/ODB1WDR0/data0001/undo01.dbf' size 1024M AUTOEXTEND ON MAXSIZE 2048M;
+ALTER DATABASE DATAFILE '/apps/oracledata/ODB1WDR0/data0001/undo01.dbf' AUTOEXTEND ON NEXT 100M;
 
-ALTER TABLESPACE "UNDOTBS1" ADD DATAFILE '/apps/oracledata/PPH1WDR0/data0001/undo02.dbf' SIZE 1024M AUTOEXTEND ON NEXT 100M MAXSIZE 10000M;
+ALTER TABLESPACE "UNDOTBS1" ADD DATAFILE '/apps/oracledata/ODB1WDR0/data0001/undo02.dbf' SIZE 1024M AUTOEXTEND ON NEXT 100M MAXSIZE 10000M;
 
 alter system set UNDO_TABLESPACE=UNDOTBS1;
 
 drop tablespace UNDOTBS2 including contents and datafiles;
-
-
-
-
-
 
 
 
