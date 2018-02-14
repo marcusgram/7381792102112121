@@ -183,11 +183,41 @@ DELETE FROM `Employees` WHERE ID = 1;
 
 ### Data control language ```DCL```
 
-*DCL commands deals with privileges only. DCL commands enforces an implicit commit before & after the statement. We cannot undo (rollback) the changes.*
+*DCL commands deals with privileges only. DCL commands enforces an implicit commit before & after the statement. We cannot undo (rollback) the changes.
+Data Control Language is used to manage user access to an Oracle database*
+
 
 1. GRANT
 2. REVOKE
 3. SET ROLE
+4. COMMIT
+5. ROLLBACK
+6. SAVEPOINT
+
+#### GRANT
+
+- A DBA or user can grant access permission on owned database objects to other user or roles using GRANT command.
+
+```
+GRANT [privilege]
+ON [object]
+TO {user |PUBLIC |role} 
+[WITH ADMIN | GRANT OPTION];
+
+SQL> GRANT CREATE SESSION TO U1;
+SQL> GRANT CONNECT, RESOURCE TO U1;
+```
+#### REVOKE
+
+- The DCL command is used to revoke an existing privilege from a user. It can revoke a system privilege, object privilege or a role from a user. Only DBA or a user with ADMIN OPTION can revoke system privilege.
+
+```
+REVOKE [privilege]
+ON [object]
+FROM {USER |PUBLIC | ROLE}
+
+SQL> REVOKE SELECT ON T1 FROM U1;
+```
 
 #### Privileges
 
