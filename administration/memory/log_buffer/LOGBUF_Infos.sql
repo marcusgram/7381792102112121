@@ -55,5 +55,13 @@ Also, if we use AMM, the log buffer size is part of memory_target algorithm.
 If you really need to change the log_buffer, you can still use alter system to change it. 
 The parameter is not dynamic, so we need to set the scope to spfile and bounce the instance to make it effective.
 
+When the LGWR write the log buffer to the log file
+-------------------------------------------------
+Every 3 secs , the LGWR will check the remaining space in the log buffer. 
+if the free space is less than 1/3, the LGWR would write the log buffer to the online redo log file.
+The “1/3” threshold is control by _LOG_IO_SIZE
+When log buffer has more than 1 MB data
+Online redo log switch
 
+Read more at http://www.sqlpanda.com/2012/10/redo-log-buffer.html#RtIVZBLq90MlkFsr.99
 Read more at http://www.sqlpanda.com/2012/10/redo-log-buffer.html#RtIVZBLq90MlkFsr.99
