@@ -33,3 +33,10 @@ where   a.sequence# = b.sequence# + 1
 order by 1;
 
 --start osmclear
+
+
+      Log                                                  Lst Log
+    Seq # Group # Archived?  Status     Wr Start         Swtch Dur
+--------- ------- ---------- ---------- -------- -----------------
+    32129       1 YES        INACTIVE   11:37:48             29.93
+    32130       2 NO         CURRENT    12:07:50             30.03
