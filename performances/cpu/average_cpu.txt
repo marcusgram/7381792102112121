@@ -1,0 +1,15 @@
+Sunday, February 20, 2011
+CPU Percentage Vs. CPU Load Average for DBAs
+Most of the people, specially, working on Windows platform don’t know much about Load Average of CPU and just take a look at the CPU usage %age. On Linux based platforms load average or run queue length is a very important indicator to check how much is the load on the CPUs of the system and whether current number of CPUs enough to support the workload pushed to the server. 
+
+Technically speaking, CPU is either 100% utilized or 0% utilized (when working, status is 1 which means it is busy, and when not working, status is 0). So, in a normal environment when there are active processes, CPU keeps on processing something all the time which means it is 100% busy all the time, so, what is CPU % then? Well, at OS level, CPU %age is calculated by number of processes actively using CPU during a time unit (used for CPU % calculation) and CPU time utilized by each of these active processes.
+
+CPU Load Average or Run Queue Length
+
+Although CPU %age is not a bad thing to look at, but, Load Average is the key to calculate the CPU load on your system which will reveal to you the need to have more CPUs in your system. CPU run queue length or load average would show you how many processes are currently in the queue waiting for the CPU to process their request. In a 4 CPU system, Load Average 4 means that there are 4 processes on the CPU and no one is waiting for the CPU because each process has a CPU available to process its request, but, if the Load Average starts increasing from the value 4 and continuously above 4 means that 4 CPUs might not be enough to support all active processes because a few processes are waiting in the queue for CPU to be free because CPUs are busy in processing the requests of other processes. A load average of 6, in this scenario, will mean that there are 2 processes which are in wait for the CPUs.
+
+So as a DBA, Load Average certainly exposes to the DBA if database is not doing good because of insufficient CPU resources. Application side could be tuned if possible to release CPU load, or more CPUs could be added.
+
+If you generate the AWR report (AWR is available starting from 10g and needs diagnostic pack license), it would also list the CPU load in it and hence can help DBA to find out CPU load during the snapshots interval this AWR is based on.
+
+If you see a high Load (more than number of CPUs), you can find out the top SQLs hogging the CPU. In my experience, I have seen SQLs running thousands of times within a time interval of 15 minutes (AWR was based on 15 minutes snapshot interval) and this was alarming because this kind of SQLs execution keep the CPU load at high level. In this scenario, you can work on Application side to find out why you have this many executions of a single SQL during a small period of time and tune your application. Otherwise, you might need to add more CPUs to the system.
